@@ -1,0 +1,10 @@
+.slide {
+  display: flex !important;
+  justify-content: center;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: gray;
+  font-size: 2rem;
+}

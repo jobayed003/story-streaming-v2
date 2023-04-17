@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+:root {
+  --white: #fff;
+  --dark: #000000;
+  --button-color: #e40914;
+  --button-hover-collor: #f40612;
+  --gray-color: #303030;
+  --footer-text-color: #898989;
+}
+body {
+  /* background-color: var(--white); */
+  color: var(--gray-color);
+  font-family: 'Roboto', sans-serif;
+}
+.pdy {
+  padding: 75px 0px;
+}
+.link-item {
+  color: #0087e9;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+}
+.link-item:hover {
+  color: #0087e9;
+  text-decoration: underline;
+}
+.custom-item {
+  border-top: 1px solid var(--footer-text-color);
+  text-align: center;
+}
+/* nav */
+nav {
+  /* background-color: var(--dark); */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.dropdown img {
+  /* max-width: 35px; */
+  border-radius: 5px;
+}
+
+/* mainsection */
+.mainsection {
+  border-bottom: 1px solid var(--footer-text-color);
+}
+.mainsection .brdr {
+  border-bottom: 1px solid var(--footer-text-color);
+}
+.mainsection .left img {
+  max-width: 180px;
+  border-radius: 5px;
+}
+.mainsection .text-content {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--footer-text-color);
+}
+.mainsection .left .cstm-a {
+  text-decoration: none;
+}
+.mainsection h2 {
+  color: var(--footer-text-color);
+  font-size: 25px;
+  font-weight: 400;
+}
+
+/* Modal custom style */
+/* .custom-modal {
+  back
+} */
+
+/* footer */
+.footer-header {
+  color: var(--footer-text-color);
+  font-size: 20px;
+  font-weight: 400;
+}
+.footer-header:hover {
+  color: var(--footer-text-color);
+  text-decoration: underline;
+}
+.footer-link {
+  font-size: 18px;
+  color: var(--footer-text-color);
+  display: block;
+  text-decoration: none;
+}
+.footer-link:hover {
+  color: var(--footer-text-color);
+  text-decoration: underline;
+}
+/* media query */
+@media only screen and (max-width: 992px) {
+  .mainsection h2 {
+    font-size: 20px;
+  }
+}
