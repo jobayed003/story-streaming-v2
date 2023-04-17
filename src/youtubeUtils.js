@@ -47,7 +47,6 @@ export const getSeriesData = async (id) => {
   if (seriesSnap.exists()) {
     return seriesSnap.data();
   }
-  return;
 };
 
 export const updateSeries = async (id, updatedDetails) => {
