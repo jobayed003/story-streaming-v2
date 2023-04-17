@@ -12,7 +12,7 @@ const VideoCard = ({ imgSrc, scrollTo, video }) => {
   const navigate = useNavigate();
 
   const handleClick = async () => {
-    setSeries(await getSeriesData(video.episodes[0].id));
+    setSeries({ ...(await getSeriesData(video.id)), id: video.id });
     scrollTo.current.scrollIntoView();
   };
 
