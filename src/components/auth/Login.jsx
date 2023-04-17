@@ -9,7 +9,7 @@ const Login = ({ show, setShow }) => {
   const [isLoading, setIsLoading] = useState(false);
   const handleClose = () => setShow(false);
 
-  const { authenticateUser, setAuthStep } = useContext(AuthProvider);
+  const { setAuthStep } = useContext(AuthProvider);
   const navigate = useNavigate();
 
   const [userCred, setUserCred] = useState({ email: '', password: '' });
@@ -30,16 +30,9 @@ const Login = ({ show, setShow }) => {
       setIsLoading(true);
       const auth = getAuth();
 
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        userCred.email,
-        userCred.password
-      );
+      await signInWithEmailAndPassword(auth, userCred.email, userCred.password);
 
-      if (userCredential.user) {
-        authenticateUser();
-        navigate('/dashboard');
-      }
+      navigate('/dashboard');
     } catch (err) {
       setIsLoading(false);
       toast.error(
