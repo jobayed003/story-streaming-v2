@@ -7,6 +7,7 @@ import { fetchData } from '../youtubeUtils';
 
 const AuthProvider = createContext({
   users: [],
+  userCredentials: {},
   isAuthenticated: false,
   authenticateUser: () => {},
 });
@@ -18,51 +19,60 @@ export const AuthContext = ({ children }) => {
   const [isDefaultAdmin, setIsDefaultAdmin] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authStep, setAuthStep] = useState('login');
-
-  const authenticateUser = () => {
-    setIsAuthenticated(true);
-  };
+  const [userCredentials, setUserCredentials] = useState({
+    name: '',
+    email: '',
+    avatar: '',
+  });
 
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
+        return;
         // navigate('/');
-      } else {
-        setIsAuthenticated(true);
       }
 
-      const userRef = doc(db, 'users', user.uid);
-      const userSnap = await getDoc(userRef);
+      setIsAuthenticated(true);
 
-      if (userSnap.data().role === 'admin') {
-        setIsAdmin(true);
-      } else {
-        setIsAdmin(false);
-      }
+      const { displayName, photoUrl, email } = user;
 
-      let users = [];
+      setUserCredentials({ name: displayName, email, avatar: photoUrl });
+      (async () => {
+        const userRef = doc(db, 'users', auth.currentUser.uid);
+        const userSnap = await getDoc(userRef);
 
-      const data = await fetchData('users');
+        if (userSnap.data().role === 'admin') {
+          setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
+        }
 
-      data.forEach((el) => {
-        users.push({ name: el.name, email: el.email, role: el.role, id: el.id });
-        el.email === 'admin@admin.com' && setIsDefaultAdmin(true);
-      });
-      setUsers(users);
+        let users = [];
+
+        const data = await fetchData('users');
+
+        data.forEach((el) => {
+          users.push({ name: el.name, email: el.email, role: el.role, id: el.id });
+          el.email === 'admin@admin.com' && setIsDefaultAdmin(true);
+        });
+        setUsers(users);
+      })();
     });
-  });
+  }, []);
 
   const contextValue = {
     isAuthenticated,
-    authenticateUser,
     authStep,
     setAuthStep,
     isAdmin,
     setIsAdmin,
     users,
+    userCredentials,
+    setUserCredentials,
     isUpdated,
     setIsUpdated,
+
     isDefaultAdmin,
   };
 

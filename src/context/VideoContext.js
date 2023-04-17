@@ -49,7 +49,7 @@ export const VideoContext = ({ children }) => {
         toast.error('Something Went Wrong!');
       }
     })();
-  }, [updated]);
+  }, [updated, series]);
 
   const contextValue = {
     clickedVideo,
