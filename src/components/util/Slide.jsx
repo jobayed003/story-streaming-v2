@@ -3,8 +3,6 @@ import Slider from 'react-slick';
 import './slide.css';
 
 const Slide = ({ children, videosCount }) => {
-  console.log(videosCount);
-
   const settings = {
     infinite: true,
     speed: 500,

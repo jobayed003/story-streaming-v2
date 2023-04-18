@@ -19,7 +19,7 @@ import {
   Spinner,
 } from 'react-bootstrap';
 import { FaEye } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import AuthProvider from '../context/AuthContext';
 import StateContextProvider from '../context/StateContext';
@@ -137,8 +137,6 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
   const auth = getAuth();
   const user = auth.currentUser;
 
-  // const { newPass: oldPassword, newpass: newPassword } = passwords;
-
   const handleChange = ({ target }) => {
     const targetId = target.id.replace('floating', '').toLowerCase();
     setPasswords((prevstate) => ({
@@ -154,7 +152,7 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
     }
 
     const actionCodeSettings = {
-      url: 'http://localhost:3000/?email=' + userDetails.email,
+      url: `${window.location.origin}/?email=` + userDetails.email,
 
       // When multiple custom dynamic link domains are defined, specify which
       // one to use.

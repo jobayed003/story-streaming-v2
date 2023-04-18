@@ -1,7 +1,5 @@
-import { doc, onSnapshot } from 'firebase/firestore';
 import { createContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { db } from '../firebase.config';
 import { fetchData } from '../youtubeUtils';
 
 const VideoContextProvider = createContext({

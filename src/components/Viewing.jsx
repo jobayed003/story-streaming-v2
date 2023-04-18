@@ -75,7 +75,7 @@ const Viewing = () => {
     onPlaybackQualityChange: () => {},
   });
   return (
-    <div style={{ height: getHeight() }}>
+    <div style={{ height: getHeight() }} className='text-light'>
       <h1>{title}</h1>
       <YouTube {...details} />
     </div>

@@ -4,6 +4,7 @@ import { useContext, useRef, useState } from 'react';
 import { Button, Card, Col, Container, Row, Spinner } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
+import { FaHeart } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import YouTube from 'react-youtube';
 import AuthProvider from '../context/AuthContext';
@@ -20,6 +21,7 @@ import Slide from './util/Slide';
 const Dashboard = () => {
   const navigate = useNavigate();
 
+  const { favouriteVideos } = useContext(StateContextProvider);
   const { isAuthenticated } = useContext(AuthProvider);
   const { videos, videoUrls } = useContext(VideoContextProvider);
 
@@ -55,31 +57,47 @@ const Dashboard = () => {
           </Col>
         </Row>
 
-        <Slide videosCount={videos.length}>
-          {videos.map((el, idx) => (
-            <div className='slide' key={Math.random() + idx} style={{ width: '400px' }}>
-              <ListCard imgSrc={thumbnail[idx]} videoDetails={el} />
-            </div>
-          ))}
-        </Slide>
+        {videos.length <= 0 ? (
+          <Row>
+            <Col className='my-5 text-light text-center'>
+              <h1>No Videos Found!</h1>
+            </Col>
+          </Row>
+        ) : (
+          <Slide videosCount={videos.length}>
+            {videos.map((el, idx) => (
+              <div className='slide' key={Math.random() + idx} style={{ width: '400px' }}>
+                <ListCard imgSrc={thumbnail[idx]} videoDetails={el} />
+              </div>
+            ))}
+          </Slide>
+        )}
         <Row>
           <Col className='text-light' id={'my-list'}>
             <h1>My List</h1>
           </Col>
         </Row>
 
-        <Slide videosCount={videos.length}>
-          {videos.map((el, idx) => (
-            <div
-              id='my-list'
-              className='slide'
-              key={Math.random() + idx}
-              style={{ width: '400px' }}
-            >
-              <ListCard imgSrc={thumbnail[idx]} videoDetails={el} />
-            </div>
-          ))}
-        </Slide>
+        {favouriteVideos.length <= 0 ? (
+          <Row>
+            <Col className='my-5 text-light text-center'>
+              <h1>No Videos Found!</h1>
+            </Col>
+          </Row>
+        ) : (
+          <Slide videosCount={videos.length}>
+            {favouriteVideos.map((el, idx) => (
+              <div
+                id='my-list'
+                className='slide'
+                key={Math.random() + idx}
+                style={{ width: '400px' }}
+              >
+                <ListCard imgSrc={thumbnail[idx]} videoDetails={el} />
+              </div>
+            ))}
+          </Slide>
+        )}
       </Container>
       {/* list-end */}
       {/* footer-start */}
@@ -92,9 +110,11 @@ export default Dashboard;
 
 const ListCard = ({ imgSrc, videoDetails }) => {
   const [hovered, setHovered] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
+
   const navigate = useNavigate();
 
-  const { setClickedVideo } = useContext(StateContextProvider);
+  const { favouriteVideos, setClickedVideo, setFavouriteVideos } = useContext(StateContextProvider);
   // useOutsideHover(ref, () => setHovered(false));
 
   const handleClick = () => {
@@ -177,6 +197,21 @@ const ListCard = ({ imgSrc, videoDetails }) => {
                 >
                   Fullscreen
                 </Button>
+                {/* <Button
+                  variant='dark'
+                  style={{
+                    color: '#fff',
+                    fontSize: '1.5rem',
+                  }}
+                  onClick={() => {
+                    setFavouriteVideos((prevVid) => [...prevVid, videoDetails]);
+                    setIsClicked(!isClicked);
+                  }}
+                >
+                  <FaHeart
+                    color={favouriteVideos.uniqueId === videoDetails.uniqueId ? 'green' : 'white'}
+                  />
+                </Button> */}
               </div>
             </Card.Body>
           </Card>
