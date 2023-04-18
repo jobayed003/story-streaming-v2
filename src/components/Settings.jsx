@@ -163,7 +163,7 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
 
     sendPasswordResetEmail(auth, userDetails.email, actionCodeSettings)
       .then(() => {
-        toast.success('Email sent, Check your mail! ');
+        toast.success('Password reset email has been sent, please check your inbox');
       })
       .catch((error) => {
         toast.error();

@@ -31,8 +31,6 @@ export const VideoContext = ({ children }) => {
     title: '',
   });
 
-  const [clickedVideo, setClickedVideo] = useState();
-
   useEffect(() => {
     let videoUrl = [];
 
@@ -52,8 +50,6 @@ export const VideoContext = ({ children }) => {
   }, [updated, series]);
 
   const contextValue = {
-    clickedVideo,
-    setClickedVideo,
     videos,
     videoUrls,
     updated,

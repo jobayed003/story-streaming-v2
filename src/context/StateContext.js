@@ -7,7 +7,9 @@ const StateContextProvider = createContext({
 });
 
 export const StateContext = ({ children }) => {
+  const [clickedVideo, setClickedVideo] = useState();
   const [selectedAvatar, setSelectedAvatar] = useState({});
+  const [favouriteVideos, setFavouriteVideos] = useState([]);
   const { userCredentials } = useContext(AuthProvider);
 
   useEffect(() => {
@@ -15,7 +17,11 @@ export const StateContext = ({ children }) => {
   }, [userCredentials]);
 
   const contextValue = {
+    clickedVideo,
+    favouriteVideos,
     selectedAvatar,
+    setFavouriteVideos,
+    setClickedVideo,
     setSelectedAvatar,
   };
 

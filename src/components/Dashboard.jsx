@@ -7,6 +7,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import YouTube from 'react-youtube';
 import AuthProvider from '../context/AuthContext';
+import StateContextProvider from '../context/StateContext';
 import VideoContextProvider from '../context/VideoContext';
 import { createCheckoutSession } from '../stripe/createCheckoutSession';
 import './Dashboard.css';
@@ -20,18 +21,10 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const { isAuthenticated } = useContext(AuthProvider);
-  const { videos, videoUrls, setClickedVideo } = useContext(VideoContextProvider);
-  // const [hoverRef, isHovered] = useHover();
+  const { videos, videoUrls } = useContext(VideoContextProvider);
 
   // custom hook for generating thumbnail from url
   const thumbnail = useThumbnail(videoUrls);
-
-  const handleClick = (el) => {
-    setClickedVideo(el);
-    localStorage.removeItem('video');
-    localStorage.setItem('video', JSON.stringify(el));
-    navigate(`/watch/${el.uniqueId}`);
-  };
 
   if (!isAuthenticated) {
     navigate('/');
@@ -64,18 +57,8 @@ const Dashboard = () => {
 
         <Slide videosCount={videos.length}>
           {videos.map((el, idx) => (
-            <div
-              className='slide'
-              key={Math.random() + idx}
-              style={{ width: '400px' }}
-              onClick={() => handleClick(el)}
-            >
-              <ListCard
-                imgSrc={thumbnail[idx]}
-                videoId={el.episodes[0].id}
-                desc={el.description}
-                title={el.title}
-              />
+            <div className='slide' key={Math.random() + idx} style={{ width: '400px' }}>
+              <ListCard imgSrc={thumbnail[idx]} videoDetails={el} />
             </div>
           ))}
         </Slide>
@@ -88,18 +71,12 @@ const Dashboard = () => {
         <Slide videosCount={videos.length}>
           {videos.map((el, idx) => (
             <div
+              id='my-list'
               className='slide'
               key={Math.random() + idx}
               style={{ width: '400px' }}
-              onClick={() => handleClick(el)}
-              id='my-list'
             >
-              <ListCard
-                imgSrc={thumbnail[idx]}
-                videoId={el.episodes[0].id}
-                desc={el.description}
-                title={el.title}
-              />
+              <ListCard imgSrc={thumbnail[idx]} videoDetails={el} />
             </div>
           ))}
         </Slide>
@@ -113,11 +90,19 @@ const Dashboard = () => {
 
 export default Dashboard;
 
-const ListCard = ({ imgSrc, title, videoId, desc }) => {
+const ListCard = ({ imgSrc, videoDetails }) => {
   const [hovered, setHovered] = useState(false);
-  const ref = useRef();
+  const navigate = useNavigate();
 
+  const { setClickedVideo } = useContext(StateContextProvider);
   // useOutsideHover(ref, () => setHovered(false));
+
+  const handleClick = () => {
+    setClickedVideo(videoDetails);
+    localStorage.removeItem('video');
+    localStorage.setItem('video', JSON.stringify(videoDetails));
+    navigate(`/watch/${videoDetails.uniqueId}`);
+  };
 
   const opts = {
     height: '300',
@@ -171,15 +156,17 @@ const ListCard = ({ imgSrc, title, videoId, desc }) => {
               fontSize: '1.5rem',
             }}
             onMouseLeave={() => setHovered(false)}
+            onClick={handleClick}
           >
-            <YouTube videoId={videoId} opts={opts} />
-            <Card.Body>
+            <YouTube videoId={videoDetails.episodes[0].id} opts={opts} onPause={handleClick} />
+
+            <Card.Body className='cursor-pointer'>
               <div className='d-flex align-items-center justify-content-between'>
                 <div>
                   <Card.Title className='display-6' style={{ fontWeight: 'bold' }}>
-                    {title}
+                    {videoDetails.title}
                   </Card.Title>
-                  <Card.Text style={{ margin: 0 }}>{desc}</Card.Text>
+                  <Card.Text style={{ margin: 0 }}>{videoDetails.description}</Card.Text>
                 </div>
                 <Button
                   variant='success'
