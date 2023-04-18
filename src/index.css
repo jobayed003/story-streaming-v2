@@ -211,6 +211,10 @@ nav .sign-in-button a {
   text-decoration: underline;
 }
 
+.cursor-pointer{
+  cursor: pointer;
+}
+
 .Toastify__toast-theme--dark {
   background-color: #303030 !important;
 }

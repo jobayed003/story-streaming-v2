@@ -9,13 +9,16 @@ import './index.css';
 
 import App from './App';
 import { AuthContext } from './context/AuthContext';
+import { StateContext } from './context/StateContext';
 import { VideoContext } from './context/VideoContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <AuthContext>
-    <VideoContext>
-      <App />
-    </VideoContext>
-  </AuthContext>
+  <StateContext>
+    <AuthContext>
+      <VideoContext>
+        <App />
+      </VideoContext>
+    </AuthContext>
+  </StateContext>
 );

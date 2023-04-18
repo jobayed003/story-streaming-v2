@@ -23,6 +23,7 @@ export const AuthContext = ({ children }) => {
     name: '',
     email: '',
     avatar: '',
+    uid: '',
   });
 
   useEffect(() => {
@@ -35,12 +36,18 @@ export const AuthContext = ({ children }) => {
 
       setIsAuthenticated(true);
 
-      const { displayName, photoUrl, email } = user;
+      const { displayName, email } = user;
 
-      setUserCredentials({ name: displayName, email, avatar: photoUrl });
       (async () => {
-        const userRef = doc(db, 'users', auth.currentUser.uid);
+        const userRef = doc(db, 'users', user.uid);
         const userSnap = await getDoc(userRef);
+
+        setUserCredentials({
+          name: displayName,
+          email,
+          avatar: userSnap.data().avatarDetails.avatar,
+          uid: user.uid,
+        });
 
         if (userSnap.data().role === 'admin') {
           setIsAdmin(true);
@@ -59,7 +66,7 @@ export const AuthContext = ({ children }) => {
         setUsers(users);
       })();
     });
-  }, []);
+  }, [isUpdated]);
 
   const contextValue = {
     isAuthenticated,

@@ -5,36 +5,34 @@ import {
   sendPasswordResetEmail,
   updatePassword,
 } from 'firebase/auth';
-import { doc, setDoc, updateDoc } from 'firebase/firestore';
+import { updateDoc } from 'firebase/firestore';
 import { useContext, useState } from 'react';
 import {
   Button,
   Col,
   Container,
-  Dropdown,
   FloatingLabel,
   Form,
-  Image,
   InputGroup,
   Modal,
   Row,
   Spinner,
 } from 'react-bootstrap';
-import { FaArrowLeft, FaEye } from 'react-icons/fa';
+import { FaEye } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import logo from '../components/Icons/StorySaloon_Logo.svg';
 import AuthProvider from '../context/AuthContext';
+import StateContextProvider from '../context/StateContext';
 import './Settings.css';
 import Header from './UI/Header';
 import Footer from './util/Footer';
+import { updateUserDoc } from './util/updateUserDoc';
 
 const Settings = () => {
-  const [show, setShow] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
   const { isAuthenticated, userCredentials } = useContext(AuthProvider);
   const navigate = useNavigate();
-
-  const handleShow = () => setShow(true);
 
   if (!isAuthenticated) {
     navigate('/');
@@ -49,7 +47,16 @@ const Settings = () => {
 
   return (
     <>
-      <ResetPass show={show} setShow={setShow} userDetails={userCredentials} />
+      <ResetPass
+        showPasswordModal={showPasswordModal}
+        setShowPasswordModal={setShowPasswordModal}
+        userDetails={userCredentials}
+      />
+      <ChangeAvatar
+        showAvatarModal={showAvatarModal}
+        setShowAvatarModal={setShowAvatarModal}
+        userDetails={userCredentials}
+      />
       {/* nav-start */}
       <Header />
       {/* nav-end */}
@@ -58,7 +65,7 @@ const Settings = () => {
       <Container
         as='section'
         className='mainsection'
-        style={{ marginBlock: '5rem', marginTop: '6rem' }}
+        style={{ marginBlock: '5rem', marginTop: '8rem' }}
       >
         {/* <Row>
           <Col className='brdr customText'>
@@ -67,11 +74,11 @@ const Settings = () => {
         </Row> */}
 
         <Row className='brdr py-3'>
-          <Col xs={4} className='py-3'>
-            <h2>MEMBERSHIP </h2>
+          <Col xs={4} className='py-2'>
+            <h2>Account </h2>
             {/* & BILLING */}
           </Col>
-          <Col className='py-3 d-flex justify-content-between'>
+          <Col className='py-2 d-flex justify-content-between'>
             <div>
               <p className='text-content'>Email: {userCredentials.email}</p>
               <p className='text-content'>Password: ********</p>
@@ -80,12 +87,22 @@ const Settings = () => {
             {/* <Button variant='link' className='link-item mb-2'>
               Change email
             </Button> */}
-            <Button variant='link' className='link-item mb-2' onClick={handleShow}>
-              Change password
-            </Button>
-            {/* <Button variant='link' className='link-item mb-2'>
-              Add phone number
-            </Button> */}
+            <div className='d-flex flex-column align-items-start'>
+              <Button
+                variant='link'
+                className='link-item mb-2'
+                onClick={() => setShowAvatarModal(true)}
+              >
+                Change Avatar
+              </Button>
+              <Button
+                variant='link'
+                className='link-item mb-2'
+                onClick={() => setShowPasswordModal(true)}
+              >
+                Change password
+              </Button>
+            </div>
           </Col>
         </Row>
 
@@ -104,7 +121,7 @@ const Settings = () => {
         </Row>
       </Container>
       {/* main-secction-end */}
-      {/* footer-start */}
+
       <Footer />
     </>
   );
@@ -112,15 +129,13 @@ const Settings = () => {
 
 export default Settings;
 
-const ResetPass = ({ show, setShow, userDetails }) => {
+const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => {
   const [passwords, setPasswords] = useState({ newpass: '', confirmpass: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
 
   const auth = getAuth();
   const user = auth.currentUser;
-
-  const handleClose = () => setShow(false);
 
   // const { newPass: oldPassword, newpass: newPassword } = passwords;
 
@@ -155,7 +170,7 @@ const ResetPass = ({ show, setShow, userDetails }) => {
     updatePassword(user, passwords.newpass)
       .then(async () => {
         setIsLoading(false);
-        handleClose();
+        setShowPasswordModal(false);
         toast.success('Password changed successfully!');
       })
       .catch((error) => {
@@ -175,8 +190,8 @@ const ResetPass = ({ show, setShow, userDetails }) => {
 
   return (
     <Modal
-      show={show}
-      onHide={handleClose}
+      show={showPasswordModal}
+      onHide={() => setShowPasswordModal(false)}
       aria-labelledby='contained-modal-title-vcenter'
       centered
       className='custom-modal'
@@ -197,7 +212,7 @@ const ResetPass = ({ show, setShow, userDetails }) => {
                 />
               </FloatingLabel>
               <InputGroup.Text
-                className={passwords.newpass === '' ? 'pe-none' : ''}
+                className={passwords.newpass === '' ? 'pe-none' : 'cursor-pointer'}
                 style={{ cursor: 'pointer' }}
                 onClick={() => setIsClicked(!isClicked)}
               >
@@ -216,7 +231,7 @@ const ResetPass = ({ show, setShow, userDetails }) => {
                 />
               </FloatingLabel>
               <InputGroup.Text
-                className={passwords.confirmpass === '' ? 'pe-none' : 'pe-auto'}
+                className={passwords.confirmpass === '' ? 'pe-none' : 'cursor-pointer'}
                 style={{ cursor: 'pointer' }}
                 onClick={() => setIsClicked(!isClicked)}
               >
@@ -253,41 +268,135 @@ const ResetPass = ({ show, setShow, userDetails }) => {
   );
 };
 
-/* <div className='right'>
-  <div className='dropdown'>
-    <button
-      className='btn dropdown-toggle'
-      type='button'
-      data-bs-toggle='dropdown'
-      aria-expanded='false'
+const ChangeAvatar = ({ showAvatarModal, setShowAvatarModal, userDetails }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { isUpdated, setIsUpdated } = useContext(AuthProvider);
+  const { selectedAvatar } = useContext(StateContextProvider);
+
+  const changeAvatar = async () => {
+    setIsLoading(true);
+    await updateUserDoc(userDetails.uid, { avatarDetails: { ...selectedAvatar } });
+    toast.dark('Avatar updated successfully!');
+    setIsUpdated(!isUpdated);
+    setShowAvatarModal(false);
+    setIsLoading(false);
+  };
+
+  const avatarDetails = [];
+
+  const avatars = [
+    '🤠',
+    '🙂',
+    '😀',
+    '😁',
+    '😉',
+    '😎',
+    '👨',
+
+    '👧',
+    '👦',
+    '👶',
+    '👶',
+    '👴',
+    '🧓',
+    '👧',
+    '👵',
+    '👩‍🦱',
+
+    '🧑‍🦱',
+    '🧑‍🦳',
+    '👱‍♀️',
+    '👩‍🦲',
+    '👱‍♂️',
+    '🧑‍🦲',
+    '👱',
+    '👸',
+    '🫅',
+    '🤴',
+    '👳‍♂️',
+    '🧔‍♀️',
+    '👼',
+    '👮‍♀️',
+    '👩‍⚕️',
+    '🧑‍🎓',
+    '👩‍🏫',
+    '🧑‍🍳',
+    '👩‍🔧',
+    '👩‍🔬',
+    '🧑‍🔬',
+    '👩‍💻',
+    '👨‍💻',
+    '👨‍🎤',
+    '👩‍🚀',
+    '🧑‍🚒',
+    '🧕',
+    '🏃‍♀️',
+    '👍',
+    '🫱🏽‍🫲🏽',
+    '👩‍💻',
+  ];
+  avatars.map((el, idx) => avatarDetails.push({ id: idx + 1, avatar: el }));
+
+  return (
+    <Modal
+      show={showAvatarModal}
+      onHide={() => setShowAvatarModal(false)}
+      aria-labelledby='contained-modal-title-vcenter'
+      centered
+      className='custom-modal'
     >
-      <img
-        src='https://occ-0-58-64.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABZBe7K0DPia9LvzIkQ4yzqX9NocZlAjS1MOyEuBQD1WmFuLKZwvq0bxc4n4_EV73khqgwed0PYLNml0V8LCymt31e7x-8jQ.png?r=229'
-        alt=''
-      />
-    </button>
-    <ul className='dropdown-menu'>
-      <li>
-        <a className='dropdown-item' href='#'>
-          Manage Profiles
-        </a>
-      </li>
-      <li>
-        <a className='dropdown-item' href='#'>
-          Account
-        </a>
-      </li>
-      <li className='mb-3'>
-        <a className='dropdown-item' href='#'>
-          Help Center
-        </a>
-      </li>
-      <li className='custom-item'>
-        <a className='dropdown-item' href='#'>
-          Sign Out
-        </a>
-      </li>
-    </ul>
-  </div>
-</div>;
- */
+      <Modal.Header closeButton className='border-0'>
+        <Modal.Title>Choose Avatar</Modal.Title>
+      </Modal.Header>
+      <Modal.Body style={{ overflow: 'auto', maxHeight: '250px' }}>
+        <div className='d-flex flex-wrap'>
+          {avatarDetails.map((el) => (
+            <Avatar avatarDetails={el} />
+          ))}
+        </div>
+      </Modal.Body>
+
+      <Modal.Footer className='border-0 justify-content-center'>
+        <div className='d-flex flex-column justify-content-between align-items-center'>
+          <Button
+            style={{
+              border: 'none',
+              height: '2.5rem',
+            }}
+            variant='success'
+            onClick={changeAvatar}
+          >
+            {isLoading ? (
+              <Spinner animation='border' style={{ width: '1.3rem', height: '1.3rem' }} />
+            ) : (
+              'Save Changes'
+            )}
+          </Button>
+        </div>
+        <div className='d-flex flex-column justify-content-between align-items-center'></div>
+      </Modal.Footer>
+    </Modal>
+  );
+};
+
+const Avatar = ({ avatarDetails }) => {
+  const { selectedAvatar, setSelectedAvatar } = useContext(StateContextProvider);
+
+  return (
+    <div
+      style={{
+        fontSize: '2rem',
+        boxShadow:
+          selectedAvatar.id === avatarDetails.id && 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+
+        // border: selectedAvatar.id === avatarDetails.id && '1px solid black',
+      }}
+      className='cursor-pointer p-2'
+      onClick={() => {
+        setSelectedAvatar(avatarDetails);
+      }}
+    >
+      {avatarDetails.avatar}
+    </div>
+  );
+};

@@ -11,7 +11,7 @@ import classes from './Header.module.css';
 const Header = () => {
   const [show, setShow] = useState(false);
 
-  const { isAdmin, users } = useContext(AuthProvider);
+  const { isAdmin, users, userCredentials } = useContext(AuthProvider);
   const navigate = useNavigate();
   const pathName = useLocation().pathname.replace('/', '');
 
@@ -90,15 +90,20 @@ const Header = () => {
           <Nav className='align-items-center'>
             <Dropdown style={{ fontFamily: 'Roboto' }} className='d-flex flex-column' align='end'>
               <Dropdown.Toggle
+                className='d-flex align-items-center'
                 style={{
                   background: 'none',
                   border: 'none',
                 }}
               >
-                <img
-                  src='https://occ-0-58-64.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABZBe7K0DPia9LvzIkQ4yzqX9NocZlAjS1MOyEuBQD1WmFuLKZwvq0bxc4n4_EV73khqgwed0PYLNml0V8LCymt31e7x-8jQ.png?r=229'
-                  alt=''
-                />
+                {!userCredentials.avatar ? (
+                  <img
+                    src='https://occ-0-58-64.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABZBe7K0DPia9LvzIkQ4yzqX9NocZlAjS1MOyEuBQD1WmFuLKZwvq0bxc4n4_EV73khqgwed0PYLNml0V8LCymt31e7x-8jQ.png?r=229'
+                    alt=''
+                  />
+                ) : (
+                  <div style={{ fontSize: '2rem' }}>{userCredentials.avatar}</div>
+                )}
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
