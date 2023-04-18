@@ -14,11 +14,11 @@ import { VideoContext } from './context/VideoContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <StateContext>
-    <AuthContext>
-      <VideoContext>
+  <AuthContext>
+    <VideoContext>
+      <StateContext>
         <App />
-      </VideoContext>
-    </AuthContext>
-  </StateContext>
+      </StateContext>
+    </VideoContext>
+  </AuthContext>
 );

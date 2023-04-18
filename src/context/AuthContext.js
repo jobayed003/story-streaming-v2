@@ -22,7 +22,7 @@ export const AuthContext = ({ children }) => {
   const [userCredentials, setUserCredentials] = useState({
     name: '',
     email: '',
-    avatar: '',
+    avatarDetails: {},
     uid: '',
   });
 
@@ -45,7 +45,7 @@ export const AuthContext = ({ children }) => {
         setUserCredentials({
           name: displayName,
           email,
-          avatar: userSnap.data().avatarDetails.avatar,
+          avatarDetails: userSnap.data().avatarDetails,
           uid: user.uid,
         });
 
@@ -79,7 +79,6 @@ export const AuthContext = ({ children }) => {
     setUserCredentials,
     isUpdated,
     setIsUpdated,
-
     isDefaultAdmin,
   };
 

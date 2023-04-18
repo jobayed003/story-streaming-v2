@@ -1,4 +1,5 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import AuthProvider from './AuthContext';
 
 const StateContextProvider = createContext({
   selectedAvatar: {},
@@ -7,6 +8,11 @@ const StateContextProvider = createContext({
 
 export const StateContext = ({ children }) => {
   const [selectedAvatar, setSelectedAvatar] = useState({});
+  const { userCredentials } = useContext(AuthProvider);
+
+  useEffect(() => {
+    setSelectedAvatar(userCredentials.avatarDetails);
+  }, [userCredentials]);
 
   const contextValue = {
     selectedAvatar,

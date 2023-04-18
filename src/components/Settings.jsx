@@ -152,20 +152,27 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
       toast.error('Password doesnt match');
       return;
     }
-    // sendPasswordResetEmail(auth, userDetails.email)
-    //   .then(() => {
-    //     // Password reset email sent!
-    //     // ..
-    //   })
-    //   .catch((error) => {
-    //     toast.error();
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //     // ..
-    //   });
 
-    // reauthenticateWithCredential(user, oldPassword)
-    //   .then(() => {
+    const actionCodeSettings = {
+      url: 'http://localhost:3000/?email=' + userDetails.email,
+
+      // When multiple custom dynamic link domains are defined, specify which
+      // one to use.
+      // dynamicLinkDomain: 'example.page.link',
+    };
+
+    sendPasswordResetEmail(auth, userDetails.email, actionCodeSettings)
+      .then(() => {
+        toast.success('Email sent, Check your mail! ');
+      })
+      .catch((error) => {
+        toast.error();
+        const errorCode = error.code;
+        const errorMessage = error.message;
+
+        console.log(errorCode, errorMessage);
+      });
+
     setIsLoading(true);
     updatePassword(user, passwords.newpass)
       .then(async () => {
@@ -270,16 +277,21 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
 
 const ChangeAvatar = ({ showAvatarModal, setShowAvatarModal, userDetails }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { isUpdated, setIsUpdated } = useContext(AuthProvider);
+  const { isUpdated, setIsUpdated, userCredentials } = useContext(AuthProvider);
   const { selectedAvatar } = useContext(StateContextProvider);
 
   const changeAvatar = async () => {
     setIsLoading(true);
-    await updateUserDoc(userDetails.uid, { avatarDetails: { ...selectedAvatar } });
-    toast.dark('Avatar updated successfully!');
-    setIsUpdated(!isUpdated);
-    setShowAvatarModal(false);
-    setIsLoading(false);
+
+    try {
+      await updateUserDoc(userDetails.uid, { avatarDetails: { ...selectedAvatar } });
+      toast.dark('Avatar updated successfully!');
+      setIsUpdated(!isUpdated);
+      setShowAvatarModal(false);
+      setIsLoading(false);
+    } catch (err) {
+      toast.error('Something went wrong! Try again');
+    }
   };
 
   const avatarDetails = [];
@@ -365,9 +377,13 @@ const ChangeAvatar = ({ showAvatarModal, setShowAvatarModal, userDetails }) => {
             }}
             variant='success'
             onClick={changeAvatar}
+            disabled={selectedAvatar.id === userCredentials.avatarDetails.id ? true : isLoading}
           >
             {isLoading ? (
-              <Spinner animation='border' style={{ width: '1.3rem', height: '1.3rem' }} />
+              <div className='d-flex align-items-center'>
+                <div>Saving...</div>
+                <Spinner animation='border' style={{ width: '1.3rem', height: '1.3rem' }} />
+              </div>
             ) : (
               'Save Changes'
             )}
@@ -388,8 +404,6 @@ const Avatar = ({ avatarDetails }) => {
         fontSize: '2rem',
         boxShadow:
           selectedAvatar.id === avatarDetails.id && 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
-
-        // border: selectedAvatar.id === avatarDetails.id && '1px solid black',
       }}
       className='cursor-pointer p-2'
       onClick={() => {
