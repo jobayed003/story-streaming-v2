@@ -153,7 +153,28 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
 
     const actionCodeSettings = {
       url: `${window.location.origin}/?email=` + userDetails.email,
+      // When multiple custom dynamic link domains are defined, specify which
+      // one to use.
+      // dynamicLinkDomain: 'example.page.link',
+    };
 
+    setIsLoading(true);
+    updatePassword(user, passwords.newpass)
+      .then(async () => {
+        setIsLoading(false);
+        setShowPasswordModal(false);
+        toast.success('Password changed successfully!');
+      })
+      .catch((error) => {
+        toast.error('An error ocurred! Try again');
+        setIsLoading(true);
+        setTimeout(() => setIsLoading(false), 500);
+      });
+  };
+
+  const sendResetMail = () => {
+    const actionCodeSettings = {
+      url: `${window.location.origin}/?email=` + userDetails.email,
       // When multiple custom dynamic link domains are defined, specify which
       // one to use.
       // dynamicLinkDomain: 'example.page.link',
@@ -170,29 +191,7 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
 
         console.log(errorCode, errorMessage);
       });
-
-    setIsLoading(true);
-    updatePassword(user, passwords.newpass)
-      .then(async () => {
-        setIsLoading(false);
-        setShowPasswordModal(false);
-        toast.success('Password changed successfully!');
-      })
-      .catch((error) => {
-        toast.error('An error ocurred! Try again');
-        setIsLoading(true);
-        setTimeout(() => setIsLoading(false), 500);
-
-        // ...
-      });
-
-    // })
-    // .catch((error) => {
-    //   // An error ocurred
-    //   // ...
-    // });
   };
-
   return (
     <Modal
       show={showPasswordModal}
@@ -214,12 +213,14 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
                   placeholder='New Password'
                   controlId='password'
                   onChange={handleChange}
+                  style={{ boxShadow: 'none' }}
                 />
               </FloatingLabel>
               <InputGroup.Text
                 className={passwords.newpass === '' ? 'pe-none' : 'cursor-pointer'}
                 style={{ cursor: 'pointer' }}
                 onClick={() => setIsClicked(!isClicked)}
+                required
               >
                 <FaEye />
               </InputGroup.Text>
@@ -233,6 +234,8 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
                   placeholder='Confirm Password'
                   controlId='password'
                   onChange={handleChange}
+                  style={{ boxShadow: 'none' }}
+                  required
                 />
               </FloatingLabel>
               <InputGroup.Text
@@ -245,12 +248,25 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
             </InputGroup>
           </Form.Group>
         </Form>
+        <Button
+          style={{
+            background: 'none',
+            color: 'blue',
+            textDecoration: 'underline',
+            border: 'none',
+            paddingLeft: '0',
+            paddingTop: '1rem',
+            height: '2.5rem',
+          }}
+          onClick={(e) => {
+            sendResetMail();
+            e.currentTarget.style.color = 'darkblue';
+          }}
+        >
+          or get a password reset email
+        </Button>
       </Modal.Body>
       <Modal.Footer className='border-0 justify-content-center'>
-        {/* <Button variant='danger' onClick={changePassword}>
-            Save Changes`
-          </Button> */}
-
         <div className='d-flex flex-column justify-content-between align-items-center'>
           <Button
             style={{
@@ -258,11 +274,16 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
               border: 'none',
               height: '2.5rem',
             }}
+            type='submit'
             variant='success'
             onClick={changePassword}
+            disabled={passwords.newpass === '' || passwords.confirmpass === '' ? true : isLoading}
           >
             {isLoading ? (
-              <Spinner animation='border' style={{ width: '1.3rem', height: '1.3rem' }} />
+              <div className='d-flex align-items-center'>
+                <div>Saving...</div>
+                <Spinner animation='border' style={{ width: '1.3rem', height: '1.3rem' }} />
+              </div>
             ) : (
               'Save Changes'
             )}
@@ -387,7 +408,6 @@ const ChangeAvatar = ({ showAvatarModal, setShowAvatarModal, userDetails }) => {
             )}
           </Button>
         </div>
-        <div className='d-flex flex-column justify-content-between align-items-center'></div>
       </Modal.Footer>
     </Modal>
   );
