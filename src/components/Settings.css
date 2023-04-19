@@ -8,11 +8,7 @@
   --gray-color: #303030;
   --footer-text-color: #898989;
 }
-body {
-  /* background-color: var(--white); */
-  color: var(--gray-color);
-  font-family: 'Roboto', sans-serif;
-}
+
 .pdy {
   padding: 75px 0px;
 }

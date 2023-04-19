@@ -19,7 +19,7 @@ import {
   Spinner,
 } from 'react-bootstrap';
 import { FaEye } from 'react-icons/fa';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import AuthProvider from '../context/AuthContext';
 import StateContextProvider from '../context/StateContext';
@@ -32,17 +32,9 @@ const Settings = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
   const { isAuthenticated, userCredentials } = useContext(AuthProvider);
-  const navigate = useNavigate();
 
   if (!isAuthenticated) {
-    navigate('/');
-    return (
-      <Row className='mb-5 mt-5 justify-content-center'>
-        <Spinner animation='border' role='status' style={{ width: '50px', height: '50px' }}>
-          <span className='visually-hidden'>Loading...</span>
-        </Spinner>
-      </Row>
-    );
+    return <Navigate to='/' />;
   }
 
   return (

@@ -31,7 +31,6 @@ export const AuthContext = ({ children }) => {
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
         return;
-        // navigate('/');
       }
 
       setIsAuthenticated(true);

@@ -9,8 +9,6 @@ const getCurrentDimension = () => {
 const useSizeElement = () => {
   const [screenSize, setScreenSize] = useState(getCurrentDimension());
 
-  console.log(screenSize);
-
   useEffect(() => {
     const updateDimension = () => {
       setScreenSize(getCurrentDimension());

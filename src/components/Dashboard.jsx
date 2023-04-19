@@ -1,11 +1,11 @@
 import { getAuth } from 'firebase/auth';
 import { motion } from 'framer-motion';
-import { useContext, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Button, Card, Col, Container, Row, Spinner } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 import { FaHeart } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import YouTube from 'react-youtube';
 import AuthProvider from '../context/AuthContext';
 import StateContextProvider from '../context/StateContext';
@@ -20,8 +20,6 @@ import Footer from './util/Footer';
 import Slide from './util/Slide';
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-
   const { favouriteVideos } = useContext(StateContextProvider);
   const { isAuthenticated } = useContext(AuthProvider);
   const { videos, videoUrls } = useContext(VideoContextProvider);
@@ -31,22 +29,12 @@ const Dashboard = () => {
   const size = useSizeElement();
 
   if (!isAuthenticated) {
-    navigate('/');
-    return (
-      <Row className='mb-5 mt-5 justify-content-center'>
-        <Spinner animation='border' role='status' style={{ width: '50px', height: '50px' }}>
-          <span className='visually-hidden'>Loading...</span>
-        </Spinner>
-      </Row>
-    );
+    return <Navigate to='/' />;
   }
 
   return (
     <div>
-      {/* nav-start */}
       <Header />
-      {/* nav-end */}
-      {/* list-start */}
       <Container
         as='section'
         id='movies'
@@ -115,7 +103,6 @@ const Dashboard = () => {
           </Slide>
         )}
       </Container>
-      {/* list-end */}
       {/* footer-start */}
       <Footer />
     </div>
