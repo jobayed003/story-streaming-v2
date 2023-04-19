@@ -211,7 +211,7 @@ nav .sign-in-button a {
   text-decoration: underline;
 }
 
-.cursor-pointer{
+.cursor-pointer {
   cursor: pointer;
 }
 
@@ -220,6 +220,10 @@ nav .sign-in-button a {
 }
 .Toastify__progress-bar-theme--dark {
   background-color: #007bff !important;
+}
+
+.boxShadow {
+  box-shadow: none !important;
 }
 
 /* media query */

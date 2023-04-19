@@ -1,12 +1,16 @@
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useContext, useState } from 'react';
-import { Button, Col, Form, Modal, Spinner } from 'react-bootstrap';
+import { Button, Col, Form, InputGroup, Modal, Spinner } from 'react-bootstrap';
+import { FaEye } from 'react-icons/fa';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import AuthProvider from '../../context/AuthContext';
 
 const Login = ({ show, setShow }) => {
+  const [isClicked, setIsClicked] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
+
   const handleClose = () => setShow(false);
 
   const { setAuthStep } = useContext(AuthProvider);
@@ -51,6 +55,7 @@ const Login = ({ show, setShow }) => {
       >
         {/* <Modal.Header closeButton><Modal.Title>Register Now</Modal.Title></Modal.Header> */}
         <Modal.Body>
+          <h2 className='text-dark text-center'>Sign In</h2>
           <Form onSubmit={handleSubmit}>
             <Form.Group className='mb-3' controlId='formGroupEmail'>
               <Form.Label>Email address</Form.Label>
@@ -59,29 +64,44 @@ const Login = ({ show, setShow }) => {
                 placeholder='Enter your email'
                 controlId='email'
                 onChange={handleChange}
+                className='boxShadow'
               />
             </Form.Group>
             <Form.Group className='mb-3' controlId='formGroupPassword'>
               <Form.Label>Password</Form.Label>
-              <Form.Control
-                type='password'
-                placeholder='Password'
-                controlId='password'
-                onChange={handleChange}
-              />
+              <InputGroup>
+                <Form.Control
+                  type={isClicked ? 'text' : 'password'}
+                  placeholder='Password'
+                  controlId='password'
+                  onChange={handleChange}
+                  className='boxShadow'
+                />
+                <InputGroup.Text
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => setIsClicked(!isClicked)}
+                >
+                  <FaEye />
+                </InputGroup.Text>
+              </InputGroup>
             </Form.Group>
 
             <div className='d-flex flex-column justify-content-between align-items-center'>
               <Button
+                variant='success'
                 type='submit'
                 style={{
-                  background: '#dc3545',
+                  // background: '#dc3545',
                   border: 'none',
                   height: '2.5rem',
                 }}
+                disabled={userCred.email === '' || userCred.password === '' ? true : isLoading}
               >
                 {isLoading ? (
-                  <Spinner animation='border' style={{ width: '1.3rem', height: '1.3rem' }} />
+                  <div className='d-flex align-items-center'>
+                    <div>Loading...</div>
+                    <Spinner animation='border' style={{ width: '1.3rem', height: '1.3rem' }} />
+                  </div>
                 ) : (
                   'Login'
                 )}

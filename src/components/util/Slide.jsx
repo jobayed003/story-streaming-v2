@@ -1,6 +1,6 @@
 import { Row } from 'react-bootstrap';
 import Slider from 'react-slick';
-import './slide.css';
+import './Slide.css';
 
 const Slide = ({ children, videosCount }) => {
   const settings = {

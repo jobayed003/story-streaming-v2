@@ -198,7 +198,6 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
       onHide={() => setShowPasswordModal(false)}
       aria-labelledby='contained-modal-title-vcenter'
       centered
-      className='custom-modal'
     >
       <Modal.Header closeButton className='border-0'>
         <Modal.Title>Change Password</Modal.Title>
@@ -213,7 +212,7 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
                   placeholder='New Password'
                   controlId='password'
                   onChange={handleChange}
-                  style={{ boxShadow: 'none' }}
+                  className='boxShadow'
                 />
               </FloatingLabel>
               <InputGroup.Text
@@ -235,6 +234,7 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
                   controlId='password'
                   onChange={handleChange}
                   style={{ boxShadow: 'none' }}
+                  className='boxShadow'
                   required
                 />
               </FloatingLabel>
