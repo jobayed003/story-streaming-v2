@@ -1,6 +1,6 @@
 import { Row } from 'react-bootstrap';
 import Slider from 'react-slick';
-import './slide.css';
+import './Slide.css';
 
 const Slide = ({ children, videosCount }) => {
   const settings = {
@@ -8,7 +8,7 @@ const Slide = ({ children, videosCount }) => {
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 4,
-    autoplay: true,
+    // autoplay: true,
     autoplaySpeed: 2500,
     // centerMode: true,
     pauseonhover: true,
@@ -71,7 +71,7 @@ const Slide = ({ children, videosCount }) => {
     prevArrow: <PrevArrow></PrevArrow>,
   };
   return (
-    <Row className='mb-5 mt-2 d-flex justify-content-center'>
+    <Row className='mb-5 mt-2 d-flex justify-content-center ms-4'>
       <Slider className='slider-wrapper' {...settings}>
         {children}
       </Slider>

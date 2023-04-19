@@ -65,7 +65,7 @@ const Register = ({ show, setShow }) => {
       userCopy.timestamp = serverTimestamp();
 
       await setDoc(doc(db, 'users', user.uid), userCopy);
-      authenticateUser();
+
       navigate('/dashboard');
     } catch (err) {
       setIsLoading(false);

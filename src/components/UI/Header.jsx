@@ -1,8 +1,8 @@
 import { getAuth } from 'firebase/auth';
 import React, { useContext, useState } from 'react';
-import { Button, Col, Container, Dropdown, Form, Image, Nav, Navbar, Row } from 'react-bootstrap';
-import { FaArrowLeft, FaBars, FaBell } from 'react-icons/fa';
-import { NavLink, useLocation, useNavigate, useRoutes } from 'react-router-dom';
+import { Button, Container, Dropdown, Form, Image, Nav, Navbar, Row } from 'react-bootstrap';
+import { FaBars, FaBell } from 'react-icons/fa';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import AuthProvider from '../../context/AuthContext';
 import logo from '../Icons/StorySaloon_Logo.svg';
 import { ManageUser } from '../util/ManageUser';

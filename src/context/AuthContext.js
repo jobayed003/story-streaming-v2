@@ -42,10 +42,16 @@ export const AuthContext = ({ children }) => {
         const userRef = doc(db, 'users', user.uid);
         const userSnap = await getDoc(userRef);
 
+        let avatarDetails = {};
+
+        if (userSnap.data().avatarDetails) {
+          avatarDetails = userSnap.data().avatarDetails;
+        }
+
         setUserCredentials({
           name: displayName,
           email,
-          avatarDetails: userSnap.data().avatarDetails,
+          avatarDetails,
           uid: user.uid,
         });
 
