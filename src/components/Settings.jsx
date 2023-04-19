@@ -1,11 +1,4 @@
-import {
-  getAuth,
-  onAuthStateChanged,
-  reauthenticateWithCredential,
-  sendPasswordResetEmail,
-  updatePassword,
-} from 'firebase/auth';
-import { updateDoc } from 'firebase/firestore';
+import { getAuth, sendPasswordResetEmail, updatePassword } from 'firebase/auth';
 import { useContext, useState } from 'react';
 import {
   Button,

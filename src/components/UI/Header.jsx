@@ -12,7 +12,6 @@ const Header = () => {
   const [show, setShow] = useState(false);
 
   const { isAdmin, users, userCredentials } = useContext(AuthProvider);
-  const navigate = useNavigate();
   const pathName = useLocation().pathname.replace('/', '');
 
   const handleLogout = () => {
@@ -119,6 +118,13 @@ const Header = () => {
                     {pathName === 'dashboard' ? 'Settings' : 'Dashboard'}
                   </NavLink>
                 </Dropdown.Item>
+                {pathName === 'upload' && (
+                  <Dropdown.Item className={'dropLinks'}>
+                    <NavLink style={{ color: 'black' }} to={'/settings'}>
+                      Settings
+                    </NavLink>
+                  </Dropdown.Item>
+                )}
 
                 {isAdmin && (
                   <>

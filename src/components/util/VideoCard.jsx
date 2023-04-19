@@ -37,7 +37,7 @@ const VideoCard = ({ imgSrc, scrollTo, video }) => {
         <Card.Img
           variant='top'
           src={imgSrc}
-          height={'230px'}
+          height={'200px'}
           style={{ cursor: 'pointer' }}
           onClick={playVideo}
         />

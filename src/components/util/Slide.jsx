@@ -71,7 +71,7 @@ const Slide = ({ children, videosCount }) => {
     prevArrow: <PrevArrow></PrevArrow>,
   };
   return (
-    <Row className='mb-5 mt-2 d-flex justify-content-center ms-4'>
+    <Row className='mb-5 mt-2 d-flex justify-content-center ms-0 ps-0'>
       <Slider className='slider-wrapper' {...settings}>
         {children}
       </Slider>
@@ -86,7 +86,7 @@ const NextArrow = (props) => {
   return (
     <div
       className={className}
-      style={{ ...style, display: 'block', background: 'none' }}
+      style={{ ...style, display: 'block', background: 'none', right: '20px', zIndex: '5' }}
       onClick={onClick}
     />
   );
@@ -97,7 +97,7 @@ const PrevArrow = (props) => {
   return (
     <div
       className={className}
-      style={{ ...style, display: 'block', background: 'none' }}
+      style={{ ...style, display: 'block', background: 'none', left: '-5px', zIndex: '5' }}
       onClick={onClick}
     />
   );

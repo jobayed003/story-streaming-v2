@@ -22,7 +22,7 @@ export const ManageUser = ({ show, setShow, users }) => {
         centered
         closeButton
       >
-        <Modal.Header closeButton className='border-0'>
+        <Modal.Header closeButton className='border-0 text-dark'>
           <Modal.Title>Manage Users</Modal.Title>
         </Modal.Header>
         <div className='px-4 my-4' closeButton>

@@ -66,7 +66,7 @@ const AddContent = () => {
       ...series,
       episodes: updatedEpisodes,
     });
-    console.log(updatedEpisodes);
+    // console.log(updatedEpisodes);
   };
 
   const AddVideo = async () => {
@@ -87,9 +87,10 @@ const AddContent = () => {
       episodes: episodes.sort((a, b) => a.episode - b.episode),
       id: series.title.toLowerCase().replace(/ /g, '-'),
     };
-    console.log(finalSeries);
+    // console.log(finalSeries);
 
-    const videoRef = doc(db, 'series', `${finalSeries.id}-${uniqueId}`);
+    const videoRef = doc(db, 'series', series.uniqueId ? series.uniqueId : uniqueId);
+
     setDoc(videoRef, finalSeries)
       .then(() => {
         toast.dark('Video added successfully', {
@@ -101,11 +102,12 @@ const AddContent = () => {
         console.log(err);
       });
     const updateTimestamp = await updateDoc(videoRef, {
-      uniqueId: `${finalSeries.id}-${uniqueId}`,
+      uniqueId: series.uniqueId ? series.uniqueId : uniqueId,
     });
 
-    console.log(updateTimestamp);
+    // console.log(updateTimestamp);
     setUpdated(!updated);
+    setSeries({ description: '', episodes: [initialEpisode], genre: '', title: '' });
   };
 
   if (!isAuthenticated) {
@@ -239,8 +241,19 @@ const AddContent = () => {
           </Col>
         </Row>
 
-        <Container as='section' className='listsection py-2'>
-          {videos.length > 0 ? (
+        <Container as='section' className='listsection py-2 overflow-hidden'>
+          {videos.length <= 0 ? (
+            status
+          ) : videos.length <= 4 ? (
+            <div
+              className='d-flex justify-content-center'
+              style={{ gap: '1rem', flexWrap: 'wrap', marginBottom: '4rem' }}
+            >
+              {videos.map((video, idx) => (
+                <VideoCard video={video} imgSrc={thumbnail[idx]} scrollTo={formRef} />
+              ))}
+            </div>
+          ) : (
             <Slide videosCount={videos.length}>
               {videos.map((video, idx) => (
                 <div className='slide' key={Math.random()} style={{ width: '400px' }}>
@@ -248,8 +261,6 @@ const AddContent = () => {
                 </div>
               ))}
             </Slide>
-          ) : (
-            status
           )}
         </Container>
         <Footer />

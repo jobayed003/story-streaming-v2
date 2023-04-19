@@ -13,7 +13,6 @@ import VideoContextProvider from '../context/VideoContext';
 import { createCheckoutSession } from '../stripe/createCheckoutSession';
 import './Dashboard.css';
 import Header from './UI/Header';
-import useOutsideHover from './hooks/useOutsideHover';
 import useSizeElement from './hooks/useSizeElement';
 import useThumbnail from './hooks/useThumbnail';
 import Footer from './util/Footer';
@@ -33,14 +32,16 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
+    <>
       <Header />
       <Container
         as='section'
         id='movies'
-        className='listsection py-2 fontFamily'
-        style={{ position: 'relative' }}
+        className='listsection py-2 fontFamily overflow-hidden'
+
+        // style={{ position: 'relative' }}
       >
+        {/* Top trending videos list */}
         <Row className='mt-5' id='top-trending'>
           <Col className='mt-5 text-light'>
             <h1>Top Trending</h1>
@@ -54,8 +55,13 @@ const Dashboard = () => {
             </Col>
           </Row>
         ) : videos.length <= 4 ? (
-          <div className='d-flex justify-content-start gap-4 ms-3'>
-            {videos.map((el, idx) => [<ListCard imgSrc={thumbnail[idx]} videoDetails={el} />])}
+          <div
+            className='d-flex justify-content-center'
+            style={{ gap: '4rem', flexWrap: 'wrap', marginBottom: '4rem' }}
+          >
+            {videos.map((el, idx) => (
+              <ListCard imgSrc={thumbnail[idx]} videoDetails={el} />
+            ))}
           </div>
         ) : (
           <Slide videosCount={videos.length}>
@@ -70,6 +76,8 @@ const Dashboard = () => {
             ))}
           </Slide>
         )}
+
+        {/* Favourite Videos List */}
         <Row>
           <Col className='text-light' id={'my-list'}>
             <h1>My List</h1>
@@ -103,9 +111,8 @@ const Dashboard = () => {
           </Slide>
         )}
       </Container>
-      {/* footer-start */}
       <Footer />
-    </div>
+    </>
   );
 };
 
@@ -114,11 +121,16 @@ export default Dashboard;
 const ListCard = ({ imgSrc, videoDetails }) => {
   const [hovered, setHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+  const [coordinates, setCoordinates] = useState({ left: 0, right: 0 });
+
+  const ref = useRef();
+
   const size = useSizeElement();
 
   const navigate = useNavigate();
 
   const { favouriteVideos, setClickedVideo, setFavouriteVideos } = useContext(StateContextProvider);
+  // const {videos, } = useContext();
   // useOutsideHover(ref, () => setHovered(false));
 
   const handleClick = () => {
@@ -128,37 +140,52 @@ const ListCard = ({ imgSrc, videoDetails }) => {
     navigate(`/watch/${videoDetails.uniqueId}`);
   };
 
+  const bodyRect = document.body.getBoundingClientRect();
+
+  const getPosition = (el) => {
+    const elemRect = el.getBoundingClientRect();
+    setCoordinates({ left: elemRect.left, right: elemRect.right });
+  };
+
   const opts = {
     height: '300',
-    width: '450',
+    width: '100%',
     playerVars: {
       autoplay: 1,
     },
   };
 
+  const conditionalStyle =
+    coordinates.left < bodyRect.width - coordinates.left
+      ? 'translateX(4rem)'
+      : coordinates.right > bodyRect.width - coordinates.right && 'translateX(-4rem)';
+
   return (
-    <>
-      {!hovered && (
-        <motion.div
-          className='box'
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            duration: 0.3,
-            delay: 0,
-            ease: [0, 0.71, 0.2, 1.01],
-          }}
-        >
-          <img
-            src={imgSrc}
-            alt='thumbnail'
-            width={size > 500 ? '300px' : '250px'}
-            onMouseEnter={() => {
-              setHovered(true);
-            }}
-          />
-        </motion.div>
-      )}
+    <div className='position-relative' ref={ref}>
+      <motion.div
+        className='box'
+        style={{ zIndex: '-2' }}
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          duration: 0.3,
+          delay: 0,
+          ease: [0, 0.71, 0.2, 1.01],
+        }}
+        onMouseEnter={() => {
+          getPosition(ref.current);
+          setHovered(true);
+        }}
+        onMouseLeave={() => setHovered(false)}
+      >
+        <img
+          src={imgSrc}
+          alt='thumbnail'
+          width={size > 500 ? '300px' : '250px'}
+          className='cursor-pointer'
+        />
+      </motion.div>
+
       {hovered && (
         <motion.div
           className='box'
@@ -169,22 +196,26 @@ const ListCard = ({ imgSrc, videoDetails }) => {
             delay: 0,
             ease: [0, 0.71, 0.2, 1.01],
           }}
-          style={{ width: '450px', position: 'relative' }}
+          onMouseEnter={() => {
+            setHovered(true);
+          }}
+          onMouseLeave={() => setHovered(false)}
+          style={{ width: '400px', position: 'absolute', top: '-25%', left: '-25%', right: '20%' }}
         >
           <Card
             style={{
               width: '100%',
               fontFamily: 'Roboto',
               background: 'gray',
-              zIndex: '1000000',
+              zIndex: '100000',
               fontSize: '1.5rem',
-              transform: 'translateX(-6rem)',
+              transform: size.width > 768 && conditionalStyle,
               transition: 'all .3s',
             }}
-            onMouseLeave={() => setHovered(false)}
           >
-            <YouTube videoId={videoDetails.episodes[0].id} opts={opts} onPause={handleClick} />
-
+            <div style={{ borderRadius: '50px' }}>
+              <YouTube videoId={videoDetails.episodes[0].id} opts={opts} onPause={handleClick} />
+            </div>
             <Card.Body className='cursor-pointer'>
               <div className='d-flex align-items-center justify-content-between'>
                 <div onClick={handleClick}>
@@ -223,7 +254,7 @@ const ListCard = ({ imgSrc, videoDetails }) => {
           </Card>
         </motion.div>
       )}
-    </>
+    </div>
   );
 };
 
