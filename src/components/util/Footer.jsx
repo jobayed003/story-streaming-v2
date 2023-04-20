@@ -6,14 +6,14 @@ const Footer = () => {
   return (
     <footer className='footersection' id='footer'>
       <Container className='pdy' id='footer'>
-        <Row className={'ms-5'}>
+        <Row className={'ms-4'}>
           <Col className='mb-5'>
             <NavLink href='#' className='footer-header'>
               Questions? Contact us.
             </NavLink>
           </Col>
         </Row>
-        <Row className={'ms-5'}>
+        <Row className={'ms-4'}>
           <Col>
             <NavLink href='#' className='footer-link mb-3'>
               Investor Relations

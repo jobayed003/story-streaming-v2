@@ -1,7 +1,7 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { createContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { db } from '../firebase.config';
 import { fetchData } from '../youtubeUtils';
 
@@ -30,6 +30,7 @@ export const AuthContext = ({ children }) => {
     const auth = getAuth();
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
+        // <Navigate to='/' />;
         return;
       }
 

@@ -43,10 +43,13 @@ const Settings = () => {
         userDetails={userCredentials}
       />
       {/* nav-start */}
+
       <Header />
+
       {/* nav-end */}
 
       {/* main-section-start */}
+
       <Container
         as='section'
         className='mainsection'
@@ -59,11 +62,11 @@ const Settings = () => {
         </Row> */}
 
         <Row className='brdr py-3'>
-          <Col xs={4} className='py-2'>
-            <h2>Account </h2>
+          <Col xs={4} className='d-flex align-items-center py-2'>
+            <h2>ACCOUNT</h2>
             {/* & BILLING */}
           </Col>
-          <Col className='py-2 d-flex justify-content-between'>
+          <Col className='py-2 d-flex justify-content-between align-items-center'>
             <div>
               <p className='text-content'>Email: {userCredentials.email}</p>
               <p className='text-content'>Password: ********</p>
@@ -92,19 +95,20 @@ const Settings = () => {
         </Row>
 
         <Row>
-          <Col className='py-4' xs={4}>
+          <Col className='d-flex align-items-center py-4' xs={4}>
             <h2>SETTINGS</h2>
           </Col>
-          <Col xs={5} className='d-flex flex-column align-items-start py-3'>
-            <Button variant='link' className='mb-2 p-0'>
+          <Col className='d-flex py-3 settings-link'>
+            <Button variant='link' className='mb-2 p-0 link-item'>
               Marketing communications
             </Button>
-            <Button variant='link' className='mb-2 p-0'>
+            <Button variant='link' className='mb-2 p-0 link-item'>
               Download your personal information
             </Button>
           </Col>
         </Row>
       </Container>
+
       {/* main-secction-end */}
 
       <Footer />

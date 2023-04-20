@@ -82,12 +82,16 @@ const Header = () => {
             </Nav.Item>
             <Nav.Item className='px-2'>
               <NavLink className={'nav-link'}>
-                <FaBell />
+                <FaBell fontSize={'1.5rem'} />
               </NavLink>
             </Nav.Item>
           </Nav>
           <Nav className='align-items-center'>
-            <Dropdown style={{ fontFamily: 'Roboto' }} className='d-flex flex-column' align='end'>
+            <Dropdown
+              style={{ fontFamily: 'Roboto' }}
+              className='d-flex flex-column align-items-center'
+              align='end'
+            >
               <Dropdown.Toggle
                 className='d-flex align-items-center'
                 style={{

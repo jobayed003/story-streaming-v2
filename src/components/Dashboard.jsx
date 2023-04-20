@@ -1,6 +1,6 @@
 import { getAuth } from 'firebase/auth';
 import { motion } from 'framer-motion';
-import { useContext, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
