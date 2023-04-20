@@ -199,8 +199,8 @@ const ListCard = ({ imgSrc, videoDetails }) => {
   };
   const conditionalStyle =
     coordinates.left < bodyRect.width - coordinates.left
-      ? 'translateX(6rem)'
-      : coordinates.right > bodyRect.width - coordinates.right && 'translateX(1rem)';
+      ? 'translateX(3rem)'
+      : coordinates.right > bodyRect.width - coordinates.right && 'translateX(-3rem)';
 
   return (
     <div className='position-relative' ref={ref}>
@@ -240,7 +240,8 @@ const ListCard = ({ imgSrc, videoDetails }) => {
             width: '350px',
             position: 'absolute',
             top: '-25%',
-            right: '5%',
+            left: '-20%',
+            right: '20%',
             zIndex: '10000000',
           }}
         >
