@@ -17,28 +17,46 @@
 //         clickable: true,
 //       }}
 //       navigation={true}
-//       modules={[Autoplay, Pagination, Navigation]}
+//       modules={[Autoplay, Navigation]}
 //       className='mySwiper'
 //       centeredSlides
 //       breakpoints={{
 //         // when window width is >= 600px
-//         600: {
-//           slidesPerView: 2,
-//           slidesPerGroup: 2,
+//         480: {
+//           slidesPerView: 1,
+//           slidesPerGroup: 1,
 //           spaceBetween: 5,
-//           centeredSlides: true,
+//           centeredSlides: false,
+//         },
+//         600: {
+//           slidesPerView: 1,
+//           slidesPerGroup: 1,
+//           spaceBetween: 5,
+//           centeredSlides: false,
 //         },
 //         // when window width is >= 900px
-//         900: {
-//           slidesPerView: 3,
-//           slidesPerGroup: 3,
-//           spaceBetween: 5,
+//         768: {
+//           slidesPerView: 2,
+//           slidesPerGroup: 2,
+//           spaceBetween: 1,
+//           centeredSlides: false,
+//         },
+//         1024: {
+//           slidesPerView: 4,
+//           slidesPerGroup: 2,
+//           spaceBetween: 1,
 //           centeredSlides: false,
 //         },
 //         // when window width is >= 1200px
 //         1200: {
 //           slidesPerView: 4,
 //           slidesPerGroup: 4,
+//           spaceBetween: 8,
+//           centeredSlides: false,
+//         },
+//         1400: {
+//           slidesPerView: 3,
+//           slidesPerGroup: 3,
 //           spaceBetween: 5,
 //           centeredSlides: false,
 //         },
@@ -53,9 +71,9 @@
 
 //         // when window width is >= 1800px
 //         1800: {
-//           slidesPerView: 5,
-//           slidesPerGroup: 5,
-//           spaceBetween: 8,
+//           slidesPerView: 4,
+//           slidesPerGroup: 4,
+//           spaceBetween: 10,
 //           centeredSlides: false,
 //         },
 //       }}

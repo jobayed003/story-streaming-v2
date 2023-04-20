@@ -1,13 +1,14 @@
 import { getAuth } from 'firebase/auth';
 import { motion } from 'framer-motion';
-import { useContext, useEffect, useRef, useState } from 'react';
-import { Button, Card, Col, Container, Row, Spinner } from 'react-bootstrap';
+import { useContext, useRef, useState } from 'react';
+import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
-import { addDoc, collection, setDoc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore';
 import { FaHeart } from 'react-icons/fa';
 import { Navigate, useNavigate } from 'react-router-dom';
 import YouTube from 'react-youtube';
+import { SwiperSlide } from 'swiper/react';
 import AuthProvider from '../context/AuthContext';
 import StateContextProvider from '../context/StateContext';
 import VideoContextProvider from '../context/VideoContext';
@@ -17,12 +18,13 @@ import { getThumbnails } from '../youtubeUtils';
 import './Dashboard.css';
 import Header from './UI/Header';
 import useSizeElement from './hooks/useSizeElement';
+import Carousel from './util/Carousel';
 import Footer from './util/Footer';
 import Slide from './util/Slide';
 
 const Dashboard = () => {
-  const { favouriteVideos } = useContext(StateContextProvider);
   const { isAuthenticated } = useContext(AuthProvider);
+  const { favouriteVideos } = useContext(StateContextProvider);
   const { videos } = useContext(VideoContextProvider);
 
   // Getting thumbnail from video Urls
@@ -40,8 +42,8 @@ const Dashboard = () => {
       <Container
         as='section'
         id='movies'
-        className='listsection py-2 fontFamily hide-scroll'
-        style={{ overflowX: 'hidden', height: '100vh' }}
+        className='fontFamily hide-scroll'
+        style={{ overflow: 'hidden visible', paddingBottom: '8rem' }}
       >
         {/* Top trending videos list */}
         <Row className='mt-5' id='top-trending'>
@@ -56,7 +58,7 @@ const Dashboard = () => {
               <h1>No Videos Found!</h1>
             </Col>
           </Row>
-        ) : videos.length <= 4 ? (
+        ) : videos.length <= 4 && size > 1400 ? (
           <div
             className='d-flex justify-content-center'
             style={{ gap: '4rem', flexWrap: 'wrap', marginBottom: '4rem' }}
@@ -66,7 +68,7 @@ const Dashboard = () => {
             ))}
           </div>
         ) : (
-          <Slide videosCount={videos.length}>
+          <Slide>
             {videos.map((el, idx) => (
               <div
                 className='slide'
@@ -86,32 +88,48 @@ const Dashboard = () => {
           </Col>
         </Row>
 
+        {/* <Row style={{ paddingBottom: '4rem' }}>
+          <Carousel>
+            {favouriteVideos.map((el, idx) => (
+              <SwiperSlide
+                id='my-list'
+                className='slide '
+                key={Math.random() + idx}
+                style={{ width: size > 500 ? '400px' : '300px' }}
+              >
+                <ListCard imgSrc={favouriteVidThumbnail[idx]} videoDetails={el} />
+              </SwiperSlide>
+            ))}
+          </Carousel>
+        </Row> */}
+
         {favouriteVideos.length <= 0 ? (
           <Row>
             <Col className='my-5 text-light text-center'>
               <h1>No Videos Found!</h1>
             </Col>
           </Row>
-        ) : favouriteVideos.length <= 4 ? (
-          <div className='d-flex justify-content-center' style={{ gap: '4rem', flexWrap: 'wrap' }}>
-            {favouriteVideos.map((el, idx) => [
-              <ListCard videoDetails={el} imgSrc={favouriteVidThumbnail[idx]} />,
-            ])}
+        ) : favouriteVideos.length <= 1 ? (
+          <div
+            className='d-flex justify-content-center'
+            style={{ gap: '4rem', flexWrap: 'wrap', paddingBottom: '4rem' }}
+          >
+            {favouriteVideos.map((el, idx) => (
+              <ListCard videoDetails={el} imgSrc={favouriteVidThumbnail[idx]} />
+            ))}
           </div>
         ) : (
-          <Slide videosCount={favouriteVideos.length}>
-            {favouriteVideos.map((el, idx) => {
-              return (
-                <div
-                  id='my-list'
-                  className='slide'
-                  key={Math.random() + idx}
-                  style={{ width: size > 500 ? '400px' : '300px' }}
-                >
-                  <ListCard imgSrc={favouriteVidThumbnail[idx]} videoDetails={el} />
-                </div>
-              );
-            })}
+          <Slide>
+            {favouriteVideos.map((el, idx) => (
+              <div
+                id='my-list'
+                className='slide '
+                key={Math.random() + idx}
+                style={{ width: size > 500 ? '400px' : '300px' }}
+              >
+                <ListCard imgSrc={favouriteVidThumbnail[idx]} videoDetails={el} />
+              </div>
+            ))}
           </Slide>
         )}
       </Container>
@@ -124,14 +142,24 @@ export default Dashboard;
 
 const ListCard = ({ imgSrc, videoDetails }) => {
   const [hovered, setHovered] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
   const [coordinates, setCoordinates] = useState({ left: 0, right: 0 });
   const navigate = useNavigate();
   const [user, userLoading] = useAuthState(getAuth());
-  const { favouriteVideos, setClickedVideo } = useContext(StateContextProvider);
+  const { favouriteVideos, favVidDocId, setClickedVideo } = useContext(StateContextProvider);
+  const { videos } = useContext(VideoContextProvider);
   const ref = useRef();
-
   const size = useSizeElement();
+
+  // Checking if favourite video
+  let favVideosUniqueID = [];
+
+  for (let i = 0; i < favouriteVideos.length; i++) {
+    const favouriteVidIndex = videos.findIndex(
+      (vid) => vid.uniqueId === favouriteVideos[i].uniqueId
+    );
+    favVideosUniqueID.push(videos[favouriteVidIndex].uniqueId);
+  }
+  const isFavourite = favVideosUniqueID.includes(videoDetails.uniqueId);
 
   const handleClick = () => {
     setClickedVideo(videoDetails);
@@ -145,7 +173,17 @@ const ListCard = ({ imgSrc, videoDetails }) => {
       ...videoDetails,
       isFavourite: true,
     });
-    setIsClicked(!isClicked);
+  };
+  const deleteFavourite = async () => {
+    const docID = favVidDocId.findIndex((el) => el.uniqueId === videoDetails.uniqueId);
+
+    const favouriteVidRef = doc(
+      db,
+      `users/${user.uid}/favourite_videos/${
+        videoDetails.docId ? videoDetails.docId : favVidDocId[docID].docId
+      }`
+    );
+    await deleteDoc(favouriteVidRef);
   };
 
   const bodyRect = document.body.getBoundingClientRect();
@@ -163,8 +201,8 @@ const ListCard = ({ imgSrc, videoDetails }) => {
   };
   const conditionalStyle =
     coordinates.left < bodyRect.width - coordinates.left
-      ? 'translateX(3.5rem)'
-      : coordinates.right > bodyRect.width - coordinates.right && 'translateX(-2rem)';
+      ? 'translateX(6rem)'
+      : coordinates.right > bodyRect.width - coordinates.right && 'translateX(1rem)';
 
   return (
     <div className='position-relative' ref={ref}>
@@ -183,12 +221,7 @@ const ListCard = ({ imgSrc, videoDetails }) => {
         }}
         onMouseLeave={() => setHovered(false)}
       >
-        <img
-          src={imgSrc}
-          alt='thumbnail'
-          width={size > 500 ? '300px' : '250px'}
-          className='cursor-pointer'
-        />
+        <img src={imgSrc} alt='thumbnail' width={'250px'} className='cursor-pointer' />
       </motion.div>
 
       {hovered && (
@@ -209,9 +242,8 @@ const ListCard = ({ imgSrc, videoDetails }) => {
             width: '350px',
             position: 'absolute',
             top: '-25%',
-            left: '-25%',
-            right: '20%',
-            zIndex: '100000',
+            right: '5%',
+            zIndex: '10000000',
           }}
         >
           <Card
@@ -232,10 +264,10 @@ const ListCard = ({ imgSrc, videoDetails }) => {
               style={{
                 position: 'absolute',
                 background: 'rgba(0,0,0,0.2)',
-                cursor: 'pointer',
                 width: '100%',
                 height: '250px',
               }}
+              className='cursor-pointer'
               onClick={handleClick}
             />
             <Card.Body className='cursor-pointer' style={{ zIndex: '100000' }}>
@@ -263,13 +295,10 @@ const ListCard = ({ imgSrc, videoDetails }) => {
                   style={{
                     fontSize: '1rem',
                     color: '#fff',
-                    zIndex: '8245923475834957348975',
                   }}
-                  onClick={saveFavourite}
+                  onClick={!isFavourite ? saveFavourite : deleteFavourite}
                 >
-                  <FaHeart
-                    color={favouriteVideos.uniqueId === videoDetails.uniqueId ? 'green' : 'white'}
-                  />
+                  <FaHeart color={isFavourite ? 'green' : 'white'} />
                 </Button>
               </div>
             </Card.Body>

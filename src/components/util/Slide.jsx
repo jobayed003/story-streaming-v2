@@ -2,9 +2,9 @@ import { Row } from 'react-bootstrap';
 import Slider from 'react-slick';
 import './Slide.css';
 
-const Slide = ({ children, videosCount }) => {
+const Slide = ({ children }) => {
   const settings = {
-    infinite: true,
+    // infinite: true,
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 4,

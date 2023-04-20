@@ -2,3 +2,11 @@
 .swiper-button-next {
   color: white;
 }
+
+.swiper {
+  overflow: visible;
+}
+
+.slider-wrapper {
+  overflow: visible;
+}
