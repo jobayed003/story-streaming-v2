@@ -8,7 +8,6 @@ import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore';
 import { FaHeart } from 'react-icons/fa';
 import { Navigate, useNavigate } from 'react-router-dom';
 import YouTube from 'react-youtube';
-import { SwiperSlide } from 'swiper/react';
 import AuthProvider from '../context/AuthContext';
 import StateContextProvider from '../context/StateContext';
 import VideoContextProvider from '../context/VideoContext';
@@ -18,7 +17,6 @@ import { getThumbnails } from '../youtubeUtils';
 import './Dashboard.css';
 import Header from './UI/Header';
 import useSizeElement from './hooks/useSizeElement';
-import Carousel from './util/Carousel';
 import Footer from './util/Footer';
 import Slide from './util/Slide';
 
@@ -109,7 +107,7 @@ const Dashboard = () => {
               <h1>No Videos Found!</h1>
             </Col>
           </Row>
-        ) : favouriteVideos.length <= 1 ? (
+        ) : favouriteVideos.length <= 4 ? (
           <div
             className='d-flex justify-content-center'
             style={{ gap: '4rem', flexWrap: 'wrap', paddingBottom: '4rem' }}
