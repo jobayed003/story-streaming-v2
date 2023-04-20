@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { fetchData } from '../youtubeUtils';
+import { fetchData, getVideoUrls } from '../youtubeUtils';
 
 const VideoContextProvider = createContext({
   videos: [],
@@ -19,7 +19,6 @@ const initialEpisode = {
 
 export const VideoContext = ({ children }) => {
   const [videos, setVideos] = useState([]);
-  const [videoUrls, setVideoUrls] = useState([]);
   const [updated, setUpdated] = useState(false);
 
   const [series, setSeries] = useState({
@@ -30,17 +29,10 @@ export const VideoContext = ({ children }) => {
   });
 
   useEffect(() => {
-    let videoUrl = [];
-
     (async () => {
       try {
         const data = await fetchData('series');
         setVideos(data);
-
-        data.forEach((el) => {
-          el.episodes.map((item) => videoUrl.push(item.url));
-        });
-        setVideoUrls(videoUrl);
       } catch {
         toast.error('Something Went Wrong!');
       }
@@ -49,7 +41,7 @@ export const VideoContext = ({ children }) => {
 
   const contextValue = {
     videos,
-    videoUrls,
+
     updated,
     setUpdated,
     series,

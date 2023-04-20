@@ -32,6 +32,41 @@ export const fetchData = async (collecName) => {
   return data;
 };
 
+const getVideoUrls = (videos) => {
+  let videoUrl = [];
+
+  videos.forEach((el) => {
+    el.episodes.forEach((item) => videoUrl.push(item.url));
+  });
+
+  return videoUrl;
+};
+
+export const getThumbnails = (videos, size) => {
+  let video, results;
+  let img = [];
+
+  const videoUrls = getVideoUrls(videos);
+
+  videoUrls.forEach((url) => {
+    const getThumb = () => {
+      if (url === null) {
+        return '';
+      }
+      size = size === null ? 'big' : size;
+      results = url.match('[\\?&]v=([^&#]*)');
+      video = results === null ? url : results[1];
+
+      if (size === 'small') {
+        return 'http://img.youtube.com/vi/' + video + '/2.jpg';
+      }
+      return 'http://img.youtube.com/vi/' + video + '/0.jpg';
+    };
+    img.push(getThumb());
+  });
+  return img;
+};
+
 export const updateUserRole = async (id, role) => {
   const userRef = doc(db, 'users', id);
 

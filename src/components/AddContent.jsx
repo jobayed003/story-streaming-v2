@@ -6,11 +6,10 @@ import { toast } from 'react-toastify';
 import AuthProvider from '../context/AuthContext';
 import VideoContextProvider from '../context/VideoContext';
 import { db } from '../firebase.config';
-import { parseVideoIDFromYoutubeURL, ytDurationToSeconds } from '../youtubeUtils';
+import { getThumbnails, parseVideoIDFromYoutubeURL, ytDurationToSeconds } from '../youtubeUtils';
 import './AddContent.css';
 import Header from './UI/Header';
 import useStatus from './hooks/useStatus';
-import useThumbnail from './hooks/useThumbnail';
 import Footer from './util/Footer';
 import Slide from './util/Slide';
 import VideoCard from './util/VideoCard';
@@ -36,10 +35,10 @@ const AddContent = () => {
   const { videos, videoUrls, series, updated, setSeries, setUpdated } =
     useContext(VideoContextProvider);
   const { isAuthenticated, isAdmin } = useContext(AuthProvider);
-
-  // custom hooks
-  const thumbnail = useThumbnail(videoUrls);
   const status = useStatus(videos);
+
+  // Getting thumbnail from video Urls
+  const thumbnail = getThumbnails(videos);
 
   const getVideoDetails = async (url) => {
     const videoID = parseVideoIDFromYoutubeURL(url);
