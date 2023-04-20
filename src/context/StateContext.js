@@ -13,7 +13,6 @@ export const StateContext = ({ children }) => {
   const [clickedVideo, setClickedVideo] = useState();
   const [selectedAvatar, setSelectedAvatar] = useState({});
   const [favouriteVideos, setFavouriteVideos] = useState([]);
-  const [favVidDocId, setFavVidDocId] = useState([]);
 
   const { userCredentials } = useContext(AuthProvider);
 
@@ -29,13 +28,10 @@ export const StateContext = ({ children }) => {
 
     onSnapshot(userFavouriteVideosRef, async (querySnapshot) => {
       let favourite_videos = [];
-      let docId = [];
       querySnapshot.forEach(async (doc) => {
-        docId.push({ docId: doc.id, uniqueId: doc.data().uniqueId });
         favourite_videos.push({ ...doc.data(), docId: doc.id });
       });
 
-      setFavVidDocId(docId);
       setFavouriteVideos(favourite_videos);
     });
   };
@@ -54,7 +50,7 @@ export const StateContext = ({ children }) => {
     clickedVideo,
     favouriteVideos,
     selectedAvatar,
-    favVidDocId,
+
     setClickedVideo,
     setSelectedAvatar,
   };

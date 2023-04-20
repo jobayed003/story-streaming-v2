@@ -4,7 +4,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
-import { addDoc, collection, deleteDoc, doc } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { FaHeart } from 'react-icons/fa';
 import { Navigate, useNavigate } from 'react-router-dom';
 import YouTube from 'react-youtube';
@@ -143,7 +143,7 @@ const ListCard = ({ imgSrc, videoDetails }) => {
   const [coordinates, setCoordinates] = useState({ left: 0, right: 0 });
   const navigate = useNavigate();
   const [user, userLoading] = useAuthState(getAuth());
-  const { favouriteVideos, favVidDocId, setClickedVideo } = useContext(StateContextProvider);
+  const { favouriteVideos, setClickedVideo } = useContext(StateContextProvider);
   const { videos } = useContext(VideoContextProvider);
   const ref = useRef();
   const size = useSizeElement();
@@ -167,20 +167,15 @@ const ListCard = ({ imgSrc, videoDetails }) => {
   };
 
   const saveFavourite = async () => {
-    await addDoc(collection(db, `users/${user.uid}/favourite_videos`), {
+    const vidRef = doc(db, `users/${user.uid}/favourite_videos/${videoDetails.uniqueId}`);
+
+    await setDoc(vidRef, {
       ...videoDetails,
       isFavourite: true,
     });
   };
   const deleteFavourite = async () => {
-    const docID = favVidDocId.findIndex((el) => el.uniqueId === videoDetails.uniqueId);
-
-    const favouriteVidRef = doc(
-      db,
-      `users/${user.uid}/favourite_videos/${
-        videoDetails.docId ? videoDetails.docId : favVidDocId[docID].docId
-      }`
-    );
+    const favouriteVidRef = doc(db, `users/${user.uid}/favourite_videos/${videoDetails.uniqueId}`);
     await deleteDoc(favouriteVidRef);
   };
 
