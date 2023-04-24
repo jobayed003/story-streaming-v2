@@ -8,15 +8,13 @@ import AuthProvider from '../../context/AuthContext';
 
 const Login = ({ show, setShow }) => {
   const [isClicked, setIsClicked] = useState(false);
-
   const [isLoading, setIsLoading] = useState(false);
+  const [userCred, setUserCred] = useState({ email: '', password: '' });
+  const navigate = useNavigate();
 
   const handleClose = () => setShow(false);
 
   const { setAuthStep } = useContext(AuthProvider);
-  const navigate = useNavigate();
-
-  const [userCred, setUserCred] = useState({ email: '', password: '' });
 
   const handleChange = ({ target }) => {
     const targetId = target.id.replace('formGroup', '').toLowerCase();

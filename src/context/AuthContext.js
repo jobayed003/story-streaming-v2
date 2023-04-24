@@ -8,6 +8,8 @@ const AuthProvider = createContext({
   users: [],
   userCredentials: {},
   isAuthenticated: false,
+  isDefaultAdmin: false,
+  isUpdated: false,
 });
 
 export const AuthContext = ({ children }) => {
@@ -75,15 +77,15 @@ export const AuthContext = ({ children }) => {
   const contextValue = {
     isAuthenticated,
     authStep,
-    setAuthStep,
     isAdmin,
-    setIsAdmin,
     users,
     userCredentials,
-    setUserCredentials,
-    isUpdated,
-    setIsUpdated,
     isDefaultAdmin,
+
+    setAuthStep,
+    setUserCredentials,
+    setIsAdmin,
+    setIsUpdated,
   };
 
   return <AuthProvider.Provider value={contextValue}>{children}</AuthProvider.Provider>;

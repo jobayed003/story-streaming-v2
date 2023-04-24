@@ -2,13 +2,12 @@ import { getAuth } from 'firebase/auth';
 import React, { useEffect, useState } from 'react';
 import { Image, Row } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import logo from '../Icons/StorySaloon_Logo.svg';
 
 const useLoadingState = () => {
   const [loadingState, setLoadingState] = useState();
-  const [user, userLoading] = useAuthState(getAuth());
-  const navigate = useNavigate();
+  const [user] = useAuthState(getAuth());
 
   useEffect(() => {
     setLoadingState(
@@ -17,11 +16,11 @@ const useLoadingState = () => {
       </Row>
     );
 
-    !userLoading &&
+    !user &&
       setTimeout(() => {
-        navigate('/');
+        setLoadingState(<Navigate to='/' />);
       }, 800);
-  }, [userLoading]);
+  }, []);
 
   return loadingState;
 };

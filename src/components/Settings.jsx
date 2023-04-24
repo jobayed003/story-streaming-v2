@@ -6,7 +6,6 @@ import {
   Container,
   FloatingLabel,
   Form,
-  Image,
   InputGroup,
   Modal,
   Row,
@@ -14,23 +13,26 @@ import {
 } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { FaEye } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import AuthProvider from '../context/AuthContext';
 import StateContextProvider from '../context/StateContext';
-import logo from './Icons/StorySaloon_Logo.svg';
 import './Settings.css';
 import Header from './UI/Header';
+import useLoadingState from './hooks/useLoadingState';
 import Footer from './util/Footer';
 import { updateUserDoc } from './util/updateUserDoc';
 
 const Settings = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Context Management
   const { isUpdated, setIsUpdated, userCredentials } = useContext(AuthProvider);
   const { selectedAvatar } = useContext(StateContextProvider);
-  const [user, userLoading] = useAuthState(getAuth());
-  const navigate = useNavigate();
+
+  // Custom Hooks
+  const [user] = useAuthState(getAuth());
+  const loadingState = useLoadingState();
 
   const changeAvatar = async () => {
     setIsLoading(true);
@@ -45,94 +47,97 @@ const Settings = () => {
     }
   };
 
-  if (!user) {
-    return (
-      <Row className='justify-content-center align-items-center' style={{ height: '100vh' }}>
-        <Image src={logo} alt='' style={{ width: '300px', height: '80px' }} />
-      </Row>
-    );
-  }
-
   return (
     <>
-      <ResetPass
-        showPasswordModal={showPasswordModal}
-        setShowPasswordModal={setShowPasswordModal}
-        userDetails={userCredentials}
-      />
+      {!user && loadingState}
 
-      {/* nav-start */}
-      <Header />
-      {/* nav-end */}
+      {user && (
+        <>
+          <ResetPass
+            showPasswordModal={showPasswordModal}
+            setShowPasswordModal={setShowPasswordModal}
+            userDetails={userCredentials}
+          />
 
-      {/* main-section-start */}
-      <Container
-        as='section'
-        className='mainsection'
-        style={{ marginBlock: '5rem', marginTop: '8rem' }}
-      >
-        <Row className='brdr py-3'>
-          <Col xs={4} className='d-flex align-items-center py-2'>
-            <h2>ACCOUNT</h2>
-          </Col>
-          <Col className='py-2 d-flex justify-content-between align-items-center'>
-            <div>
-              <p className='text-content'>Email: {userCredentials.email}</p>
-              <p className='text-content'>Password: ********</p>
-            </div>
+          {/* nav-start */}
+          <Header />
+          {/* nav-end */}
 
-            <div className='d-flex flex-column align-items-start'>
-              <Button
-                variant='link'
-                className='link-item mb-2'
-                onClick={() => setShowPasswordModal(true)}
+          {/* main-section-start */}
+          <Container
+            as='section'
+            className='mainsection'
+            style={{ marginBlock: '5rem', marginTop: '8rem' }}
+          >
+            <Row className='brdr py-3'>
+              <Col xs={4} className='d-flex align-items-center py-2'>
+                <h2>ACCOUNT</h2>
+              </Col>
+              <Col className='py-2 d-flex justify-content-between align-items-center'>
+                <div>
+                  <p className='text-content'>Email: {userCredentials.email}</p>
+                  <p className='text-content'>Password: ********</p>
+                </div>
+
+                <div className='d-flex flex-column align-items-start'>
+                  <Button
+                    variant='link'
+                    className='link-item mb-2'
+                    onClick={() => setShowPasswordModal(true)}
+                  >
+                    Change password
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col className='d-flex align-items-center py-4' xs={4}>
+                <h2>SETTINGS</h2>
+              </Col>
+              <Col className='d-flex align-items-center'>
+                <div>
+                  <p className='text-content'>Avatar: {userCredentials.avatarDetails.avatar}</p>
+                </div>
+              </Col>
+              <Col
+                xs={5}
+                className='hide-scroll'
+                style={{ overflowY: 'scroll', maxHeight: '200px' }}
               >
-                Change password
-              </Button>
-            </div>
-          </Col>
-        </Row>
+                <ChangeAvatar />
+              </Col>
+              <Col xs={1} className='d-flex align-items-center p-0'>
+                <div className='d-flex flex-column justify-content-between align-items-center'>
+                  <Button
+                    style={{
+                      border: 'none',
+                      height: '2.5rem',
+                    }}
+                    variant='success'
+                    onClick={changeAvatar}
+                    disabled={
+                      selectedAvatar.id === userCredentials.avatarDetails.id ? true : isLoading
+                    }
+                  >
+                    {isLoading ? (
+                      <div className='d-flex align-items-center'>
+                        <div>Saving...</div>
+                        <Spinner animation='border' style={{ width: '1.3rem', height: '1.3rem' }} />
+                      </div>
+                    ) : (
+                      'Save Avatar'
+                    )}
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+          {/* main-secction-end */}
 
-        <Row>
-          <Col className='d-flex align-items-center py-4' xs={4}>
-            <h2>SETTINGS</h2>
-          </Col>
-          <Col className='d-flex align-items-center'>
-            <div>
-              <p className='text-content'>Avatar: {userCredentials.avatarDetails.avatar}</p>
-            </div>
-          </Col>
-          <Col xs={5} className='hide-scroll' style={{ overflowY: 'scroll', maxHeight: '200px' }}>
-            <ChangeAvatar />
-          </Col>
-          <Col xs={1} className='d-flex align-items-center p-0'>
-            <div className='d-flex flex-column justify-content-between align-items-center'>
-              <Button
-                style={{
-                  border: 'none',
-                  height: '2.5rem',
-                }}
-                variant='success'
-                onClick={changeAvatar}
-                disabled={selectedAvatar.id === userCredentials.avatarDetails.id ? true : isLoading}
-              >
-                {isLoading ? (
-                  <div className='d-flex align-items-center'>
-                    <div>Saving...</div>
-                    <Spinner animation='border' style={{ width: '1.3rem', height: '1.3rem' }} />
-                  </div>
-                ) : (
-                  'Save Avatar'
-                )}
-              </Button>
-            </div>
-          </Col>
-        </Row>
-      </Container>
-
-      {/* main-secction-end */}
-
-      <Footer />
+          <Footer />
+        </>
+      )}
     </>
   );
 };
@@ -198,8 +203,9 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
     <Modal
       show={showPasswordModal}
       onHide={() => setShowPasswordModal(false)}
-      aria-labelledby='contained-modal-title-vcenter'
+      aria-labelledby='contained-modal-title-vcenter '
       centered
+      className='settings-text-color'
     >
       <Modal.Header closeButton className='border-0'>
         <Modal.Title>Change Password</Modal.Title>
@@ -359,31 +365,6 @@ const ChangeAvatar = () => {
       ))}
     </div>
   );
-
-  // return (
-  //   <Modal
-  //     show={showAvatarModal}
-  //     onHide={() => setShowAvatarModal(false)}
-  //     aria-labelledby='contained-modal-title-vcenter'
-  //     centered
-  //     className='custom-modal'
-  //   >
-  //     <Modal.Header closeButton className='border-0'>
-  //       <Modal.Title>Choose Avatar</Modal.Title>
-  //     </Modal.Header>
-  //     <Modal.Body style={{ overflow: 'auto', maxHeight: '250px' }}>
-  //       <div className='d-flex flex-wrap'>
-  //         {avatarDetails.map((el) => (
-  //           <Avatar avatarDetails={el} />
-  //         ))}
-  //       </div>
-  //     </Modal.Body>
-
-  //     <Modal.Footer className='border-0 justify-content-center'>
-  //
-  //     </Modal.Footer>
-  //   </Modal>
-  // );
 };
 
 const Avatar = ({ avatarDetails }) => {

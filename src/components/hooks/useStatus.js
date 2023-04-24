@@ -15,7 +15,7 @@ const useStatus = (dependency) => {
 
     setTimeout(() => {
       setStatus(<h1 className='mb-5 mt-5 text-center'>No Videos Found</h1>);
-    }, 5000);
+    }, 2500);
   }, [dependency]);
 
   return status;

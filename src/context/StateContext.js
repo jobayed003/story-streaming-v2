@@ -20,6 +20,7 @@ export const StateContext = ({ children }) => {
 
   const auth = getAuth();
 
+  // Checking if favourite video is also available in series
   const videosUniqueId = videos.map((vid) => vid.uniqueId);
   const favVideosUniqueID = favouriteVideos.map((vid) => vid.uniqueId);
 
@@ -27,13 +28,15 @@ export const StateContext = ({ children }) => {
     (el) => !videosUniqueId.some((el1) => el === el1)
   );
 
-  VideoNotAvailableID.forEach(async (id) => {
-    console.log(id);
+  // const result = favVideosUniqueID.find((elem) => !videosUniqueId.includes(elem));
+  // console.log(result);
 
+  VideoNotAvailableID.forEach(async (id) => {
     const favouriteVidRef = doc(db, `users/${userCredentials.uid}/favourite_videos/${id}`);
     await deleteDoc(favouriteVidRef);
   });
 
+  // Uploading Favourite Videos
   const uploadFavouriteVideos = async () => {
     const userFavouriteVideosRef = collection(
       db,

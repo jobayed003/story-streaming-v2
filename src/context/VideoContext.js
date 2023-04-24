@@ -7,6 +7,10 @@ const VideoContextProvider = createContext({
   videoUrls: [],
   seriesDetails: [],
   series: {},
+
+  setVideos: () => {},
+  setUpdated: () => {},
+  setSeries: () => {},
 });
 
 const initialEpisode = {
@@ -41,10 +45,10 @@ export const VideoContext = ({ children }) => {
 
   const contextValue = {
     videos,
-
     updated,
-    setUpdated,
     series,
+
+    setUpdated,
     setSeries,
   };
 

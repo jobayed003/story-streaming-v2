@@ -3,14 +3,12 @@ import { useContext } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import AuthProvider from '../../context/AuthContext';
 import VideoContextProvider from '../../context/VideoContext';
 import { db } from '../../firebase.config';
 import { getSeriesData } from '../../youtubeUtils';
 
 const VideoCard = ({ imgSrc, scrollTo, video }) => {
   const { updated, setUpdated, setSeries } = useContext(VideoContextProvider);
-  const { userCredentials } = useContext(AuthProvider);
 
   const navigate = useNavigate();
 

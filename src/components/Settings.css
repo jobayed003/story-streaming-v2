@@ -9,6 +9,10 @@
   --footer-text-color: #898989;
 }
 
+.settings-text-color {
+  color: var(--dark);
+}
+
 .pdy {
   padding: 75px 0px;
 }

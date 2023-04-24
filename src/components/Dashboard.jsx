@@ -1,123 +1,122 @@
 import { getAuth } from 'firebase/auth';
 import { motion } from 'framer-motion';
-import { useContext, useEffect, useRef, useState } from 'react';
-import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap';
+import { useContext, useRef, useState } from 'react';
+import { Button, Card, Col, Container, Row } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { FaHeart } from 'react-icons/fa';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import YouTube from 'react-youtube';
-import AuthProvider from '../context/AuthContext';
 import StateContextProvider from '../context/StateContext';
 import VideoContextProvider from '../context/VideoContext';
 import { db } from '../firebase.config';
 import { createCheckoutSession } from '../stripe/createCheckoutSession';
 import { getThumbnails } from '../youtubeUtils';
 import './Dashboard.css';
-import logo from './Icons/StorySaloon_Logo.svg';
+
 import Header from './UI/Header';
 import useDimension from './hooks/useDimension';
+import useLoadingState from './hooks/useLoadingState';
 import useStatus from './hooks/useStatus';
 import Footer from './util/Footer';
 import Slide from './util/Slide';
 
 const Dashboard = () => {
-  const { isAuthenticated } = useContext(AuthProvider);
+  // Context Management
   const { favouriteVideos } = useContext(StateContextProvider);
   const { videos } = useContext(VideoContextProvider);
-  const [user, userLoading] = useAuthState(getAuth());
+
+  // Custom Hooks
+  const [user] = useAuthState(getAuth());
+  const loadingState = useLoadingState();
   const status = useStatus(videos);
-  const navigate = useNavigate();
+  const size = useDimension();
 
   // Getting thumbnail from video Urls
-  const size = useDimension();
   const trendingVidThumbnail = getThumbnails(videos);
   const favouriteVidThumbnail = getThumbnails(favouriteVideos);
 
-  if (!user) {
-    return (
-      <Row className='justify-content-center align-items-center' style={{ height: '100vh' }}>
-        <Image src={logo} alt='' style={{ width: '300px', height: '80px' }} />
-      </Row>
-    );
-  }
-
   return (
     <>
-      <Header />
-      <Container
-        as='section'
-        id='movies'
-        className='fontFamily hide-scroll'
-        style={{ overflow: 'hidden visible', paddingBottom: '8rem' }}
-      >
-        {/* Top trending videos list */}
-        <Row className='mt-5' id='top-trending'>
-          <Col className='mt-5 text-light'>
-            <h1>Top Trending</h1>
-          </Col>
-        </Row>
-
-        {videos.length <= 0 ? (
-          <Row>{status}</Row>
-        ) : videos.length <= 4 ? (
-          <div
-            className='d-flex justify-content-center'
-            style={{ gap: '4rem', flexWrap: 'wrap', marginBottom: '4rem' }}
+      {!user && loadingState}
+      {user && (
+        <>
+          <Header />
+          <Container
+            as='section'
+            id='movies'
+            className='fontFamily hide-scroll'
+            style={{ overflow: 'hidden visible', paddingBottom: '8rem' }}
           >
-            {videos.map((el, idx) => (
-              <ListCard imgSrc={trendingVidThumbnail[idx]} videoDetails={el} />
-            ))}
-          </div>
-        ) : (
-          <Slide>
-            {videos.map((el, idx) => (
-              <div
-                className='slide'
-                key={Math.random() + idx}
-                style={{ width: size > 500 ? '400px' : '300px' }}
-              >
-                <ListCard imgSrc={trendingVidThumbnail[idx]} videoDetails={el} />
-              </div>
-            ))}
-          </Slide>
-        )}
+            {/* Top trending videos list */}
+            <Row className='mt-5' id='top-trending'>
+              <Col className='mt-5 text-light'>
+                <h1>Top Trending</h1>
+              </Col>
+            </Row>
 
-        {/* Favourite Videos List */}
-        <Row style={{ marginTop: '8rem' }}>
-          <Col className='text-light' id={'my-list'}>
-            <h1>My List</h1>
-          </Col>
-        </Row>
-
-        {favouriteVideos.length <= 0 ? (
-          <Row>{status}</Row>
-        ) : favouriteVideos.length <= 4 ? (
-          <div
-            className='d-flex justify-content-center'
-            style={{ gap: '4rem', flexWrap: 'wrap', paddingBottom: '4rem' }}
-          >
-            {favouriteVideos.map((el, idx) => (
-              <ListCard videoDetails={el} imgSrc={favouriteVidThumbnail[idx]} />
-            ))}
-          </div>
-        ) : (
-          <Slide>
-            {favouriteVideos.map((el, idx) => (
+            {videos.length <= 0 ? (
+              <Row>{status}</Row>
+            ) : videos.length <= 4 ? (
               <div
-                id='my-list'
-                className='slide '
-                key={Math.random() + idx}
-                style={{ width: size > 500 ? '400px' : '300px' }}
+                className='d-flex justify-content-center'
+                style={{ gap: '4rem', flexWrap: 'wrap', marginBottom: '4rem' }}
               >
-                <ListCard imgSrc={favouriteVidThumbnail[idx]} videoDetails={el} />
+                {videos.map((el, idx) => (
+                  <ListCard imgSrc={trendingVidThumbnail[idx]} videoDetails={el} />
+                ))}
               </div>
-            ))}
-          </Slide>
-        )}
-      </Container>
-      <Footer />
+            ) : (
+              <Slide>
+                {videos.map((el, idx) => (
+                  <div
+                    className='slide'
+                    key={Math.random() + idx}
+                    style={{ width: size > 500 ? '400px' : '300px' }}
+                  >
+                    <ListCard imgSrc={trendingVidThumbnail[idx]} videoDetails={el} />
+                  </div>
+                ))}
+              </Slide>
+            )}
+
+            {/* Favourite Videos List */}
+            <Row style={{ marginTop: '8rem' }}>
+              <Col className='text-light' id={'my-list'}>
+                <h1>My List</h1>
+              </Col>
+            </Row>
+
+            {favouriteVideos.length <= 0 ? (
+              <Row>{status}</Row>
+            ) : favouriteVideos.length <= 4 ? (
+              <div
+                className='d-flex justify-content-center'
+                style={{ gap: '4rem', flexWrap: 'wrap', paddingBottom: '4rem' }}
+              >
+                {favouriteVideos.map((el, idx) => (
+                  <ListCard videoDetails={el} imgSrc={favouriteVidThumbnail[idx]} />
+                ))}
+              </div>
+            ) : (
+              <Slide>
+                {favouriteVideos.map((el, idx) => (
+                  <div
+                    id='my-list'
+                    className='slide '
+                    key={Math.random() + idx}
+                    style={{ width: size > 500 ? '400px' : '300px' }}
+                  >
+                    <ListCard imgSrc={favouriteVidThumbnail[idx]} videoDetails={el} />
+                  </div>
+                ))}
+              </Slide>
+            )}
+          </Container>
+          <Footer />
+        </>
+      )}
     </>
   );
 };
@@ -128,15 +127,18 @@ const ListCard = ({ imgSrc, videoDetails }) => {
   const [hovered, setHovered] = useState(false);
   const [coordinates, setCoordinates] = useState({ left: 0, right: 0 });
   const navigate = useNavigate();
-  const [user, userLoading] = useAuthState(getAuth());
+  const ref = useRef();
+
+  // Context Management
   const { favouriteVideos, setClickedVideo } = useContext(StateContextProvider);
   const { videos } = useContext(VideoContextProvider);
-  const ref = useRef();
+
+  // Custom Hooks
+  const [user] = useAuthState(getAuth());
   const size = useDimension();
 
-  // Checking if favourite video
+  // Checking if the vidoe is a favourite video
   let favVideosUniqueID = [];
-
   for (let i = 0; i < favouriteVideos.length; i++) {
     const favouriteVidIndex = videos.findIndex(
       (vid) => vid.uniqueId === favouriteVideos[i].uniqueId
