@@ -26,12 +26,7 @@ const VideoCard = ({ imgSrc, scrollTo, video }) => {
   };
 
   const deleteVideo = async () => {
-    const favouriteVidRef = doc(
-      db,
-      `users/${userCredentials.uid}/favourite_videos/${video.uniqueId}`
-    );
     await deleteDoc(doc(db, 'series', video.id));
-    await deleteDoc(favouriteVidRef);
     setUpdated(!updated);
     toast.success('Video Deleted Successfully');
   };

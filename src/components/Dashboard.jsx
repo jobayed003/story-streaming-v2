@@ -61,7 +61,7 @@ const Dashboard = () => {
 
         {videos.length <= 0 ? (
           <Row>{status}</Row>
-        ) : videos.length <= 4 && size > 1400 ? (
+        ) : videos.length <= 4 ? (
           <div
             className='d-flex justify-content-center'
             style={{ gap: '4rem', flexWrap: 'wrap', marginBottom: '4rem' }}

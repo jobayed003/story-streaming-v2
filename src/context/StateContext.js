@@ -1,8 +1,9 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { db } from '../firebase.config';
 import AuthProvider from './AuthContext';
+import VideoContextProvider from './VideoContext';
 
 const StateContextProvider = createContext({
   selectedAvatar: {},
@@ -15,8 +16,23 @@ export const StateContext = ({ children }) => {
   const [favouriteVideos, setFavouriteVideos] = useState([]);
 
   const { userCredentials } = useContext(AuthProvider);
+  const { videos } = useContext(VideoContextProvider);
 
   const auth = getAuth();
+
+  const videosUniqueId = videos.map((vid) => vid.uniqueId);
+  const favVideosUniqueID = favouriteVideos.map((vid) => vid.uniqueId);
+
+  const VideoNotAvailableID = favVideosUniqueID.filter(
+    (el) => !videosUniqueId.some((el1) => el === el1)
+  );
+
+  VideoNotAvailableID.forEach(async (id) => {
+    console.log(id);
+
+    const favouriteVidRef = doc(db, `users/${userCredentials.uid}/favourite_videos/${id}`);
+    await deleteDoc(favouriteVidRef);
+  });
 
   const uploadFavouriteVideos = async () => {
     const userFavouriteVideosRef = collection(
