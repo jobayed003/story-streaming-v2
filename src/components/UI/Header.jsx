@@ -28,7 +28,7 @@ const Header = () => {
     >
       <Container>
         <Navbar.Brand href='/'>
-          <Image src={logo} alt='' style={{ width: '350px', height: '50px' }} />
+          <Image src={logo} alt='' className={classes.logo} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls='navbarScroll'>
           <FaBars />

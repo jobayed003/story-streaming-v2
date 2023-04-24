@@ -47,9 +47,6 @@ html::-webkit-scrollbar {
 }
 
 /* navbar */
-.navbar-brand img {
-  max-width: 200px;
-}
 
 .nav-link {
   font-size: 1.4rem;
