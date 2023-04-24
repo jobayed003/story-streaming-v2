@@ -4,7 +4,7 @@ import AuthProvider from '../../context/AuthContext';
 import { updateUserRole } from '../../youtubeUtils';
 
 export const ManageUser = ({ show, setShow, users }) => {
-  const { isUpdated, setIsUpdated, isDefaultAdmin } = useContext(AuthProvider);
+  const { isUpdated, setIsUpdated } = useContext(AuthProvider);
 
   const handleClose = () => setShow(false);
 

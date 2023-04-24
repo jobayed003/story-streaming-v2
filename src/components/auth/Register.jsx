@@ -27,7 +27,7 @@ const Register = ({ show, setShow }) => {
 
   const handleClose = () => setShow(false);
 
-  const { authenticateUser, setAuthStep } = useContext(AuthProvider);
+  const { setAuthStep } = useContext(AuthProvider);
 
   const handleChange = ({ target }) => {
     const targetId = target.id.replace('formGroup', '').toLowerCase();

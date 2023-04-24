@@ -6,16 +6,19 @@ import {
   Container,
   FloatingLabel,
   Form,
+  Image,
   InputGroup,
   Modal,
   Row,
   Spinner,
 } from 'react-bootstrap';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { FaEye } from 'react-icons/fa';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import AuthProvider from '../context/AuthContext';
 import StateContextProvider from '../context/StateContext';
+import logo from './Icons/StorySaloon_Logo.svg';
 import './Settings.css';
 import Header from './UI/Header';
 import Footer from './util/Footer';
@@ -23,11 +26,31 @@ import { updateUserDoc } from './util/updateUserDoc';
 
 const Settings = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [showAvatarModal, setShowAvatarModal] = useState(false);
-  const { isAuthenticated, userCredentials } = useContext(AuthProvider);
+  const [isLoading, setIsLoading] = useState(false);
+  const { isUpdated, setIsUpdated, userCredentials } = useContext(AuthProvider);
+  const { selectedAvatar } = useContext(StateContextProvider);
+  const [user, userLoading] = useAuthState(getAuth());
+  const navigate = useNavigate();
 
-  if (!isAuthenticated) {
-    return <Navigate to='/' />;
+  const changeAvatar = async () => {
+    setIsLoading(true);
+
+    try {
+      await updateUserDoc(userCredentials.uid, { avatarDetails: { ...selectedAvatar } });
+      toast.dark('Avatar updated successfully!');
+      setIsUpdated(!isUpdated);
+      setIsLoading(false);
+    } catch (err) {
+      toast.error('Something went wrong! Try again');
+    }
+  };
+
+  if (!user) {
+    return (
+      <Row className='justify-content-center align-items-center' style={{ height: '100vh' }}>
+        <Image src={logo} alt='' style={{ width: '300px', height: '80px' }} />
+      </Row>
+    );
   }
 
   return (
@@ -37,34 +60,20 @@ const Settings = () => {
         setShowPasswordModal={setShowPasswordModal}
         userDetails={userCredentials}
       />
-      <ChangeAvatar
-        showAvatarModal={showAvatarModal}
-        setShowAvatarModal={setShowAvatarModal}
-        userDetails={userCredentials}
-      />
+
       {/* nav-start */}
-
       <Header />
-
       {/* nav-end */}
 
       {/* main-section-start */}
-
       <Container
         as='section'
         className='mainsection'
         style={{ marginBlock: '5rem', marginTop: '8rem' }}
       >
-        {/* <Row>
-          <Col className='brdr customText'>
-            <h1>Account</h1>
-          </Col>
-        </Row> */}
-
         <Row className='brdr py-3'>
           <Col xs={4} className='d-flex align-items-center py-2'>
             <h2>ACCOUNT</h2>
-            {/* & BILLING */}
           </Col>
           <Col className='py-2 d-flex justify-content-between align-items-center'>
             <div>
@@ -72,17 +81,7 @@ const Settings = () => {
               <p className='text-content'>Password: ********</p>
             </div>
 
-            {/* <Button variant='link' className='link-item mb-2'>
-              Change email
-            </Button> */}
             <div className='d-flex flex-column align-items-start'>
-              <Button
-                variant='link'
-                className='link-item mb-2'
-                onClick={() => setShowAvatarModal(true)}
-              >
-                Change Avatar
-              </Button>
               <Button
                 variant='link'
                 className='link-item mb-2'
@@ -98,13 +97,35 @@ const Settings = () => {
           <Col className='d-flex align-items-center py-4' xs={4}>
             <h2>SETTINGS</h2>
           </Col>
-          <Col className='d-flex py-3 settings-link'>
-            <Button variant='link' className='mb-2 p-0 link-item'>
-              Marketing communications
-            </Button>
-            <Button variant='link' className='mb-2 p-0 link-item'>
-              Download your personal information
-            </Button>
+          <Col className='d-flex align-items-center'>
+            <div>
+              <p className='text-content'>Avatar: {userCredentials.avatarDetails.avatar}</p>
+            </div>
+          </Col>
+          <Col xs={5} className='hide-scroll' style={{ overflowY: 'scroll', maxHeight: '200px' }}>
+            <ChangeAvatar />
+          </Col>
+          <Col xs={1} className='d-flex align-items-center p-0'>
+            <div className='d-flex flex-column justify-content-between align-items-center'>
+              <Button
+                style={{
+                  border: 'none',
+                  height: '2.5rem',
+                }}
+                variant='success'
+                onClick={changeAvatar}
+                disabled={selectedAvatar.id === userCredentials.avatarDetails.id ? true : isLoading}
+              >
+                {isLoading ? (
+                  <div className='d-flex align-items-center'>
+                    <div>Saving...</div>
+                    <Spinner animation='border' style={{ width: '1.3rem', height: '1.3rem' }} />
+                  </div>
+                ) : (
+                  'Save Avatar'
+                )}
+              </Button>
+            </div>
           </Col>
         </Row>
       </Container>
@@ -139,14 +160,6 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
       toast.error('Password doesnt match');
       return;
     }
-
-    const actionCodeSettings = {
-      url: `${window.location.origin}/?email=` + userDetails.email,
-      // When multiple custom dynamic link domains are defined, specify which
-      // one to use.
-      // dynamicLinkDomain: 'example.page.link',
-    };
-
     setIsLoading(true);
     updatePassword(user, passwords.newpass)
       .then(async () => {
@@ -283,25 +296,7 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
   );
 };
 
-const ChangeAvatar = ({ showAvatarModal, setShowAvatarModal, userDetails }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { isUpdated, setIsUpdated, userCredentials } = useContext(AuthProvider);
-  const { selectedAvatar } = useContext(StateContextProvider);
-
-  const changeAvatar = async () => {
-    setIsLoading(true);
-
-    try {
-      await updateUserDoc(userDetails.uid, { avatarDetails: { ...selectedAvatar } });
-      toast.dark('Avatar updated successfully!');
-      setIsUpdated(!isUpdated);
-      setShowAvatarModal(false);
-      setIsLoading(false);
-    } catch (err) {
-      toast.error('Something went wrong! Try again');
-    }
-  };
-
+const ChangeAvatar = () => {
   const avatarDetails = [];
 
   const avatars = [
@@ -358,59 +353,49 @@ const ChangeAvatar = ({ showAvatarModal, setShowAvatarModal, userDetails }) => {
   avatars.map((el, idx) => avatarDetails.push({ id: idx + 1, avatar: el }));
 
   return (
-    <Modal
-      show={showAvatarModal}
-      onHide={() => setShowAvatarModal(false)}
-      aria-labelledby='contained-modal-title-vcenter'
-      centered
-      className='custom-modal'
-    >
-      <Modal.Header closeButton className='border-0'>
-        <Modal.Title>Choose Avatar</Modal.Title>
-      </Modal.Header>
-      <Modal.Body style={{ overflow: 'auto', maxHeight: '250px' }}>
-        <div className='d-flex flex-wrap'>
-          {avatarDetails.map((el) => (
-            <Avatar avatarDetails={el} />
-          ))}
-        </div>
-      </Modal.Body>
-
-      <Modal.Footer className='border-0 justify-content-center'>
-        <div className='d-flex flex-column justify-content-between align-items-center'>
-          <Button
-            style={{
-              border: 'none',
-              height: '2.5rem',
-            }}
-            variant='success'
-            onClick={changeAvatar}
-            disabled={selectedAvatar.id === userCredentials.avatarDetails.id ? true : isLoading}
-          >
-            {isLoading ? (
-              <div className='d-flex align-items-center'>
-                <div>Saving...</div>
-                <Spinner animation='border' style={{ width: '1.3rem', height: '1.3rem' }} />
-              </div>
-            ) : (
-              'Save Changes'
-            )}
-          </Button>
-        </div>
-      </Modal.Footer>
-    </Modal>
+    <div className='d-flex flex-wrap mt-3'>
+      {avatarDetails.map((el) => (
+        <Avatar avatarDetails={el} />
+      ))}
+    </div>
   );
+
+  // return (
+  //   <Modal
+  //     show={showAvatarModal}
+  //     onHide={() => setShowAvatarModal(false)}
+  //     aria-labelledby='contained-modal-title-vcenter'
+  //     centered
+  //     className='custom-modal'
+  //   >
+  //     <Modal.Header closeButton className='border-0'>
+  //       <Modal.Title>Choose Avatar</Modal.Title>
+  //     </Modal.Header>
+  //     <Modal.Body style={{ overflow: 'auto', maxHeight: '250px' }}>
+  //       <div className='d-flex flex-wrap'>
+  //         {avatarDetails.map((el) => (
+  //           <Avatar avatarDetails={el} />
+  //         ))}
+  //       </div>
+  //     </Modal.Body>
+
+  //     <Modal.Footer className='border-0 justify-content-center'>
+  //
+  //     </Modal.Footer>
+  //   </Modal>
+  // );
 };
 
 const Avatar = ({ avatarDetails }) => {
   const { selectedAvatar, setSelectedAvatar } = useContext(StateContextProvider);
-
   return (
     <div
       style={{
         fontSize: '2rem',
-        boxShadow:
-          selectedAvatar.id === avatarDetails.id && 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+        borderRadius: '30px',
+        background: selectedAvatar.id === avatarDetails.id && 'rgba(255, 255, 255, 0.2)',
+        // boxShadow:
+        // selectedAvatar.id === avatarDetails.id && 'rgba(255, 255, 255, 0.2) 0px 7px 29px 0px',
       }}
       className='cursor-pointer p-2'
       onClick={() => {

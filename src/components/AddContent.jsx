@@ -32,8 +32,7 @@ const AddContent = () => {
   const formRef = useRef();
   const navigate = useNavigate();
 
-  const { videos, videoUrls, series, updated, setSeries, setUpdated } =
-    useContext(VideoContextProvider);
+  const { videos, series, updated, setSeries, setUpdated } = useContext(VideoContextProvider);
   const { isAuthenticated, isAdmin } = useContext(AuthProvider);
   const status = useStatus(videos);
 
@@ -100,7 +99,9 @@ const AddContent = () => {
         toast.error(err);
         console.log(err);
       });
-    const updateTimestamp = await updateDoc(videoRef, {
+
+    // setting uniquesID
+    await updateDoc(videoRef, {
       uniqueId: series.uniqueId ? series.uniqueId : uniqueId,
     });
 

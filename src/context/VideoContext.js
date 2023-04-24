@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { fetchData, getVideoUrls } from '../youtubeUtils';
+import { fetchData } from '../youtubeUtils';
 
 const VideoContextProvider = createContext({
   videos: [],

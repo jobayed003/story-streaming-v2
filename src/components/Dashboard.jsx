@@ -1,10 +1,10 @@
 import { getAuth } from 'firebase/auth';
 import { motion } from 'framer-motion';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { Button, Card, Col, Container, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
-import { addDoc, collection, deleteDoc, doc, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, setDoc } from 'firebase/firestore';
 import { FaHeart } from 'react-icons/fa';
 import { Navigate, useNavigate } from 'react-router-dom';
 import YouTube from 'react-youtube';
@@ -15,8 +15,10 @@ import { db } from '../firebase.config';
 import { createCheckoutSession } from '../stripe/createCheckoutSession';
 import { getThumbnails } from '../youtubeUtils';
 import './Dashboard.css';
+import logo from './Icons/StorySaloon_Logo.svg';
 import Header from './UI/Header';
-import useSizeElement from './hooks/useSizeElement';
+import useDimension from './hooks/useDimension';
+import useStatus from './hooks/useStatus';
 import Footer from './util/Footer';
 import Slide from './util/Slide';
 
@@ -24,14 +26,21 @@ const Dashboard = () => {
   const { isAuthenticated } = useContext(AuthProvider);
   const { favouriteVideos } = useContext(StateContextProvider);
   const { videos } = useContext(VideoContextProvider);
+  const [user, userLoading] = useAuthState(getAuth());
+  const status = useStatus(videos);
+  const navigate = useNavigate();
 
   // Getting thumbnail from video Urls
-  const size = useSizeElement();
-  const trendingViThumbnail = getThumbnails(videos);
+  const size = useDimension();
+  const trendingVidThumbnail = getThumbnails(videos);
   const favouriteVidThumbnail = getThumbnails(favouriteVideos);
 
-  if (!isAuthenticated) {
-    return <Navigate to='/' />;
+  if (!user) {
+    return (
+      <Row className='justify-content-center align-items-center' style={{ height: '100vh' }}>
+        <Image src={logo} alt='' style={{ width: '300px', height: '80px' }} />
+      </Row>
+    );
   }
 
   return (
@@ -51,18 +60,14 @@ const Dashboard = () => {
         </Row>
 
         {videos.length <= 0 ? (
-          <Row>
-            <Col className='my-5 text-light text-center'>
-              <h1>No Videos Found!</h1>
-            </Col>
-          </Row>
+          <Row>{status}</Row>
         ) : videos.length <= 4 && size > 1400 ? (
           <div
             className='d-flex justify-content-center'
             style={{ gap: '4rem', flexWrap: 'wrap', marginBottom: '4rem' }}
           >
             {videos.map((el, idx) => (
-              <ListCard imgSrc={trendingViThumbnail[idx]} videoDetails={el} />
+              <ListCard imgSrc={trendingVidThumbnail[idx]} videoDetails={el} />
             ))}
           </div>
         ) : (
@@ -73,7 +78,7 @@ const Dashboard = () => {
                 key={Math.random() + idx}
                 style={{ width: size > 500 ? '400px' : '300px' }}
               >
-                <ListCard imgSrc={trendingViThumbnail[idx]} videoDetails={el} />
+                <ListCard imgSrc={trendingVidThumbnail[idx]} videoDetails={el} />
               </div>
             ))}
           </Slide>
@@ -86,27 +91,8 @@ const Dashboard = () => {
           </Col>
         </Row>
 
-        {/* <Row style={{ paddingBottom: '4rem' }}>
-          <Carousel>
-            {favouriteVideos.map((el, idx) => (
-              <SwiperSlide
-                id='my-list'
-                className='slide '
-                key={Math.random() + idx}
-                style={{ width: size > 500 ? '400px' : '300px' }}
-              >
-                <ListCard imgSrc={favouriteVidThumbnail[idx]} videoDetails={el} />
-              </SwiperSlide>
-            ))}
-          </Carousel>
-        </Row> */}
-
         {favouriteVideos.length <= 0 ? (
-          <Row>
-            <Col className='my-5 text-light text-center'>
-              <h1>No Videos Found!</h1>
-            </Col>
-          </Row>
+          <Row>{status}</Row>
         ) : favouriteVideos.length <= 4 ? (
           <div
             className='d-flex justify-content-center'
@@ -146,7 +132,7 @@ const ListCard = ({ imgSrc, videoDetails }) => {
   const { favouriteVideos, setClickedVideo } = useContext(StateContextProvider);
   const { videos } = useContext(VideoContextProvider);
   const ref = useRef();
-  const size = useSizeElement();
+  const size = useDimension();
 
   // Checking if favourite video
   let favVideosUniqueID = [];
@@ -179,6 +165,7 @@ const ListCard = ({ imgSrc, videoDetails }) => {
     await deleteDoc(favouriteVidRef);
   };
 
+  // getting the position relative to the viewport
   const bodyRect = document.body.getBoundingClientRect();
   const getPosition = (el) => {
     const elemRect = el.getBoundingClientRect();

@@ -44,7 +44,8 @@ export const StateContext = ({ children }) => {
     });
 
     setSelectedAvatar(userCredentials.avatarDetails);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userCredentials]);
 
   const contextValue = {
     clickedVideo,

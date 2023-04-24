@@ -1,7 +1,6 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { createContext, useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
 import { db } from '../firebase.config';
 import { fetchData } from '../youtubeUtils';
 
@@ -9,7 +8,6 @@ const AuthProvider = createContext({
   users: [],
   userCredentials: {},
   isAuthenticated: false,
-  authenticateUser: () => {},
 });
 
 export const AuthContext = ({ children }) => {

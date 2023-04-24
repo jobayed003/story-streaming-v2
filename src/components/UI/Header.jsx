@@ -1,8 +1,8 @@
 import { getAuth } from 'firebase/auth';
 import React, { useContext, useState } from 'react';
-import { Button, Container, Dropdown, Form, Image, Nav, Navbar, Row } from 'react-bootstrap';
-import { FaBars, FaBell } from 'react-icons/fa';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Button, Container, Dropdown, Form, Image, Nav, Navbar } from 'react-bootstrap';
+import { FaBars, FaBell, FaSearch } from 'react-icons/fa';
+import { NavLink, useLocation } from 'react-router-dom';
 import AuthProvider from '../../context/AuthContext';
 import logo from '../Icons/StorySaloon_Logo.svg';
 import { ManageUser } from '../util/ManageUser';
@@ -28,7 +28,7 @@ const Header = () => {
     >
       <Container>
         <Navbar.Brand href='/'>
-          <Image src={logo} alt='' style={{ width: '300px', height: '50px' }} />
+          <Image src={logo} alt='' style={{ width: '350px', height: '50px' }} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls='navbarScroll'>
           <FaBars />
@@ -60,8 +60,8 @@ const Header = () => {
               aria-label='Search'
             />
 
-            <Button variant='light' type='submit'>
-              Search
+            <Button variant='light' type='submit' style={{ paddingBlock: '0' }}>
+              <FaSearch color='gray' />
             </Button>
           </Form>
           <Nav className='align-items-center ms-3 mb-2 mb-lg-0'>
@@ -158,45 +158,3 @@ const Header = () => {
 };
 
 export default Header;
-/* <Navbar>
-        <Container>
-          <Navbar.Brand href='/'>
-            <Image src={logo} alt='' style={{ width: '350px', height: '50px' }} />
-          </Navbar.Brand>
-
-          <Dropdown align='end'>
-            <Dropdown.Toggle
-              style={{
-                background: 'none',
-                border: 'none',
-              }}
-            >
-              <img
-                src='https://occ-0-58-64.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABZBe7K0DPia9LvzIkQ4yzqX9NocZlAjS1MOyEuBQD1WmFuLKZwvq0bxc4n4_EV73khqgwed0PYLNml0V8LCymt31e7x-8jQ.png?r=229'
-                alt=''
-              />
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item className={'dropLinks'} href='/profile'>
-                Manage Profiles
-              </Dropdown.Item>
-
-              <Dropdown.Item className={'dropLinks'} href='/account'>
-                Account
-              </Dropdown.Item>
-
-              <Dropdown.Item className={'dropLinks'} href='/help'>
-                Help Center
-              </Dropdown.Item>
-
-              <Dropdown.Item className={'dropLinks'} href='/dashboard'>
-                Dashboard
-              </Dropdown.Item>
-
-              <Dropdown.Item href='/' className={'customItem dropLinks'} onClick={handleLogout}>
-                Sign Out
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </Container>
-      </Navbar> */

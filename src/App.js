@@ -1,10 +1,11 @@
-import { getAuth } from 'firebase/auth';
-import { Suspense, lazy, useContext } from 'react';
-import { Row, Spinner } from 'react-bootstrap';
-import { Route, BrowserRouter as Router, Routes, redirect } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
+import { Image, Row, Spinner } from 'react-bootstrap';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
+import logo from './components/Icons/StorySaloon_Logo.svg';
+
 import { Test } from './components/Dashboard';
 
 const Landing = lazy(() => import('./components/Landing'));
@@ -17,8 +18,8 @@ const App = () => (
   <Router>
     <Suspense
       fallback={
-        <Row className='mb-5 mt-5 justify-content-center'>
-          <Spinner animation='border' role='status' style={{ width: '50px', height: '50px' }} />
+        <Row className='justify-content-center align-items-center' style={{ height: '100vh' }}>
+          <Image src={logo} alt='' style={{ width: '300px', height: '80px' }} />
         </Row>
       }
     >
