@@ -1,6 +1,7 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { createContext, useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { db } from '../firebase.config';
 import { fetchData } from '../youtubeUtils';
 
@@ -36,10 +37,10 @@ export const AuthContext = ({ children }) => {
 
       setIsAuthenticated(true);
 
-      const { displayName, email } = user;
+      const { displayName, email, uid } = user;
 
       (async () => {
-        const userRef = doc(db, 'users', user.uid);
+        const userRef = doc(db, 'users', uid);
         const userSnap = await getDoc(userRef);
 
         let avatarDetails = {};
@@ -52,7 +53,7 @@ export const AuthContext = ({ children }) => {
           name: displayName,
           email,
           avatarDetails,
-          uid: user.uid,
+          uid,
         });
 
         if (userSnap.data().role === 'admin') {
@@ -81,6 +82,7 @@ export const AuthContext = ({ children }) => {
     users,
     userCredentials,
     isDefaultAdmin,
+    isUpdated,
 
     setAuthStep,
     setUserCredentials,

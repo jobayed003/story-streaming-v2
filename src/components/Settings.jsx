@@ -39,9 +39,9 @@ const Settings = () => {
 
     try {
       await updateUserDoc(userCredentials.uid, { avatarDetails: { ...selectedAvatar } });
-      toast.dark('Avatar updated successfully!');
       setIsUpdated(!isUpdated);
       setIsLoading(false);
+      toast.dark('Avatar updated successfully!');
     } catch (err) {
       toast.error('Something went wrong! Try again');
     }

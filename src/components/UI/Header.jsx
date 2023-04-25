@@ -38,15 +38,15 @@ const Header = () => {
             <NavLink className={classes.customLink} to='/dashboard#my-list'>
               My List
             </NavLink>
-            <NavLink className={classes.customLink} to='/tv-shows'>
+            <NavLink className={classes.customLink} to='/dashboard#tv-shows'>
               Tv Shows
             </NavLink>
             <NavLink className={classes.customLink} to='/dashboard#movies'>
               Movies
             </NavLink>
-            <Nav.Link className={classes.customLink} href='#environment'>
+            <NavLink className={classes.customLink} to='/dashboard#environment'>
               Environment
-            </Nav.Link>
+            </NavLink>
             {/* <NavLink className={classes.customLink} to='/dashboard#home'>
               Home
             </NavLink> */}
@@ -65,7 +65,7 @@ const Header = () => {
             </Button>
           </Form>
           <Nav className='align-items-center ms-3 mb-2 mb-lg-0'>
-            <Nav.Item>
+            {/* <Nav.Item>
               <Button
                 variant='light'
                 className='nav-link'
@@ -79,7 +79,7 @@ const Header = () => {
               >
                 Kids
               </Button>
-            </Nav.Item>
+            </Nav.Item> */}
             <Nav.Item className='px-2'>
               <NavLink className={'nav-link'}>
                 <FaBell fontSize={'1.5rem'} />

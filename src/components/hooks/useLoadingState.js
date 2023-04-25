@@ -19,7 +19,7 @@ const useLoadingState = () => {
     !user &&
       setTimeout(() => {
         setLoadingState(<Navigate to='/' />);
-      }, 800);
+      }, 1000);
   }, []);
 
   return loadingState;

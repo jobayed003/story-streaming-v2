@@ -60,8 +60,13 @@ const Dashboard = () => {
               <Row>{status}</Row>
             ) : videos.length <= 4 ? (
               <div
-                className='d-flex justify-content-center'
-                style={{ gap: '4rem', flexWrap: 'wrap', marginBottom: '4rem' }}
+                className='d-flex justify-content-start ms-3'
+                style={{
+                  gap: '4rem',
+                  marginLeft: '2.5rem',
+                  marginBottom: '4rem',
+                  flexWrap: 'wrap',
+                }}
               >
                 {videos.map((el, idx) => (
                   <ListCard imgSrc={trendingVidThumbnail[idx]} videoDetails={el} />
@@ -92,8 +97,13 @@ const Dashboard = () => {
               <Row>{status}</Row>
             ) : favouriteVideos.length <= 4 ? (
               <div
-                className='d-flex justify-content-center'
-                style={{ gap: '4rem', flexWrap: 'wrap', paddingBottom: '4rem' }}
+                className='d-flex justify-content-start '
+                style={{
+                  gap: '4rem',
+                  marginLeft: '2.5rem',
+                  flexWrap: 'wrap',
+                  paddingBottom: '4rem',
+                }}
               >
                 {favouriteVideos.map((el, idx) => (
                   <ListCard videoDetails={el} imgSrc={favouriteVidThumbnail[idx]} />
