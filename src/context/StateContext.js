@@ -61,7 +61,6 @@ export const StateContext = ({ children }) => {
         uploadFavouriteVideos();
       }
     });
-    // console.log(userCredentials.avatarDetails
 
     setSelectedAvatar(userCredentials.avatarDetails);
     // eslint-disable-next-line react-hooks/exhaustive-deps
