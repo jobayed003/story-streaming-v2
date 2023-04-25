@@ -3,8 +3,8 @@ import React, { useContext, useState } from 'react';
 import { Button, Container, Dropdown, Form, Image, Nav, Navbar } from 'react-bootstrap';
 import { FaBars, FaBell, FaSearch } from 'react-icons/fa';
 import { NavLink, useLocation } from 'react-router-dom';
+import logo from '../../assets/Icons/StorySaloon_Logo.svg';
 import AuthProvider from '../../context/AuthContext';
-import logo from '../Icons/StorySaloon_Logo.svg';
 import { ManageUser } from '../util/ManageUser';
 import classes from './Header.module.css';
 

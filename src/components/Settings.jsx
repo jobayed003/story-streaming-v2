@@ -17,9 +17,9 @@ import { toast } from 'react-toastify';
 import AuthProvider from '../context/AuthContext';
 import StateContextProvider from '../context/StateContext';
 import './Settings.css';
+import Footer from './UI/Footer';
 import Header from './UI/Header';
 import useLoadingState from './hooks/useLoadingState';
-import Footer from './util/Footer';
 import { updateUserDoc } from './util/updateUserDoc';
 
 const Settings = () => {
@@ -70,7 +70,7 @@ const Settings = () => {
             style={{ marginBlock: '5rem', marginTop: '8rem' }}
           >
             <Row className='brdr py-3'>
-              <Col xs={4} className='d-flex align-items-center py-2'>
+              <Col xs='4' className='d-flex align-items-center py-2'>
                 <h2>ACCOUNT</h2>
               </Col>
               <Col className='py-2 d-flex justify-content-between align-items-center'>
@@ -92,23 +92,22 @@ const Settings = () => {
             </Row>
 
             <Row>
-              <Col className='d-flex align-items-center py-4' xs={4}>
+              <Col
+                className='d-flex align-items-center justify-content-between flex-wrap  py-4'
+                xs
+                lg='4'
+              >
                 <h2>SETTINGS</h2>
-              </Col>
-              <Col className='d-flex align-items-center'>
+
                 <div>
-                  <p className='text-content'>Avatar: {userCredentials.avatarDetails.avatar}</p>
+                  <p className='text-content m-0'>Avatar: {userCredentials.avatarDetails.avatar}</p>
                 </div>
               </Col>
-              <Col
-                xs={5}
-                className='hide-scroll'
-                style={{ overflowY: 'scroll', maxHeight: '200px' }}
-              >
+              <Col className='avatar-container hide-scroll'>
                 <ChangeAvatar />
               </Col>
               <Col xs={1} className='d-flex align-items-center p-0'>
-                <div className='d-flex flex-column justify-content-between align-items-center'>
+                <div className='d-flex flex-column justify-content-between align-items-center me-5'>
                   <Button
                     style={{
                       border: 'none',
@@ -126,7 +125,7 @@ const Settings = () => {
                         <Spinner animation='border' style={{ width: '1.3rem', height: '1.3rem' }} />
                       </div>
                     ) : (
-                      'Save Avatar'
+                      'Save'
                     )}
                   </Button>
                 </div>
@@ -372,7 +371,7 @@ const Avatar = ({ avatarDetails }) => {
   return (
     <div
       style={{
-        fontSize: '2rem',
+        // fontSize: '2rem',
         borderRadius: '30px',
         background: selectedAvatar.id === avatarDetails.id && 'rgba(255, 255, 255, 0.2)',
         // boxShadow:

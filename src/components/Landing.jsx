@@ -2,15 +2,15 @@ import { useContext, useEffect, useState } from 'react';
 import { Accordion, Button, Col, Container, Image, Nav, Navbar, Row } from 'react-bootstrap';
 import { FaChevronRight } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import logo from '../components/Icons/StorySaloon_Logo.svg';
+import logo from '../assets/Icons/StorySaloon_Logo.svg';
+import left from '../assets/images/left.png';
+import placeholder from '../assets/images/placeholder.jpg';
+import tv from '../assets/images/tv.png';
 import AuthProvider from '../context/AuthContext';
-import left from '../images/left.png';
-import placeholder from '../images/placeholder.jpg';
-import tv from '../images/tv.png';
 import '../index.css';
+import Footer from './UI/Footer';
 import Login from './auth/Login';
 import Register from './auth/Register';
-import Footer from './util/Footer';
 
 const Landing = () => {
   const [show, setShow] = useState(false);

@@ -1,10 +1,10 @@
 import { Suspense, lazy } from 'react';
-import { Image, Row, Spinner } from 'react-bootstrap';
+import { Image, Row } from 'react-bootstrap';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
-import logo from './components/Icons/StorySaloon_Logo.svg';
+import logo from './assets/Icons/StorySaloon_Logo.svg';
 
 import { Test } from './components/Dashboard';
 

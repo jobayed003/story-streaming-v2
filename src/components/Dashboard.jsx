@@ -15,11 +15,11 @@ import { createCheckoutSession } from '../stripe/createCheckoutSession';
 import { getThumbnails } from '../youtubeUtils';
 import './Dashboard.css';
 
+import Footer from './UI/Footer';
 import Header from './UI/Header';
 import useDimension from './hooks/useDimension';
 import useLoadingState from './hooks/useLoadingState';
 import useStatus from './hooks/useStatus';
-import Footer from './util/Footer';
 import Slide from './util/Slide';
 
 const Dashboard = () => {

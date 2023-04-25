@@ -203,10 +203,10 @@ nav .sign-in-button a {
   box-shadow: unset;
 }
 .accordion-button:not(.collapsed)::after {
-  background-image: url(./components/Icons/chevron-down.svg);
+  background-image: url(./assets/Icons/chevron-down.svg);
 }
 .collapsed::after {
-  background-image: url(./components/Icons/chevron-down.svg);
+  background-image: url(./assets/Icons/chevron-down.svg);
 }
 
 .accordion-item:first-of-type {

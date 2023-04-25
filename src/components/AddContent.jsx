@@ -10,10 +10,10 @@ import VideoContextProvider from '../context/VideoContext';
 import { db } from '../firebase.config';
 import { getThumbnails, parseVideoIDFromYoutubeURL, ytDurationToSeconds } from '../youtubeUtils';
 import './AddContent.css';
+import Footer from './UI/Footer';
 import Header from './UI/Header';
 import useLoadingState from './hooks/useLoadingState';
 import useStatus from './hooks/useStatus';
-import Footer from './util/Footer';
 import Slide from './util/Slide';
 import VideoCard from './util/VideoCard';
 

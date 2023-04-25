@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Image, Row } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Navigate } from 'react-router-dom';
-import logo from '../Icons/StorySaloon_Logo.svg';
+import logo from '../../assets/Icons/StorySaloon_Logo.svg';
 
 const useLoadingState = () => {
   const [loadingState, setLoadingState] = useState();
