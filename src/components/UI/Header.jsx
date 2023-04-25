@@ -35,21 +35,21 @@ const Header = () => {
         </Navbar.Toggle>
         <Navbar.Collapse className='justify-content-center' id='navbarScroll'>
           <Nav className='align-items-center me-auto mb-2 mb-lg-0' navbarScroll>
-            <NavLink className={classes.customLink} to='/dashboard#home'>
-              Home
+            <NavLink className={classes.customLink} to='/dashboard#my-list'>
+              My List
             </NavLink>
-            <Nav.Link className={classes.customLink} href='#footer'>
-              Link
-            </Nav.Link>
             <NavLink className={classes.customLink} to='/tv-shows'>
               Tv Shows
             </NavLink>
             <NavLink className={classes.customLink} to='/dashboard#movies'>
               Movies
             </NavLink>
-            <NavLink className={classes.customLink} to='/dashboard#my-list'>
-              My List
-            </NavLink>
+            <Nav.Link className={classes.customLink} href='#environment'>
+              Environment
+            </Nav.Link>
+            {/* <NavLink className={classes.customLink} to='/dashboard#home'>
+              Home
+            </NavLink> */}
           </Nav>
 
           <Form className='d-flex' role='search' style={{ fontFamily: 'Roboto', color: '#fff' }}>
