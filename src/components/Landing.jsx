@@ -1,3 +1,4 @@
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useContext, useEffect, useState } from 'react';
 import { Accordion, Button, Col, Container, Image, Nav, Navbar, Row } from 'react-bootstrap';
 import { FaChevronRight } from 'react-icons/fa';
@@ -15,19 +16,24 @@ import Register from './auth/Register';
 const Landing = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [show, setShow] = useState(false);
-  const { authStep, setAuthStep, isAuthenticated } = useContext(AuthProvider);
+  const { authStep, setAuthStep } = useContext(AuthProvider);
   const navigate = useNavigate();
 
   const handleShow = () => setShow(true);
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/dashboard');
-      return;
-    }
+  const auth = getAuth();
 
-    setTimeout(() => setIsLoading(false), 1500);
-  }, [isAuthenticated]);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate('/dashboard');
+        return;
+      }
+      if (!user) {
+        setIsLoading(false);
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -253,9 +259,9 @@ const Landing = () => {
 
           {/* footer-start */}
           <Footer />
+          {/* footer-end */}
         </>
       )}
-      {/* footer-end */}
     </>
   );
 };

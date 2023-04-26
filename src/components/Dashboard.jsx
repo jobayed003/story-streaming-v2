@@ -212,6 +212,8 @@ const ListCard = ({ imgSrc, videoDetails }) => {
       ? 'translateX(3rem)'
       : coordinates.right > bodyRect.width - coordinates.right && 'translateX(-3rem)';
 
+  console.log(videoDetails.episodes[0].id);
+
   return (
     <div className='position-relative' ref={ref}>
       <motion.div

@@ -46,7 +46,7 @@ const Viewing = () => {
     className: '',
     iframeClassName: '',
     style: {},
-    title: '',
+    title: 'hello WOrld',
     loading: undefined,
     opts: {
       height: getHeight(),
