@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react';
 import { Button, Container, Dropdown, Form, Image, Nav, Navbar } from 'react-bootstrap';
 import { FaBars, FaBell, FaSearch } from 'react-icons/fa';
 import { NavLink, useLocation } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 import logo from '../../assets/Icons/StorySaloon_Logo.svg';
 import AuthProvider from '../../context/AuthContext';
 import { ManageUser } from '../util/ManageUser';
@@ -20,6 +21,13 @@ const Header = () => {
     auth.signOut();
   };
 
+  const navLinks = [
+    { name: 'My List', link: '/dashboard#my-list' },
+    { name: 'Tv Shows', link: '/dashboard#tv-shows' },
+    { name: 'Movies', link: '/dashboard#movies' },
+    { name: 'Environment', link: '/dashboard#environment' },
+  ];
+
   return (
     <Navbar
       expand='lg'
@@ -28,28 +36,24 @@ const Header = () => {
     >
       <Container>
         <Navbar.Brand href='/'>
-          <Image src={logo} alt='' className={classes.logo} />
+          <HashLink to='/dashboard#'>
+            <Image src={logo} alt='' className={classes.logo} />
+          </HashLink>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls='navbarScroll'>
           <FaBars />
         </Navbar.Toggle>
         <Navbar.Collapse className='justify-content-center' id='navbarScroll'>
           <Nav className='align-items-center me-auto mb-2 mb-lg-0' navbarScroll>
-            <NavLink className={classes.customLink} to='/dashboard#my-list'>
-              My List
-            </NavLink>
-            <NavLink className={classes.customLink} to='/dashboard#tv-shows'>
-              Tv Shows
-            </NavLink>
-            <NavLink className={classes.customLink} to='/dashboard#movies'>
-              Movies
-            </NavLink>
-            <NavLink className={classes.customLink} to='/dashboard#environment'>
-              Environment
-            </NavLink>
-            {/* <NavLink className={classes.customLink} to='/dashboard#home'>
-              Home
-            </NavLink> */}
+            {navLinks.map((lnk) => (
+              <HashLink
+                className={classes.customLink}
+                to={lnk.link}
+                scroll={(el) => el.scrollIntoView({ behavior: 'auto', block: 'center' })}
+              >
+                {lnk.name}
+              </HashLink>
+            ))}
           </Nav>
 
           <Form className='d-flex' role='search' style={{ fontFamily: 'Roboto', color: '#fff' }}>

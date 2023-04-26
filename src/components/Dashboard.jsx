@@ -45,7 +45,6 @@ const Dashboard = () => {
           <Header />
           <Container
             as='section'
-            id='movies'
             className='fontFamily hide-scroll'
             style={{ overflow: 'hidden visible', paddingBottom: '8rem' }}
           >
@@ -87,8 +86,8 @@ const Dashboard = () => {
             )}
 
             {/* Favourite Videos List */}
-            <Row style={{ marginTop: '8rem' }}>
-              <Col className='text-light' id={'my-list'}>
+            <Row style={{ marginTop: '8rem' }} id={'my-list'}>
+              <Col className='text-light'>
                 <h1>My List</h1>
               </Col>
             </Row>
@@ -123,6 +122,23 @@ const Dashboard = () => {
                 ))}
               </Slide>
             )}
+
+            <Row className='mt-5' id='tv-shows'>
+              <Col className='mt-5 text-light'>
+                <h1>TV Shows</h1>
+              </Col>
+            </Row>
+            <Row className='mt-5' id='movies'>
+              <Col className='mt-5 text-light'>
+                <h1>Top Movies</h1>
+              </Col>
+            </Row>
+
+            <Row className='mt-5' id='environment'>
+              <Col className='mt-5 text-light'>
+                <h1>Environment</h1>
+              </Col>
+            </Row>
           </Container>
           <Footer />
         </>
