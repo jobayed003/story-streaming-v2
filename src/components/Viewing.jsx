@@ -1,6 +1,8 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import YouTube from 'react-youtube';
 import VideoContextProvider from '../context/VideoContext';
+import Header from './UI/Header';
+import useDimension from './hooks/useDimension';
 
 function getWidth() {
   return Math.max(
@@ -26,7 +28,7 @@ function getHeight() {
 
 const Viewing = () => {
   const { clickedVideo } = useContext(VideoContextProvider);
-
+  const { height, width } = useDimension();
   let videoId = '';
   let title = '';
 
@@ -40,17 +42,19 @@ const Viewing = () => {
     title = videofromStorage.episodes[0].title;
   }
 
+  const headerRef = useRef();
+
   const [details, setDetails] = useState({
     videoId,
     id: '',
     className: '',
     iframeClassName: '',
     style: {},
-    title: 'hello WOrld',
+    title: '',
     loading: undefined,
     opts: {
-      height: getHeight(),
-      width: getWidth(),
+      width,
+      height,
       fullscreen: true,
       playerVars: {
         // https://developers.google.com/youtube/player_parameters
@@ -60,8 +64,8 @@ const Viewing = () => {
         loop: 1,
         modestbranding: 1,
         mute: 0,
-        playlistType: 'playlist',
-        playlist: videoId,
+        // playlistType: 'playlist',
+        // playlist: videoId,
         rel: 0,
       },
     },
@@ -74,11 +78,19 @@ const Viewing = () => {
     onPlaybackRateChange: () => {},
     onPlaybackQualityChange: () => {},
   });
+
+  useEffect(() => {
+    setDetails((prev) => ({ ...prev, opts: { ...prev.opts, width: width, height: height } }));
+  }, [width, height]);
+
   return (
-    <div style={{ height: getHeight() }} className='text-light'>
-      <h1>{title}</h1>
-      <YouTube {...details} />
-    </div>
+    <>
+      <Header headerRef={headerRef} />
+      <div className='text-light'>
+        {/* <h1>{title}</h1> */}
+        <YouTube {...details} />
+      </div>
+    </>
   );
 };
 

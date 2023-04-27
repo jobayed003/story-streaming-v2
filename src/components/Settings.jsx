@@ -24,28 +24,13 @@ import { updateUserDoc } from './util/updateUserDoc';
 
 const Settings = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   // Context Management
-  const { isUpdated, setIsUpdated, userCredentials } = useContext(AuthProvider);
-  const { selectedAvatar } = useContext(StateContextProvider);
+  const { userCredentials } = useContext(AuthProvider);
 
   // Custom Hooks
   const [user] = useAuthState(getAuth());
   const loadingState = useLoadingState();
-
-  const changeAvatar = async () => {
-    setIsLoading(true);
-
-    try {
-      await updateUserDoc(userCredentials.uid, { avatarDetails: { ...selectedAvatar } });
-      setIsUpdated(!isUpdated);
-      setIsLoading(false);
-      toast.dark('Avatar updated successfully!');
-    } catch (err) {
-      toast.error('Something went wrong! Try again');
-    }
-  };
 
   return (
     <>
@@ -69,11 +54,26 @@ const Settings = () => {
             className='mainsection'
             style={{ marginBlock: '5rem', marginTop: '8rem' }}
           >
-            <Row className='brdr py-3'>
-              <Col xs='4' className='d-flex align-items-center py-2'>
-                <h2>ACCOUNT</h2>
+            <Row className='brdr py-3 flex-nowrap align-items-center settings-container'>
+              <Col
+                xs={8}
+                md={8}
+                sm={8}
+                className='py-2 d-flex justify-content-between align-items-center flex-wrap'
+              >
+                <h2>ACCOUNT SETTINGS</h2>
+                <div>
+                  <p className='text-content'>Email: {userCredentials.email}</p>
+                  <p className='text-content'>Password: ********</p>
+                  <p className='text-content m-0'>Avatar: {userCredentials.avatarDetails.avatar}</p>
+                  <div className='avatar-container hide-scroll'>
+                    <ChangeAvatar />
+                  </div>
+                </div>
               </Col>
-              <Col className='py-2 d-flex justify-content-between align-items-center'>
+
+              {/* <div className='d-flex flex-column'>
+
                 <div>
                   <p className='text-content'>Email: {userCredentials.email}</p>
                   <p className='text-content'>Password: ********</p>
@@ -89,24 +89,29 @@ const Settings = () => {
                   </Button>
                 </div>
               </Col>
-            </Row>
-
-            <Row>
-              <Col
-                className='d-flex align-items-center justify-content-between flex-wrap  py-4'
-                xs
-                lg='4'
-              >
-                <h2>SETTINGS</h2>
-
+              <div className='d-flex align-items-center justify-content-between flex-wrap py-4'>
                 <div>
                   <p className='text-content m-0'>Avatar: {userCredentials.avatarDetails.avatar}</p>
                 </div>
-              </Col>
-              <Col className='avatar-container hide-scroll'>
+              </div>
+              <div className='avatar-container hide-scroll'>
                 <ChangeAvatar />
+              </div> */}
+
+              <Col xs={4}>
+                <div className='d-flex justify-content-end'>
+                  <Button
+                    variant='link'
+                    className='link-item mb-2'
+                    onClick={() => setShowPasswordModal(true)}
+                  >
+                    Change password
+                  </Button>
+                </div>
               </Col>
-              <Col xs={1} className='d-flex align-items-center p-0'>
+            </Row>
+
+            {/* <Col xs={1} className='d-flex align-items-center p-0'>
                 <div className='d-flex flex-column justify-content-between align-items-center me-5'>
                   <Button
                     style={{
@@ -129,8 +134,7 @@ const Settings = () => {
                     )}
                   </Button>
                 </div>
-              </Col>
-            </Row>
+              </Col> */}
           </Container>
           {/* main-secction-end */}
 
@@ -368,6 +372,19 @@ const ChangeAvatar = () => {
 
 const Avatar = ({ avatarDetails }) => {
   const { selectedAvatar, setSelectedAvatar } = useContext(StateContextProvider);
+  const { isUpdated, setIsUpdated, userCredentials } = useContext(AuthProvider);
+
+  const changeAvatar = async () => {
+    setSelectedAvatar(avatarDetails);
+    try {
+      await updateUserDoc(userCredentials.uid, { avatarDetails });
+      setIsUpdated(!isUpdated);
+      toast.dark('Avatar updated successfully!');
+    } catch (err) {
+      toast.error('Something went wrong! Try again');
+    }
+  };
+
   return (
     <div
       style={{
@@ -378,9 +395,7 @@ const Avatar = ({ avatarDetails }) => {
         // selectedAvatar.id === avatarDetails.id && 'rgba(255, 255, 255, 0.2) 0px 7px 29px 0px',
       }}
       className='cursor-pointer p-2'
-      onClick={() => {
-        setSelectedAvatar(avatarDetails);
-      }}
+      onClick={changeAvatar}
     >
       {avatarDetails.avatar}
     </div>

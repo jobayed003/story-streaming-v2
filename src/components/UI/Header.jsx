@@ -1,17 +1,17 @@
 import { getAuth } from 'firebase/auth';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Button, Container, Dropdown, Form, Image, Nav, Navbar } from 'react-bootstrap';
 import { FaBars, FaBell, FaSearch } from 'react-icons/fa';
 import { NavLink, useLocation } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
+import { Link, animateScroll } from 'react-scroll';
 import logo from '../../assets/Icons/StorySaloon_Logo.svg';
 import AuthProvider from '../../context/AuthContext';
 import { ManageUser } from '../util/ManageUser';
 import classes from './Header.module.css';
 
-const Header = () => {
+const Header = ({ headerRef }) => {
   const [show, setShow] = useState(false);
-
   const { isAdmin, users, userCredentials } = useContext(AuthProvider);
   const pathName = useLocation().pathname.replace('/', '');
 
@@ -22,17 +22,25 @@ const Header = () => {
   };
 
   const navLinks = [
-    { name: 'My List', link: '/dashboard#my-list' },
-    { name: 'Tv Shows', link: '/dashboard#tv-shows' },
-    { name: 'Movies', link: '/dashboard#movies' },
-    { name: 'Environment', link: '/dashboard#environment' },
+    { name: 'My List', link: 'my-list' },
+    { name: 'Tv Shows', link: 'tv-shows' },
+    { name: 'Movies', link: 'movies' },
+    { name: 'Environment', link: 'environment' },
   ];
+
+  const scrollToElement = (id) => {
+    animateScroll.scrollTo(id, {
+      containerId: 'videos-container',
+      duration: 1000,
+    });
+  };
 
   return (
     <Navbar
       expand='lg'
       className='fontFamily'
       style={{ width: '100%', position: 'fixed', zIndex: '1000', background: '#303030' }}
+      ref={headerRef}
     >
       <Container>
         <Navbar.Brand href='/'>
@@ -46,13 +54,19 @@ const Header = () => {
         <Navbar.Collapse className='justify-content-center' id='navbarScroll'>
           <Nav className='align-items-center me-auto mb-2 mb-lg-0' navbarScroll>
             {navLinks.map((lnk) => (
-              <HashLink
-                className={classes.customLink}
+              <Link
                 to={lnk.link}
-                scroll={(el) => el.scrollIntoView({ behavior: 'auto', block: 'center' })}
+                activeClass={classes.customLink}
+                spy={false}
+                smooth={true}
+                offset={-80}
+                duration={0}
+                onClick={() => scrollToElement(`#${lnk.link}`)}
               >
-                {lnk.name}
-              </HashLink>
+                <NavLink to={'/dashboard'} className={classes.customLink}>
+                  {lnk.name}
+                </NavLink>
+              </Link>
             ))}
           </Nav>
 

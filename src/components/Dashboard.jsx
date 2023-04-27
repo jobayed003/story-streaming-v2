@@ -45,6 +45,7 @@ const Dashboard = () => {
           <Header />
           <Container
             as='section'
+            id={'videos-container'}
             className='fontFamily hide-scroll'
             style={{ overflow: 'hidden visible', paddingBottom: '8rem' }}
           >
@@ -211,8 +212,6 @@ const ListCard = ({ imgSrc, videoDetails }) => {
     coordinates.left < bodyRect.width - coordinates.left
       ? 'translateX(3rem)'
       : coordinates.right > bodyRect.width - coordinates.right && 'translateX(-3rem)';
-
-  console.log(videoDetails.episodes[0].id);
 
   return (
     <div className='position-relative' ref={ref}>

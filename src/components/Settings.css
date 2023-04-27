@@ -78,8 +78,10 @@ nav {
 
 .avatar-container {
   font-size: 2rem;
-  padding-inline: 3.5rem;
+  margin-top: 1rem;
+  margin-left: -16px;
   overflow-y: scroll;
+  width: 450px;
   max-height: 200px;
 }
 
@@ -87,6 +89,8 @@ nav {
 @media only screen and (max-width: 1400px) {
   .avatar-container {
     /* max-width: 150px; */
+    width: 300px;
+
     font-size: 1.5rem;
   }
 }
@@ -114,14 +118,16 @@ nav {
     align-items: center;
   }
   .avatar-container {
-    padding-inline: 1rem;
+    width: 250px;
+  }
+}
+@media only screen and (max-width: 575px) {
+  .avatar-container {
+    margin-left: -10px;
   }
 }
 @media only screen and (max-width: 400px) {
   .link-item {
     font-size: 0.8rem;
-  }
-  .avatar-container {
-    padding-inline: 0rem;
   }
 }
