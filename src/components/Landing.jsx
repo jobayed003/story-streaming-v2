@@ -9,6 +9,7 @@ import placeholder from '../assets/images/placeholder.jpg';
 import tv from '../assets/images/tv.png';
 import AuthProvider from '../context/AuthContext';
 import '../index.css';
+import classes from './Landing.module.css';
 import Footer from './UI/Footer';
 import Login from './auth/Login';
 import Register from './auth/Register';
@@ -60,7 +61,7 @@ const Landing = () => {
             <Navbar>
               <Container>
                 <Navbar.Brand href='/'>
-                  <Image src={logo} alt='' style={{ width: '350px', height: '50px' }} />
+                  <Image src={logo} alt='' className={classes.logo} />
                 </Navbar.Brand>
                 <Nav className=''>
                   <Nav.Link href='#'>

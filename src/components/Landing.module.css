@@ -1,0 +1,27 @@
+/* navbar */
+.navbar-brand img {
+  max-width: 150px;
+}
+
+/* .navbar-nav .nav-link.active,
+  .navbar-nav .show > .nav-link {
+      color: var(--white);
+  } */
+
+.navbar-toggler {
+  color: var(--white);
+}
+
+.logo {
+  width: 200px;
+  height: 50px;
+}
+
+@media (max-width: 1200px) {
+  .customLink {
+    font-size: 1.5rem;
+  }
+  .logo {
+    max-width: 150px;
+  }
+}

@@ -72,32 +72,6 @@ const Settings = () => {
                 </div>
               </Col>
 
-              {/* <div className='d-flex flex-column'>
-
-                <div>
-                  <p className='text-content'>Email: {userCredentials.email}</p>
-                  <p className='text-content'>Password: ********</p>
-                </div>
-
-                <div className='d-flex flex-column align-items-start'>
-                  <Button
-                    variant='link'
-                    className='link-item mb-2'
-                    onClick={() => setShowPasswordModal(true)}
-                  >
-                    Change password
-                  </Button>
-                </div>
-              </Col>
-              <div className='d-flex align-items-center justify-content-between flex-wrap py-4'>
-                <div>
-                  <p className='text-content m-0'>Avatar: {userCredentials.avatarDetails.avatar}</p>
-                </div>
-              </div>
-              <div className='avatar-container hide-scroll'>
-                <ChangeAvatar />
-              </div> */}
-
               <Col xs={4}>
                 <div className='d-flex justify-content-end'>
                   <Button
@@ -110,31 +84,6 @@ const Settings = () => {
                 </div>
               </Col>
             </Row>
-
-            {/* <Col xs={1} className='d-flex align-items-center p-0'>
-                <div className='d-flex flex-column justify-content-between align-items-center me-5'>
-                  <Button
-                    style={{
-                      border: 'none',
-                      height: '2.5rem',
-                    }}
-                    variant='success'
-                    onClick={changeAvatar}
-                    disabled={
-                      selectedAvatar.id === userCredentials.avatarDetails.id ? true : isLoading
-                    }
-                  >
-                    {isLoading ? (
-                      <div className='d-flex align-items-center'>
-                        <div>Saving...</div>
-                        <Spinner animation='border' style={{ width: '1.3rem', height: '1.3rem' }} />
-                      </div>
-                    ) : (
-                      'Save'
-                    )}
-                  </Button>
-                </div>
-              </Col> */}
           </Container>
           {/* main-secction-end */}
 
