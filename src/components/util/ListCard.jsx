@@ -13,9 +13,9 @@ import StateContextProvider from '../../context/StateContext';
 import VideoContextProvider from '../../context/VideoContext';
 
 import { db } from '../../firebase.config';
-import { getThumbnails } from '../../youtubeUtils';
+
 import useDimension from '../hooks/useDimension';
-import { VideoDetailsModal } from './VideoDetailsModal';
+import { EpisodeDetailsModal } from './EpisodeDetailsModal';
 
 export const ListCard = ({ imgSrc, videoDetails }) => {
   const [hovered, setHovered] = useState(false);
@@ -102,10 +102,10 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
       >
         <img src={imgSrc} alt='thumbnail' width={'250px'} className='cursor-pointer' />
       </motion.div>
-      <VideoDetailsModal
+      <EpisodeDetailsModal
         show={show}
         setShow={setShow}
-        episodes={videoDetails.episodes}
+        details={videoDetails}
         handleClick={handleClick}
       />
 
@@ -193,7 +193,10 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
                       fontSize: '1rem',
                       color: '#fff',
                     }}
-                    onClick={() => setShow(true)}
+                    onClick={() => {
+                      setHovered(false);
+                      setShow(true);
+                    }}
                   >
                     Episodes
                   </Button>

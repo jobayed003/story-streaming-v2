@@ -16,12 +16,13 @@ const ListHoverContent = ({ videos, thumbnail }) => {
         <Row>{status}</Row>
       ) : videos.length <= 4 ? (
         <div
-          className='d-flex justify-content-start ms-3'
+          className='d-flex ms-3'
           style={{
             gap: '4rem',
             marginLeft: '2.5rem',
             marginBottom: '4rem',
             flexWrap: 'wrap',
+            justifyContent: size.width > 400 ? 'start' : 'center',
           }}
         >
           {videos.map((el, idx) => (

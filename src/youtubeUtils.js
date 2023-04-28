@@ -19,17 +19,6 @@ function ytDurationToSeconds(duration) {
 
 export { parseVideoIDFromYoutubeURL, ytDurationToSeconds };
 
-// const getVideoUrls = (videos) => {
-//   let videoUrl = [];
-
-//   videos.forEach((el) => {
-//     videoUrl.push(el.episodes[0].url);
-//     // el.episodes.forEach((item) => videoUrl.push(item.url));
-//   });
-
-//   return videoUrl;
-// };
-
 export const getThumbnails = (urls, size) => {
   let video, results;
   let img = [];
