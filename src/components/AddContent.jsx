@@ -28,16 +28,16 @@ const AddContent = () => {
   const formRef = useRef();
 
   // Context Management
-  const { videos, series, updated, setSeries, setUpdated } = useContext(VideoContextProvider);
+  const { seriesVideos, seriesDetails, setSeriesDetails } = useContext(VideoContextProvider);
   const { isAdmin } = useContext(AuthProvider);
 
   // Custom Hooks
-  const status = useStatus(videos);
+  const status = useStatus(seriesVideos);
   const loadingState = useLoadingState();
   const [user] = useAuthState(getAuth());
 
   // Getting thumbnail from video Urls
-  const thumbnail = getThumbnails(videos);
+  const thumbnail = getThumbnails(seriesVideos);
 
   const getVideoDetails = async (url) => {
     const videoID = parseVideoIDFromYoutubeURL(url);
@@ -51,7 +51,7 @@ const AddContent = () => {
   };
 
   const updatedEpisodeDetails = (field, value, currentIndex) => {
-    const updatedEpisodes = series.episodes.map((episode, index) => {
+    const updatedEpisodes = seriesDetails.episodes.map((episode, index) => {
       if (index === currentIndex) {
         return {
           ...episode,
@@ -60,8 +60,8 @@ const AddContent = () => {
       }
       return episode;
     });
-    setSeries({
-      ...series,
+    setSeriesDetails({
+      ...seriesDetails,
       episodes: updatedEpisodes,
     });
     // console.log(updatedEpisodes);
@@ -70,8 +70,8 @@ const AddContent = () => {
   const AddVideo = async () => {
     const uniqueId = Math.random().toString(16).slice(2);
     const episodes = [];
-    for (var x = 0; x < series.episodes.length; x++) {
-      const episode = series.episodes[x];
+    for (var x = 0; x < seriesDetails.episodes.length; x++) {
+      const episode = seriesDetails.episodes[x];
       console.log(episode);
       const videoDetails = await getVideoDetails(episode.url);
       console.log(videoDetails);
@@ -80,44 +80,44 @@ const AddContent = () => {
         ...videoDetails,
       });
     }
+
+    if (seriesDetails.type === 'series') {
+      delete seriesDetails.season;
+    }
     const finalSeries = {
-      ...series,
+      ...seriesDetails,
       episodes: episodes.sort((a, b) => a.episode - b.episode),
-      id: series.title.toLowerCase().replace(/ /g, '-'),
+      id: seriesDetails.title.toLowerCase().replace(/ /g, '-'),
     };
     // console.log(finalSeries);
 
-    const videoRef = doc(db, 'series', series.uniqueId ? series.uniqueId : uniqueId);
+    const seriesVideoRef = doc(
+      db,
+      'series',
+      seriesDetails.uniqueId ? seriesDetails.uniqueId : uniqueId
+    );
 
-    setDoc(videoRef, finalSeries)
-      .then(() => {
-        toast.dark('Video added successfully', {
-          theme: 'dark',
-        });
-      })
-      .catch((err) => {
-        toast.error(err);
-        console.log(err);
+    try {
+      await setDoc(seriesVideoRef, finalSeries);
+      toast.dark('Video added successfully', {
+        theme: 'dark',
       });
+      setSeriesDetails({ description: '', episodes: [initialEpisode], genre: '', title: '' });
+    } catch (error) {
+      toast.dark('Something Went Wrong', {
+        theme: 'dark',
+      });
+      // toast.error(err);
+      console.log(error);
+    }
 
     // setting uniquesID
-    await updateDoc(videoRef, {
-      uniqueId: series.uniqueId ? series.uniqueId : uniqueId,
+    await updateDoc(seriesVideoRef, {
+      uniqueId: seriesDetails.uniqueId ? seriesDetails.uniqueId : uniqueId,
     });
 
     // console.log(updateTimestamp);
-    setUpdated(!updated);
-    setSeries({ description: '', episodes: [initialEpisode], genre: '', title: '' });
   };
-
-  // !isAdmin && loadingState;
-  // useEffect(() => {
-  //   ;
-  // }, []);
-
-  // if (!isAdmin) {
-  //   setTimeout(() => navigate('/dashboard'), 1000);
-  // }
 
   return (
     <>
@@ -134,46 +134,34 @@ const AddContent = () => {
             </Row>
             <Row className='justify-content-center'>
               <Col xs={9}>
-                <Form className=''>
-                  <h2 className='mb-0'>Series Details</h2>
-                  <Form.Group className='mb-3'>
-                    <Form.Label className='custom-label'>Video Title</Form.Label>
-                    <Form.Control
-                      type='text'
-                      value={series.title}
-                      placeholder='Enter Title'
-                      onChange={(e) => {
-                        setSeries({ ...series, title: e.target.value });
-                      }}
-                    />
-                  </Form.Group>
-                  <Form.Group className='mb-3'>
-                    <Form.Label className='custom-label'>Video Description</Form.Label>
-                    <Form.Control
-                      type='text'
-                      value={series.description}
-                      placeholder='Enter Description'
-                      onChange={(e) => {
-                        setSeries({ ...series, description: e.target.value });
-                      }}
-                    />
-                  </Form.Group>
-                  <Form.Group className='mb-3'>
-                    <Form.Label className='custom-label'>Video Genre</Form.Label>
-                    <Form.Control
-                      type='text'
-                      value={series.genre}
-                      placeholder='Enter Genre'
-                      onChange={(e) => {
-                        setSeries({ ...series, genre: e.target.value });
-                      }}
-                    />
-                  </Form.Group>
+                <Form>
+                  <div className='d-flex justify-content-between align-items-center'>
+                    <h2 className='mb-0'>
+                      {seriesDetails.type === 'series' ? 'Series Details' : 'Show Details'}
+                    </h2>
+                    <Form.Group>
+                      <Form.Label className='custom-label'>Choose Video Type</Form.Label>
+                      <Form.Select
+                        aria-label='Video Type Select'
+                        onChange={(e) => {
+                          setSeriesDetails({ ...seriesDetails, type: e.target.value });
+                        }}
+                        value={seriesDetails.type}
+                      >
+                        <option defaultValue={'series'} value='series'>
+                          Series
+                        </option>
+                        <option value='tv-shows'>TV Shows</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </div>
+                  {seriesDetails.type === 'series' && <VideoDetailsForm type='series' />}
 
-                  {series.episodes.map((el, index) => (
+                  {seriesDetails.type === 'tv-shows' && <VideoDetailsForm type='tv-shows' />}
+                  {seriesDetails.episodes.map((el, index) => (
                     <span key={'episode-' + index}>
                       <h3 className='mt-5'>Episode {index + 1}</h3>
-                      {index > 0 && index === series.episodes.length - 1 && (
+                      {index > 0 && index === seriesDetails.episodes.length - 1 && (
                         <Button
                           style={{
                             background: 'none',
@@ -181,7 +169,10 @@ const AddContent = () => {
                             paddingLeft: 0,
                           }}
                           onClick={() =>
-                            setSeries({ ...series, episodes: series.episodes.splice(index, 1) })
+                            setSeriesDetails({
+                              ...seriesDetails,
+                              episodes: seriesDetails.episodes.splice(index, 1),
+                            })
                           }
                         >
                           Remove
@@ -229,11 +220,11 @@ const AddContent = () => {
                       style={{ paddingLeft: 0, textDecoration: 'none' }}
                       type='button'
                       onClick={() => {
-                        setSeries({
-                          ...series,
+                        setSeriesDetails({
+                          ...seriesDetails,
                           episodes: [
-                            ...series.episodes,
-                            { ...initialEpisode, episode: series.episodes.length + 1 },
+                            ...seriesDetails.episodes,
+                            { ...initialEpisode, episode: seriesDetails.episodes.length + 1 },
                           ],
                         });
                       }}
@@ -255,20 +246,20 @@ const AddContent = () => {
             </Row>
 
             <Container as='section' className='listsection py-2 overflow-hidden'>
-              {videos.length <= 0 ? (
+              {seriesVideos.length <= 0 ? (
                 status
-              ) : videos.length <= 4 ? (
+              ) : seriesVideos.length <= 4 ? (
                 <div
                   className='d-flex justify-content-center'
                   style={{ gap: '1rem', flexWrap: 'wrap', marginBottom: '4rem' }}
                 >
-                  {videos.map((video, idx) => (
+                  {seriesVideos.map((video, idx) => (
                     <VideoCard video={video} imgSrc={thumbnail[idx]} scrollTo={formRef} />
                   ))}
                 </div>
               ) : (
-                <Slide videosCount={videos.length}>
-                  {videos.map((video, idx) => (
+                <Slide videosCount={seriesVideos.length}>
+                  {seriesVideos.map((video, idx) => (
                     <div className='slide' key={Math.random()} style={{ width: '400px' }}>
                       <VideoCard video={video} imgSrc={thumbnail[idx]} scrollTo={formRef} />
                     </div>
@@ -279,9 +270,68 @@ const AddContent = () => {
             <Footer />
           </Container>
         </div>
-      )}{' '}
+      )}
     </>
   );
 };
 
 export default AddContent;
+
+const VideoDetailsForm = ({ type }) => {
+  // Context Management
+  const { seriesDetails, setSeriesDetails } = useContext(VideoContextProvider);
+
+  return (
+    <>
+      <Form.Group className='mb-3'>
+        <Form.Label className='custom-label'>Video Title</Form.Label>
+        <Form.Control
+          type='text'
+          value={seriesDetails.title}
+          placeholder='Enter Title'
+          onChange={(e) => {
+            setSeriesDetails({ ...seriesDetails, title: e.target.value });
+          }}
+        />
+      </Form.Group>
+      <Form.Group className='mb-3'>
+        <Form.Label className='custom-label'>Video Description</Form.Label>
+        <Form.Control
+          type='text'
+          value={seriesDetails.description}
+          placeholder='Enter Description'
+          onChange={(e) => {
+            setSeriesDetails({ ...seriesDetails, description: e.target.value });
+          }}
+        />
+      </Form.Group>
+      <Form.Group className='mb-3'>
+        <Form.Label className='custom-label'>Video Genre</Form.Label>
+        <Form.Control
+          type='text'
+          value={seriesDetails.genre}
+          placeholder='Enter Genre'
+          onChange={(e) => {
+            setSeriesDetails({ ...seriesDetails, genre: e.target.value });
+          }}
+        />
+      </Form.Group>
+      {type === 'tv-shows' && (
+        <Form.Group className='mb-3'>
+          <Form.Label className='custom-label'> Season no.</Form.Label>
+
+          <Form.Control
+            min={1}
+            max={40}
+            type='number'
+            value={seriesDetails.season}
+            placeholder='Select Season'
+            onChange={(e) => {
+              setSeriesDetails({ ...seriesDetails, season: e.target.value });
+            }}
+          />
+        </Form.Group>
+      )}
+    </>
+  );
+};

@@ -1,5 +1,5 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { collection, deleteDoc, doc, onSnapshot } from 'firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { db } from '../firebase.config';
 import AuthProvider from './AuthContext';
@@ -11,38 +11,34 @@ const StateContextProvider = createContext({
 });
 
 export const StateContext = ({ children }) => {
-  const [clickedVideo, setClickedVideo] = useState();
+  const [clickedVideo, setClickedVideo] = useState('');
   const [selectedAvatar, setSelectedAvatar] = useState({});
   const [favouriteVideos, setFavouriteVideos] = useState([]);
 
   const { userCredentials } = useContext(AuthProvider);
-  const { videos } = useContext(VideoContextProvider);
+  const { seriesVideos } = useContext(VideoContextProvider);
 
   const auth = getAuth();
 
   // Checking if favourite video is also available in series
-  const videosUniqueId = videos.map((vid) => vid.uniqueId);
+  const videosUniqueId = seriesVideos.map((vid) => vid.uniqueId);
   const favVideosUniqueID = favouriteVideos.map((vid) => vid.uniqueId);
 
   const VideoNotAvailableID = favVideosUniqueID.filter(
     (el) => !videosUniqueId.some((el1) => el === el1)
   );
-
   // const result = favVideosUniqueID.find((elem) => !videosUniqueId.includes(elem));
   // console.log(result);
-
   VideoNotAvailableID.forEach(async (id) => {
     const favouriteVidRef = doc(db, `users/${userCredentials.uid}/favourite_videos/${id}`);
     await deleteDoc(favouriteVidRef);
   });
 
-  // Uploading Favourite Videos
-  const uploadFavouriteVideos = async () => {
-    const userFavouriteVideosRef = collection(
-      db,
-      'users',
-      auth.currentUser.uid,
-      'favourite_videos'
+  // Fetching Favourite Videos
+  const fetchingFavouriteVideos = async () => {
+    const userFavouriteVideosRef = query(
+      collection(db, 'users', auth.currentUser.uid, 'favourite_videos'),
+      orderBy('timestamp', 'asc')
     );
 
     onSnapshot(userFavouriteVideosRef, async (querySnapshot) => {
@@ -58,7 +54,7 @@ export const StateContext = ({ children }) => {
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        uploadFavouriteVideos();
+        fetchingFavouriteVideos();
       }
     });
 

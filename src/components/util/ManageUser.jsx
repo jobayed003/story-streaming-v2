@@ -1,16 +1,14 @@
 import { useContext } from 'react';
 import { Badge, Button, Modal, Spinner } from 'react-bootstrap';
 import AuthProvider from '../../context/AuthContext';
-import { updateUserRole } from '../../youtubeUtils';
 
 export const ManageUser = ({ show, setShow, users }) => {
-  const { isUpdated, setIsUpdated } = useContext(AuthProvider);
+  const { updateUserRole } = useContext(AuthProvider);
 
   const handleClose = () => setShow(false);
 
   const handleClick = async (id, role) => {
     await updateUserRole(id, role);
-    setIsUpdated(!isUpdated);
   };
 
   return (
@@ -42,7 +40,7 @@ export const ManageUser = ({ show, setShow, users }) => {
                 <Button
                   variant='light'
                   className='bg-success'
-                  onClick={() => handleClick(el.id, el.role === 'admin' ? 'user' : 'admin')}
+                  onClick={() => handleClick(el.uid, el.role === 'admin' ? 'user' : 'admin')}
                   style={{
                     color: '#fff',
                     width: '',

@@ -3,18 +3,20 @@ import { useContext } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import StateContextProvider from '../../context/StateContext';
 import VideoContextProvider from '../../context/VideoContext';
 import { db } from '../../firebase.config';
-import { getSeriesData } from '../../youtubeUtils';
+import { getSeriesData } from './videoUtil';
 
 const VideoCard = ({ imgSrc, scrollTo, video }) => {
-  const { updated, setUpdated, setSeries } = useContext(VideoContextProvider);
+  const { setSeriesDetails } = useContext(VideoContextProvider);
+  // const { deleteFavouriteVideo } = useContext(StateContextProvider);
 
   const navigate = useNavigate();
 
   const editVideo = async () => {
-    setSeries({ ...(await getSeriesData(video.id)), id: video.id });
-    scrollTo.current.scrollIntoView();
+    setSeriesDetails(await getSeriesData(video.uniqueId));
+    scrollTo.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
   };
 
   const playVideo = () => {
@@ -25,7 +27,6 @@ const VideoCard = ({ imgSrc, scrollTo, video }) => {
 
   const deleteVideo = async () => {
     await deleteDoc(doc(db, 'series', video.id));
-    setUpdated(!updated);
     toast.success('Video Deleted Successfully');
   };
 
@@ -50,7 +51,9 @@ const VideoCard = ({ imgSrc, scrollTo, video }) => {
         />
         <Card.Body>
           <Card.Title>{video.episodes[0].title}</Card.Title>
-          <Card.Text>{video.episodes[0].description}</Card.Text>
+          <div className='overflow-scroll hide-scroll' style={{ height: '80px' }}>
+            <Card.Text>{video.episodes[0].description}</Card.Text>
+          </div>
 
           <div className='d-flex justify-content-between'>
             <Button className={'bg-primary'} style={{ ...btnStyles }} onClick={editVideo}>

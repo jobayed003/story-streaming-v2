@@ -32,14 +32,14 @@ const Viewing = () => {
   let videoId = '';
   let title = '';
 
-  const videofromStorage = JSON.parse(localStorage.getItem('video'));
+  const videoIDfromStorage = JSON.parse(localStorage.getItem('videoID'));
 
-  if (videofromStorage === undefined) {
-    videoId = clickedVideo.episodes[0].id;
-    title = clickedVideo.episodes[0].title;
+  if (videoIDfromStorage === undefined) {
+    videoId = clickedVideo;
+    // title = clickedVideo.episodes[0].title;
   } else {
-    videoId = videofromStorage.episodes[0].id;
-    title = videofromStorage.episodes[0].title;
+    videoId = videoIDfromStorage;
+    // title = videofromStorage.episodes[0].title;
   }
 
   const headerRef = useRef();

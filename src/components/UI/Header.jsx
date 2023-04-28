@@ -62,6 +62,7 @@ const Header = ({ headerRef }) => {
                 offset={-80}
                 duration={0}
                 onClick={() => scrollToElement(`#${lnk.link}`)}
+                key={Math.random()}
               >
                 <NavLink to={'/dashboard'} className={classes.customLink}>
                   {lnk.name}

@@ -1,16 +1,14 @@
 import { createContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { fetchData } from '../youtubeUtils';
+import { fetchVideos } from '../components/util/videoUtil';
 
 const VideoContextProvider = createContext({
-  videos: [],
+  seriesVideos: [],
   videoUrls: [],
-  seriesDetails: [],
   series: {},
 
-  setVideos: () => {},
-  setUpdated: () => {},
-  setSeries: () => {},
+  setSeriesVideos: () => {},
+  setSeriesDetails: () => {},
 });
 
 const initialEpisode = {
@@ -22,34 +20,43 @@ const initialEpisode = {
 };
 
 export const VideoContext = ({ children }) => {
-  const [videos, setVideos] = useState([]);
-  const [updated, setUpdated] = useState(false);
+  const [seriesVideos, setSeriesVideos] = useState([]);
 
-  const [series, setSeries] = useState({
+  const [seriesDetails, setSeriesDetails] = useState({
     description: '',
     episodes: [initialEpisode],
     genre: '',
     title: '',
+    type: 'series',
   });
+
+  const getVideoUrls = (videos) => {
+    let videoUrl = [];
+
+    videos.forEach((el) => {
+      videoUrl.push(el.episodes[0].url);
+      // el.episodes.forEach((item) => videoUrl.push(item.url));
+    });
+
+    return videoUrl;
+  };
 
   useEffect(() => {
     (async () => {
       try {
-        const data = await fetchData('series');
-        setVideos(data);
+        setSeriesVideos(await fetchVideos());
       } catch {
         toast.error('Something Went Wrong!');
       }
     })();
-  }, [updated, series]);
+  }, []);
 
   const contextValue = {
-    videos,
-    updated,
-    series,
+    seriesDetails,
+    seriesVideos,
+    getVideoUrls,
 
-    setUpdated,
-    setSeries,
+    setSeriesDetails,
   };
 
   return (

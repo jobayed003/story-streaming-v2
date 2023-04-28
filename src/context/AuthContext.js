@@ -1,5 +1,5 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { collection, doc, onSnapshot, orderBy, query, updateDoc } from 'firebase/firestore';
 import { createContext, useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { db } from '../firebase.config';
@@ -10,13 +10,11 @@ const AuthProvider = createContext({
   userCredentials: {},
   isAuthenticated: false,
   isDefaultAdmin: false,
-  isUpdated: false,
 });
 
 export const AuthContext = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [users, setUsers] = useState([]);
-  const [isUpdated, setIsUpdated] = useState(false);
   const [isDefaultAdmin, setIsDefaultAdmin] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authStep, setAuthStep] = useState('login');
@@ -27,53 +25,50 @@ export const AuthContext = ({ children }) => {
     uid: '',
   });
 
+  const updateUserRole = async (id, role) => {
+    const userRef = doc(db, 'users', id);
+
+    await updateDoc(userRef, {
+      role: role,
+    });
+  };
+
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        // <Navigate to='/' />;
-        return;
-      }
-
       setIsAuthenticated(true);
 
       const { displayName, email, uid } = user;
 
       (async () => {
-        const userRef = doc(db, 'users', uid);
-        const userSnap = await getDoc(userRef);
-
-        let avatarDetails = {};
-
-        if (userSnap.data().avatarDetails) {
-          avatarDetails = userSnap.data().avatarDetails;
-        }
-
-        setUserCredentials({
-          name: displayName,
-          email,
-          avatarDetails,
-          uid,
+        // Getting Logged in user
+        onSnapshot(doc(db, 'users', uid), (doc) => {
+          setUserCredentials({
+            name: displayName,
+            email,
+            avatarDetails: doc.data().avatarDetails || {},
+            uid,
+          });
+          if (doc.data().role === 'admin') {
+            setIsAdmin(true);
+          } else {
+            setIsAdmin(false);
+          }
         });
+      })();
 
-        if (userSnap.data().role === 'admin') {
-          setIsAdmin(true);
-        } else {
-          setIsAdmin(false);
-        }
-
+      // Getting all users
+      const usersRef = query(collection(db, 'users'), orderBy('timestamp', 'asc'));
+      onSnapshot(usersRef, (querySnapshot) => {
         let users = [];
-
-        const data = await fetchData('users');
-
-        data.forEach((el) => {
-          users.push({ name: el.name, email: el.email, role: el.role, id: el.id });
-          el.email === 'admin@admin.com' && setIsDefaultAdmin(true);
+        querySnapshot.forEach((doc) => {
+          users.push({ ...doc.data(), uid: doc.id });
+          doc.data().email === 'admin@admin.com' && setIsDefaultAdmin(true);
         });
         setUsers(users);
-      })();
+      });
     });
-  }, [isUpdated]);
+  }, []);
 
   const contextValue = {
     isAuthenticated,
@@ -82,12 +77,11 @@ export const AuthContext = ({ children }) => {
     users,
     userCredentials,
     isDefaultAdmin,
-    isUpdated,
 
     setAuthStep,
     setUserCredentials,
     setIsAdmin,
-    setIsUpdated,
+    updateUserRole,
   };
 
   return <AuthProvider.Provider value={contextValue}>{children}</AuthProvider.Provider>;

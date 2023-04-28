@@ -1,6 +1,3 @@
-import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
-import { db } from './firebase.config';
-
 function parseVideoIDFromYoutubeURL(url) {
   var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
   var match = url.match(regExp);
@@ -22,33 +19,22 @@ function ytDurationToSeconds(duration) {
 
 export { parseVideoIDFromYoutubeURL, ytDurationToSeconds };
 
-export const fetchData = async (collecName) => {
-  let data = [];
-  const dataRef = await getDocs(collection(db, collecName));
-  dataRef.forEach((doc) => {
-    data.push({ ...doc.data(), id: doc.id });
-  });
+// const getVideoUrls = (videos) => {
+//   let videoUrl = [];
 
-  return data;
-};
+//   videos.forEach((el) => {
+//     videoUrl.push(el.episodes[0].url);
+//     // el.episodes.forEach((item) => videoUrl.push(item.url));
+//   });
 
-const getVideoUrls = (videos) => {
-  let videoUrl = [];
+//   return videoUrl;
+// };
 
-  videos.forEach((el) => {
-    el.episodes.forEach((item) => videoUrl.push(item.url));
-  });
-
-  return videoUrl;
-};
-
-export const getThumbnails = (videos, size) => {
+export const getThumbnails = (urls, size) => {
   let video, results;
   let img = [];
 
-  const videoUrls = getVideoUrls(videos);
-
-  videoUrls.forEach((url) => {
+  urls.forEach((url) => {
     const getThumb = () => {
       if (url === null) {
         return '';
@@ -65,29 +51,4 @@ export const getThumbnails = (videos, size) => {
     img.push(getThumb());
   });
   return img;
-};
-
-export const updateUserRole = async (id, role) => {
-  const userRef = doc(db, 'users', id);
-
-  await updateDoc(userRef, {
-    role: role,
-  });
-};
-
-export const getSeriesData = async (id) => {
-  const seriesRef = doc(db, 'series', id);
-  const seriesSnap = await getDoc(seriesRef);
-
-  if (seriesSnap.exists()) {
-    return seriesSnap.data();
-  }
-};
-
-export const updateSeries = async (id, updatedDetails) => {
-  const seriesRef = doc(db, 'series', id);
-
-  await updateDoc(seriesRef, {
-    ...updatedDetails,
-  });
 };

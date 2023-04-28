@@ -321,13 +321,12 @@ const ChangeAvatar = () => {
 
 const Avatar = ({ avatarDetails }) => {
   const { selectedAvatar, setSelectedAvatar } = useContext(StateContextProvider);
-  const { isUpdated, setIsUpdated, userCredentials } = useContext(AuthProvider);
+  const { userCredentials } = useContext(AuthProvider);
 
   const changeAvatar = async () => {
     setSelectedAvatar(avatarDetails);
     try {
       await updateUserDoc(userCredentials.uid, { avatarDetails });
-      setIsUpdated(!isUpdated);
       toast.dark('Avatar updated successfully!');
     } catch (err) {
       toast.error('Something went wrong! Try again');
