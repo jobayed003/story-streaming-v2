@@ -17,6 +17,7 @@ const initialEpisode = {
   episode: 0,
   title: '',
   url: '',
+  season: 0,
 };
 
 export const VideoContext = ({ children }) => {
@@ -27,7 +28,7 @@ export const VideoContext = ({ children }) => {
     episodes: [initialEpisode],
     genre: '',
     title: '',
-    type: 'series',
+    type: 'movies',
   });
 
   const getVideoUrls = (videos) => {

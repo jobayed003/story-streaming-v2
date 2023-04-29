@@ -109,7 +109,7 @@ const Dashboard = () => {
 
             {/* <TvShowCard videos={tvshows} thumbnail={tvshowsThumbnail} /> */}
 
-            <Row className='mt-5' id='movies'>
+            {/* <Row className='mt-5' id='movies'>
               <Col className='mt-5 text-light'>
                 <h1>Top Movies</h1>
               </Col>
@@ -119,7 +119,7 @@ const Dashboard = () => {
               <Col className='mt-5 text-light'>
                 <h1>Environment</h1>
               </Col>
-            </Row>
+            </Row> */}
           </Container>
           <Footer />
         </>

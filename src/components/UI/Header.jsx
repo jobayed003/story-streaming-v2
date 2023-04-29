@@ -2,7 +2,7 @@ import { getAuth } from 'firebase/auth';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Button, Container, Dropdown, Form, Image, Nav, Navbar } from 'react-bootstrap';
 import { FaBars, FaBell, FaSearch } from 'react-icons/fa';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import { Link, animateScroll } from 'react-scroll';
 import logo from '../../assets/Icons/StorySaloon_Logo.svg';
@@ -13,6 +13,8 @@ import classes from './Header.module.css';
 const Header = ({ headerRef }) => {
   const [show, setShow] = useState(false);
   const { isAdmin, users, userCredentials } = useContext(AuthProvider);
+
+  const navigate = useNavigate();
   const pathName = useLocation().pathname.replace('/', '');
 
   const handleLogout = () => {
@@ -27,12 +29,8 @@ const Header = ({ headerRef }) => {
     { name: 'Movies', link: 'movies' },
     { name: 'Environment', link: 'environment' },
   ];
-
-  const scrollToElement = (id) => {
-    animateScroll.scrollTo(id, {
-      containerId: 'videos-container',
-      duration: 1000,
-    });
+  const handleClick = (path) => {
+    navigate(path);
   };
 
   return (
@@ -61,7 +59,7 @@ const Header = ({ headerRef }) => {
                 smooth={true}
                 offset={-80}
                 duration={0}
-                onClick={() => scrollToElement(`#${lnk.link}`)}
+                // onClick={() => scrollToElement(`#${lnk.link}`)}
                 key={Math.random()}
               >
                 <NavLink to={'/dashboard'} className={classes.customLink}>
@@ -84,21 +82,6 @@ const Header = ({ headerRef }) => {
             </Button>
           </Form>
           <Nav className='align-items-center ms-3 mb-2 mb-lg-0'>
-            {/* <Nav.Item>
-              <Button
-                variant='light'
-                className='nav-link'
-                href='#'
-                style={{
-                  fontFamily: 'Roboto',
-                  color: '#fff',
-                  background: 'none',
-                  border: 'none',
-                }}
-              >
-                Kids
-              </Button>
-            </Nav.Item> */}
             <Nav.Item className='px-2'>
               <NavLink className={'nav-link'}>
                 <FaBell fontSize={'1.5rem'} />
@@ -129,11 +112,10 @@ const Header = ({ headerRef }) => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu>
-                {/* <Dropdown.Item className={'dropLinks'} href='/'>
-                Home
-              </Dropdown.Item> */}
-
-                <Dropdown.Item className={'dropLinks'}>
+                <Dropdown.Item
+                  className={'dropLinks'}
+                  onClick={() => handleClick(pathName === 'dashboard' ? '/settings' : '/dashboard')}
+                >
                   <NavLink
                     style={{ color: 'black' }}
                     to={pathName === 'dashboard' ? '/settings' : '/dashboard'}
@@ -142,7 +124,7 @@ const Header = ({ headerRef }) => {
                   </NavLink>
                 </Dropdown.Item>
                 {pathName === 'upload' && (
-                  <Dropdown.Item className={'dropLinks'}>
+                  <Dropdown.Item className={'dropLinks'} onClick={() => handleClick('/settings')}>
                     <NavLink style={{ color: 'black' }} to={'/settings'}>
                       Settings
                     </NavLink>
@@ -151,7 +133,7 @@ const Header = ({ headerRef }) => {
 
                 {isAdmin && (
                   <>
-                    <Dropdown.Item className={'dropLinks'}>
+                    <Dropdown.Item className={'dropLinks'} onClick={() => handleClick('/upload')}>
                       <NavLink style={{ color: 'black' }} to={'/upload'}>
                         Upload Series
                       </NavLink>

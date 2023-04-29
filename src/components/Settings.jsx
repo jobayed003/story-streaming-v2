@@ -55,16 +55,20 @@ const Settings = () => {
             style={{ marginBlock: '5rem', marginTop: '8rem' }}
           >
             <Row className='brdr py-3 flex-nowrap align-items-center settings-container'>
-              <Col
-                xs={8}
-                md={8}
-                sm={8}
-                className='py-2 d-flex justify-content-between align-items-center flex-wrap'
-              >
+              <Col xs={8} md={8} sm={8} className='py-2 d-flex justify-content-between flex-wrap'>
                 <h2>ACCOUNT SETTINGS</h2>
                 <div>
                   <p className='text-content'>Email: {userCredentials.email}</p>
-                  <p className='text-content'>Password: ********</p>
+                  <div className='d-flex align-items-center'>
+                    <p className='text-content'>Password: ********</p>
+                    <Button
+                      variant='link'
+                      className='link-item mb-2'
+                      onClick={() => setShowPasswordModal(true)}
+                    >
+                      Change password
+                    </Button>
+                  </div>
                   <p className='text-content m-0'>Avatar: {userCredentials.avatarDetails.avatar}</p>
                   <div className='avatar-container hide-scroll'>
                     <ChangeAvatar />
@@ -72,7 +76,7 @@ const Settings = () => {
                 </div>
               </Col>
 
-              <Col xs={4}>
+              {/* <Col xs={4}>
                 <div className='d-flex justify-content-end'>
                   <Button
                     variant='link'
@@ -81,8 +85,8 @@ const Settings = () => {
                   >
                     Change password
                   </Button>
-                </div>
-              </Col>
+                </div> 
+              </Col>*/}
             </Row>
           </Container>
           {/* main-secction-end */}

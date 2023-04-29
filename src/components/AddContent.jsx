@@ -16,6 +16,7 @@ import useLoadingState from './hooks/useLoadingState';
 import useStatus from './hooks/useStatus';
 import Slide from './util/Slide';
 import VideoCard from './util/VideoCard';
+import { getVideoUrls } from './util/videoUtil';
 
 const AddContent = () => {
   const initialEpisode = {
@@ -36,16 +37,19 @@ const AddContent = () => {
   const loadingState = useLoadingState();
   const [user] = useAuthState(getAuth());
 
+  // Getting the urls
+  const seriesVideosThumbnail = getVideoUrls(seriesVideos);
+
   // Getting thumbnail from video Urls
-  const thumbnail = getThumbnails(seriesVideos);
+  const thumbnail = getThumbnails(seriesVideosThumbnail);
 
   const getVideoDetails = async (url) => {
     const videoID = parseVideoIDFromYoutubeURL(url);
-    console.log(videoID);
+
     const videoDetails = await fetch(
       `https://www.googleapis.com/youtube/v3/videos?id=${videoID}&part=contentDetails&key=AIzaSyCptCwdOzdgBvgU1O6UIOB_Z1ipsMUKCtg`
     ).then((res) => res.json());
-    console.log(videoDetails);
+
     const { contentDetails } = videoDetails.items[0] || {};
     return { id: videoID, duration: ytDurationToSeconds(contentDetails.duration), contentDetails };
   };
@@ -55,6 +59,7 @@ const AddContent = () => {
       if (index === currentIndex) {
         return {
           ...episode,
+          season: seriesDetails.season,
           [field]: value,
         };
       }
@@ -72,24 +77,23 @@ const AddContent = () => {
     const episodes = [];
     for (var x = 0; x < seriesDetails.episodes.length; x++) {
       const episode = seriesDetails.episodes[x];
-      console.log(episode);
+      // console.log(episode);
       const videoDetails = await getVideoDetails(episode.url);
-      console.log(videoDetails);
+      // console.log(videoDetails);
       episodes.push({
         ...episode,
         ...videoDetails,
       });
     }
 
-    if (seriesDetails.type === 'series') {
-      delete seriesDetails.season;
-    }
+    delete seriesDetails.season;
+
     const finalSeries = {
       ...seriesDetails,
       episodes: episodes.sort((a, b) => a.episode - b.episode),
       id: seriesDetails.title.toLowerCase().replace(/ /g, '-'),
     };
-    // console.log(finalSeries);
+    console.log(finalSeries);
 
     const seriesVideoRef = doc(
       db,
@@ -137,7 +141,7 @@ const AddContent = () => {
                 <Form>
                   <div className='d-flex justify-content-between align-items-center'>
                     <h2 className='mb-0'>
-                      {seriesDetails.type === 'series' ? 'Series Details' : 'Show Details'}
+                      {seriesDetails.type === 'movies' ? 'Series Details' : 'Show Details'}
                     </h2>
                     <Form.Group>
                       <Form.Label className='custom-label'>Choose Video Type</Form.Label>
@@ -148,14 +152,15 @@ const AddContent = () => {
                         }}
                         value={seriesDetails.type}
                       >
-                        <option defaultValue={'series'} value='series'>
-                          Series
+                        <option defaultValue={'movies'} value='movies'>
+                          Movies
                         </option>
                         <option value='tv-shows'>TV Shows</option>
+                        <option value='special'>Special</option>
                       </Form.Select>
                     </Form.Group>
                   </div>
-                  {seriesDetails.type === 'series' && <VideoDetailsForm type='series' />}
+                  {seriesDetails.type === 'movies' && <VideoDetailsForm type='movies' />}
 
                   {seriesDetails.type === 'tv-shows' && <VideoDetailsForm type='tv-shows' />}
                   {seriesDetails.episodes.map((el, index) => (
@@ -327,7 +332,7 @@ const VideoDetailsForm = ({ type }) => {
             value={seriesDetails.season}
             placeholder='Select Season'
             onChange={(e) => {
-              setSeriesDetails({ ...seriesDetails, season: e.target.value });
+              setSeriesDetails({ ...seriesDetails, season: +e.target.value });
             }}
           />
         </Form.Group>
