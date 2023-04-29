@@ -72,7 +72,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
   };
 
   const opts = {
-    height: '250',
+    height: size.width > 1000 ? '250' : '200',
     width: '100%',
     playerVars: {
       autoplay: 1,
@@ -100,7 +100,12 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
         }}
         onMouseLeave={() => setHovered(false)}
       >
-        <img src={imgSrc} alt='thumbnail' width={'250px'} className='cursor-pointer' />
+        <img
+          src={imgSrc}
+          alt='thumbnail'
+          width={size.width > 1000 ? '250px' : '200px'}
+          className='cursor-pointer'
+        />
       </motion.div>
       <EpisodeDetailsModal
         show={show}
@@ -124,7 +129,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
           }}
           onMouseLeave={() => setHovered(false)}
           style={{
-            width: '350px',
+            width: size.width > 1000 ? '350px' : '300px',
             position: 'absolute',
             top: '-25%',
             left: '-20%',
@@ -143,7 +148,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
               zIndex: '100000',
             }}
           >
-            <div style={{ borderRadius: '50px' }}>
+            <div className='rounded p-0 overflow-hidden' style={{ borderRadius: '5px' }}>
               <YouTube videoId={videoDetails.episodes[0].id} opts={opts} />
             </div>
             <div
@@ -151,7 +156,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
                 position: 'absolute',
                 background: 'rgba(0,0,0,0.2)',
                 width: '100%',
-                height: '250px',
+                height: size.width > 1000 ? '250' : '200',
               }}
               className='cursor-pointer'
               onClick={() => handleClick(videoDetails.episodes[0].id)}
@@ -166,16 +171,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
                     {videoDetails.description}
                   </Card.Text>
                 </div>
-                {/* <Button
-                  variant='success'
-                  style={{
-                    color: '#fff',
-                    fontSize: '1rem',
-                  }}
-                  onClick={() => handleClick(videoDetails.episodes[0].id)}
-                >
-                  Fullscreen
-                </Button> */}
+
                 <Button
                   variant='dark'
                   style={{

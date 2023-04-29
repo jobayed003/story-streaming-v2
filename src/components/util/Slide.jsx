@@ -40,6 +40,15 @@ const Slide = ({ children }) => {
           centerMode: false,
         },
       },
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 2,
+          infinite: true,
+          centerMode: false,
+        },
+      },
 
       {
         breakpoint: 768,
@@ -47,14 +56,15 @@ const Slide = ({ children }) => {
           slidesToShow: 2,
           slidesToScroll: 1,
           infinite: true,
-          centerMode: true,
+
+          // centerMode: true,
         },
       },
 
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 2,
           slidesToScroll: 1,
         },
       },

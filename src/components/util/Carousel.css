@@ -10,3 +10,8 @@
 .slider-wrapper {
   overflow: visible;
 }
+
+.swiper-backface-hidden .swiper-slide {
+  /* transform: translateZ(1px); */
+  backface-visibility: visible;
+}
