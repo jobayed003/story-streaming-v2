@@ -3,6 +3,7 @@ import { Form, Modal } from 'react-bootstrap';
 import YouTube from 'react-youtube';
 import ChevronDownIcon from '../../assets/Icons/chevron-down.svg';
 import { getThumbnails } from '../../youtubeUtils';
+import classes from './EpisodeDetailsModal.module.css';
 
 export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => {
   const [watchTime, setWatchTime] = useState(0);
@@ -22,10 +23,10 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
     const secs = ~~duration % 60;
     let time = '';
     if (hrs > 0) {
-      time += '' + hrs + '.' + (mins < 10 ? '0' : '');
+      time += '' + hrs + 'h ' + (mins < 10 ? '0' : '');
     }
-    time += '' + mins + '.' + (secs < 10 ? '0' : '');
-    time += '' + secs;
+    time += '' + mins + 'm ' + (secs < 10 ? '0' : '');
+    time += '' + secs + 's';
 
     return time;
   };
@@ -49,7 +50,7 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
               onPause={(e) => setWatchTime(getDuration(e.target.playerInfo.currentTime))}
             />
           </div>
-          <div className='d-flex flex-column p-4 pb-0'>
+          <div className={'d-flex flex-column p-4 pb-0'}>
             <span style={{ fontWeight: 'bold', fontSize: '2rem' }}>{details.title}</span>
             <span>{details.description}</span>
             <span>{details.genre}</span>
@@ -79,28 +80,23 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
                 onClick={() => handleClick(el.id)}
               >
                 <span>{idx + 1}</span>
-                <img
-                  alt='img'
-                  width={'100px'}
-                  src={thumbnail[idx]}
-                  style={{ borderRadius: '5px' }}
-                />
+                <img alt='img' src={thumbnail[idx]} className={classes.episodesImg} />
 
-                <div className='d-flex justify-content-between mt-2' style={{ width: '100%' }}>
-                  <div
-                    className='d-flex flex-column'
-                    style={{
-                      textOverflow: 'ellipsis',
-                      overflow: 'hidden',
-                      width: '260px',
-                    }}
-                  >
+                <div
+                  className='d-flex flex-column mt-2'
+                  style={{
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <div className={`d-flex justify-content-between ${classes.episodeDetails}`}>
                     <span style={{ fontWeight: 'bold' }}>{el.title}</span>
-                    <span className='text-secondary' style={{ height: '50px' }}>
-                      {details.episodes[0].description}
-                    </span>
+
+                    <span style={{ fontSize: '.9rem' }}>{getDuration(el.duration)}</span>
                   </div>
-                  <span>{getDuration(el.duration) + 'm'}</span>
+                  <span className={`text-secondary`} style={{ height: '50px' }}>
+                    {el.description}
+                  </span>
                 </div>
               </div>
             ))}

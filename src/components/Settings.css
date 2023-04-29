@@ -88,9 +88,7 @@ nav {
 /* media query */
 @media only screen and (max-width: 1400px) {
   .avatar-container {
-    /* max-width: 150px; */
     width: 300px;
-
     font-size: 1.5rem;
   }
 }
@@ -117,13 +115,10 @@ nav {
     justify-content: center;
     align-items: center;
   }
-  .avatar-container {
-    width: 250px;
-  }
 }
 @media only screen and (max-width: 575px) {
   .avatar-container {
-    margin-left: -10px;
+    margin-left: 0px;
   }
 }
 @media only screen and (max-width: 400px) {

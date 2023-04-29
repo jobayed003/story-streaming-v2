@@ -22,7 +22,7 @@ const ListHoverContent = ({ videos, thumbnail }) => {
             marginLeft: '2.5rem',
             marginBottom: '4rem',
             flexWrap: 'wrap',
-            justifyContent: size.width > 400 ? 'start' : 'center',
+            justifyContent: size.width > 575 ? 'start' : 'center',
           }}
         >
           {videos.map((el, idx) => (

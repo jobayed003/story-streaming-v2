@@ -47,15 +47,15 @@ const Settings = () => {
           {/* nav-start */}
           <Header />
           {/* nav-end */}
-
+          {/* xs={8} md={8} sm={8} */}
           {/* main-section-start */}
           <Container
             as='section'
             className='mainsection'
             style={{ marginBlock: '5rem', marginTop: '8rem' }}
           >
-            <Row className='brdr py-3 flex-nowrap align-items-center settings-container'>
-              <Col xs={8} md={8} sm={8} className='py-2 d-flex justify-content-between flex-wrap'>
+            <Row className='brdr py-3 align-items-center settings-container'>
+              <Col className='py-2 d-flex justify-content-around gap-4 flex-wrap'>
                 <h2>ACCOUNT SETTINGS</h2>
                 <div>
                   <p className='text-content'>Email: {userCredentials.email}</p>
