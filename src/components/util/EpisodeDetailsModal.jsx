@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Form, Modal } from 'react-bootstrap';
 import YouTube from 'react-youtube';
 import ChevronDownIcon from '../../assets/Icons/chevron-down.svg';
@@ -6,15 +6,16 @@ import { getThumbnails } from '../../youtubeUtils';
 import classes from './EpisodeDetailsModal.module.css';
 
 export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => {
+  const [seasons, setSeasons] = useState([]);
+  const [episodes, setEpisodes] = useState([]);
   const [watchTime, setWatchTime] = useState(0);
 
   const handleClose = () => setShow(false);
   const episodeUrls = details.episodes.map((episode) => {
     return episode.url;
   });
-  const thumbnail = getThumbnails(episodeUrls);
 
-  const season = details.episodes[0].season;
+  const thumbnail = getThumbnails(episodeUrls);
 
   const getDuration = (duration) => {
     // Hours, minutes and seconds
@@ -29,6 +30,17 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
     time += '' + secs + 's';
 
     return time;
+  };
+
+  useEffect(() => {
+    const totalSeason = [...new Set(details.episodes.map((el) => el.season))];
+    setSeasons(totalSeason);
+    getSeason(1);
+  }, []);
+
+  const getSeason = (season) => {
+    const selectedSeasonEp = details.episodes.filter((ep) => ep.season === season);
+    setEpisodes(selectedSeasonEp);
   };
 
   const opts = {
@@ -65,16 +77,17 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
                   width: 'max-content',
                   backgroundImage: `url(${ChevronDownIcon})`,
                 }}
+                onChange={(e) => getSeason(+e.target.value)}
               >
-                {[...Array(season).keys()].map((season) => (
-                  <option defaultValue={details.season} value={season + 1}>
-                    Season {season + 1}
+                {seasons.map((season) => (
+                  <option defaultValue={details.season} value={season}>
+                    Season {season}
                   </option>
                 ))}
               </Form.Select>
             </div>
 
-            {details.episodes.map((el, idx) => (
+            {episodes.map((el, idx) => (
               <div
                 className='d-flex justify-content gap-3 align-items-center mb-2 pb-1 cursor-pointer border-bottom'
                 onClick={() => handleClick(el.id)}

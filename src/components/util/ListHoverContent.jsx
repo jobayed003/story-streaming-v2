@@ -14,18 +14,17 @@ const ListHoverContent = ({ videos, thumbnail }) => {
 
   return (
     <>
-      {/* <Row>
-        <Carousel>
-          {/* <Row className='mb-5 mt-2 d-flex justify-content-center ms-0 ps-0'> 
-          {videos.map((el, idx) => (
-            <SwiperSlide className='ms-1'>
-              <ListCard imgSrc={thumbnail[idx]} videoDetails={el} />
-            </SwiperSlide>
-          ))}
-           </Row> 
-        </Carousel>
-      </Row> 
-    */}
+      {/* <Slide videoCount={videos.length}>
+        {videos.map((el, idx) => (
+          <div
+            className='slide'
+            key={Math.random() + idx}
+            style={{ width: size > 500 ? '400px' : '300px' }}
+          >
+            <ListCard imgSrc={thumbnail[idx]} videoDetails={el} />
+          </div>
+        ))}
+      </Slide> */}
       {videos.length <= 0 ? (
         <Row>{status}</Row>
       ) : videos.length <= 4 ? (

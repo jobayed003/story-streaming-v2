@@ -81,14 +81,14 @@ nav {
   margin-top: 1rem;
   margin-left: -16px;
   overflow-y: scroll;
-  width: 450px;
-  max-height: 200px;
+  width: 600px;
+  /* max-height: 200px; */
 }
 
 /* media query */
 @media only screen and (max-width: 1400px) {
   .avatar-container {
-    width: 300px;
+    width: 500px;
     font-size: 1.5rem;
   }
 }
@@ -100,6 +100,10 @@ nav {
     flex-direction: row;
     justify-content: center;
     align-items: start;
+  }
+
+  .avatar-container {
+    width: 350px;
   }
 }
 @media only screen and (max-width: 768px) {
@@ -124,5 +128,9 @@ nav {
 @media only screen and (max-width: 400px) {
   .link-item {
     font-size: 0.8rem;
+  }
+
+  .avatar-container {
+    width: 300px;
   }
 }

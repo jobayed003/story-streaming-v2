@@ -1,23 +1,16 @@
 import { getAuth } from 'firebase/auth';
-
-import { useContext, useRef, useState } from 'react';
+import { useContext } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
-
 import StateContextProvider from '../context/StateContext';
 import VideoContextProvider from '../context/VideoContext';
-
 import { createCheckoutSession } from '../stripe/createCheckoutSession';
 import { getThumbnails } from '../youtubeUtils';
 import './Dashboard.css';
-
 import Footer from './UI/Footer';
 import Header from './UI/Header';
-
 import useLoadingState from './hooks/useLoadingState';
-
 import ListHoverContent from './util/ListHoverContent';
-
 import { getVideoUrls } from './util/videoUtil';
 
 const Dashboard = () => {
@@ -25,8 +18,9 @@ const Dashboard = () => {
   const { favouriteVideos } = useContext(StateContextProvider);
   const { seriesVideos } = useContext(VideoContextProvider);
 
-  const trendingVideos = seriesVideos.filter((vid) => vid.type === 'series');
+  const trendingVideos = seriesVideos.filter((vid) => vid.type === 'movies');
   const tvShows = seriesVideos.filter((vid) => vid.type === 'tv-shows');
+
   // Custom Hooks
   const [user] = useAuthState(getAuth());
   const loadingState = useLoadingState();

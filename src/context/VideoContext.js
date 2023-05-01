@@ -33,12 +33,10 @@ export const VideoContext = ({ children }) => {
 
   const getVideoUrls = (videos) => {
     let videoUrl = [];
-
     videos.forEach((el) => {
       videoUrl.push(el.episodes[0].url);
       // el.episodes.forEach((item) => videoUrl.push(item.url));
     });
-
     return videoUrl;
   };
 
@@ -50,7 +48,7 @@ export const VideoContext = ({ children }) => {
         toast.error('Something Went Wrong!');
       }
     })();
-  }, []);
+  }, [seriesDetails]);
 
   const contextValue = {
     seriesDetails,

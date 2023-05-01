@@ -2,7 +2,9 @@ import { Row } from 'react-bootstrap';
 import Slider from 'react-slick';
 import './Slide.css';
 
-const Slide = ({ children }) => {
+const Slide = ({ children, videoCount }) => {
+  // const slidesToShow = videoCount > 4 ? 4 : videoCount;
+
   const settings = {
     // infinite: true,
     speed: 500,
@@ -10,8 +12,9 @@ const Slide = ({ children }) => {
     slidesToScroll: 4,
     // autoplay: true,
     autoplaySpeed: 2500,
-    // centerMode: true,
+    centerMode: true,
     pauseonhover: true,
+    // variableWidth: true,
     responsive: [
       {
         breakpoint: 1400,
@@ -77,8 +80,8 @@ const Slide = ({ children }) => {
       },
     ],
 
-    nextArrow: <NextArrow></NextArrow>,
-    prevArrow: <PrevArrow></PrevArrow>,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
   };
   return (
     <Row className='mb-5 mt-2 d-flex justify-content-center ms-0 ps-0'>
@@ -112,3 +115,68 @@ const PrevArrow = (props) => {
     />
   );
 };
+
+/*  responsive: [
+      {
+        breakpoint: 1400,
+        settings: {
+          slidesToShow: videoCount > 4 ? 3 : videoCount,
+          slidesToScroll: 3,
+          infinite: true,
+          // centerMode: true,
+        },
+      },
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 2.66,
+          slidesToScroll: 3,
+          infinite: true,
+          centerMode: true,
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: videoCount > 4 ? 3 : videoCount,
+          slidesToScroll: 2,
+          infinite: true,
+          centerMode: true,
+        },
+      },
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: videoCount > 4 ? 3 : videoCount,
+          slidesToScroll: 1,
+          infinite: true,
+          centerMode: true,
+        },
+      },
+
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: videoCount > 4 ? 2 : videoCount,
+          slidesToScroll: 1,
+          infinite: true,
+
+          // centerMode: true,
+        },
+      },
+
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ], */
