@@ -62,6 +62,8 @@ export const StateContext = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userCredentials.avatarDetails]);
 
+  // console.log(selectedAvatar);
+
   const contextValue = {
     clickedVideo,
     favouriteVideos,

@@ -1,5 +1,13 @@
 import { getAuth, sendPasswordResetEmail, updatePassword } from 'firebase/auth';
-import { useContext, useState } from 'react';
+import {
+  getDownloadURL,
+  getStorage,
+  listAll,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+} from 'firebase/storage';
+import { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Col,
@@ -14,12 +22,18 @@ import {
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { FaEye } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import avatar1 from '../assets/avatar/avatar_1.png';
+import avatar2 from '../assets/avatar/avatar_2.png';
+import avatar3 from '../assets/avatar/avatar_3.png';
+import avatar4 from '../assets/avatar/avatar_4.png';
+import avatar5 from '../assets/avatar/avatar_5.png';
 import AuthProvider from '../context/AuthContext';
 import StateContextProvider from '../context/StateContext';
 import './Settings.css';
 import Footer from './UI/Footer';
 import Header from './UI/Header';
 import useLoadingState from './hooks/useLoadingState';
+import { getAllAvatar, getImgUrl } from './util/firebaseUtil';
 import { updateUserDoc } from './util/updateUserDoc';
 
 const Settings = () => {
@@ -69,24 +83,20 @@ const Settings = () => {
                       Change password
                     </Button>
                   </div>
-                  <p className='text-content m-0'>Avatar: {userCredentials.avatarDetails.avatar}</p>
+                  <div className='d-flex align-items-center gap-2'>
+                    <p className='text-content m-0'>Avatar: </p>
+                    <img
+                      src={userCredentials.avatarDetails.avatar}
+                      alt='avatar img'
+                      width={'40px'}
+                      style={{ borderRadius: '50%' }}
+                    />
+                  </div>
                   <div className='avatar-container hide-scroll'>
                     <ChangeAvatar />
                   </div>
                 </div>
               </Col>
-
-              {/* <Col xs={4}>
-                <div className='d-flex justify-content-end'>
-                  <Button
-                    variant='link'
-                    className='link-item mb-2'
-                    onClick={() => setShowPasswordModal(true)}
-                  >
-                    Change password
-                  </Button>
-                </div> 
-              </Col>*/}
             </Row>
           </Container>
           {/* main-secction-end */}
@@ -261,58 +271,63 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
 const ChangeAvatar = () => {
   const avatarDetails = [];
 
-  const avatars = [
-    '🤠',
-    '🙂',
-    '😀',
-    '😁',
-    '😉',
-    '😎',
-    '👨',
+  // const avatars = [
+  //   '🤠',
+  //   '🙂',
+  //   '😀',
+  //   '😁',
+  //   '😉',
+  //   '😎',
+  //   '👨',
 
-    '👧',
-    '👦',
-    '👶',
-    '👶',
-    '👴',
-    '🧓',
-    '👧',
-    '👵',
-    '👩‍🦱',
+  //   '👧',
+  //   '👦',
+  //   '👶',
+  //   '👶',
+  //   '👴',
+  //   '🧓',
+  //   '👧',
+  //   '👵',
+  //   '👩‍🦱',
 
-    '🧑‍🦱',
-    '🧑‍🦳',
-    '👱‍♀️',
-    '👩‍🦲',
-    '👱‍♂️',
-    '🧑‍🦲',
-    '👱',
-    '👸',
-    '🫅',
-    '🤴',
-    '👳‍♂️',
-    '🧔‍♀️',
-    '👼',
-    '👮‍♀️',
-    '👩‍⚕️',
-    '🧑‍🎓',
-    '👩‍🏫',
-    '🧑‍🍳',
-    '👩‍🔧',
-    '👩‍🔬',
-    '🧑‍🔬',
-    '👩‍💻',
-    '👨‍💻',
-    '👨‍🎤',
-    '👩‍🚀',
-    '🧑‍🚒',
-    '🧕',
-    '🏃‍♀️',
-    '👍',
-    '🫱🏽‍🫲🏽',
-    '👩‍💻',
-  ];
-  avatars.map((el, idx) => avatarDetails.push({ id: idx + 1, avatar: el }));
+  //   '🧑‍🦱',
+  //   '🧑‍🦳',
+  //   '👱‍♀️',
+  //   '👩‍🦲',
+  //   '👱‍♂️',
+  //   '🧑‍🦲',
+  //   '👱',
+  //   '👸',
+  //   '🫅',
+  //   '🤴',
+  //   '👳‍♂️',
+  //   '🧔‍♀️',
+  //   '👼',
+  //   '👮‍♀️',
+  //   '👩‍⚕️',
+  //   '🧑‍🎓',
+  //   '👩‍🏫',
+  //   '🧑‍🍳',
+  //   '👩‍🔧',
+  //   '👩‍🔬',
+  //   '🧑‍🔬',
+  //   '👩‍💻',
+  //   '👨‍💻',
+  //   '👨‍🎤',
+  //   '👩‍🚀',
+  //   '🧑‍🚒',
+  //   '🧕',
+  //   '🏃‍♀️',
+  //   '👍',
+  //   '🫱🏽‍🫲🏽',
+  //   '👩‍💻',
+  // ];
+
+  const avatars = ['avatar_1.png', 'avatar_2.png', 'avatar_3.png', 'avatar_4.png', 'avatar_5.png'];
+
+  avatars.map((el, idx) => {
+    avatarDetails.push({ id: idx + 1, avatar: el });
+  });
 
   return (
     <div className='d-flex flex-wrap mt-3'>
@@ -324,13 +339,24 @@ const ChangeAvatar = () => {
 };
 
 const Avatar = ({ avatarDetails }) => {
+  const [imgUrl, setImgUrl] = useState('');
+
   const { selectedAvatar, setSelectedAvatar } = useContext(StateContextProvider);
   const { userCredentials } = useContext(AuthProvider);
+  getImgUrl(avatarDetails.avatar);
+
+  useEffect(() => {
+    (async () => {
+      setImgUrl(await getImgUrl(avatarDetails.avatar));
+    })();
+  }, []);
 
   const changeAvatar = async () => {
     setSelectedAvatar(avatarDetails);
+    const details = { id: avatarDetails.id, avatar: imgUrl };
+
     try {
-      await updateUserDoc(userCredentials.uid, { avatarDetails });
+      await updateUserDoc(userCredentials.uid, { avatarDetails: details });
       toast.dark('Avatar updated successfully!');
     } catch (err) {
       toast.error('Something went wrong! Try again');
@@ -340,16 +366,19 @@ const Avatar = ({ avatarDetails }) => {
   return (
     <div
       style={{
-        // fontSize: '2rem',
-        borderRadius: '30px',
+        borderRadius: '50%',
         background: selectedAvatar.id === avatarDetails.id && 'rgba(255, 255, 255, 0.2)',
-        // boxShadow:
-        // selectedAvatar.id === avatarDetails.id && 'rgba(255, 255, 255, 0.2) 0px 7px 29px 0px',
       }}
       className='cursor-pointer p-2'
       onClick={changeAvatar}
     >
-      {avatarDetails.avatar}
+      <img
+        src={imgUrl}
+        alt='avatar img'
+        width={'70px'}
+        height={'70px'}
+        style={{ borderRadius: '40px' }}
+      />
     </div>
   );
 };

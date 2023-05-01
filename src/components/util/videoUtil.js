@@ -23,29 +23,6 @@ export const fetchVideos = async (quer) => {
     });
   });
 
-  // const q = query(collectionRef, orderBy('timestamp', 'asc'));
-
-  // const querySnapshot = await getDocs(q);
-
-  // querySnapshot.forEach((doc) => {
-  //   console.log(doc.id, ' => ', doc.data());
-  // });
-
-  //   const dataRef = await getDocs(collectionRef);
-
-  // if (collecName === 'series') {
-  //   const q = query(collection(db, collecName), where('uniqueId', '==', 'aad5f31e156d2'));
-  //   const querySnapshot = await getDocs(q);
-
-  //   querySnapshot.forEach((doc) => {
-  //     console.log(doc.id, ' => ', doc.data());
-  //   });
-  // }
-
-  //   dataRef.forEach((doc) => {
-  //     data.push({ ...doc.data(), uid: doc.id });
-  //   });
-
   return videos;
 };
 

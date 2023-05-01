@@ -107,7 +107,14 @@ const Header = ({ headerRef }) => {
                     alt=''
                   />
                 ) : (
-                  <div style={{ fontSize: '2rem' }}>{userCredentials.avatarDetails.avatar}</div>
+                  <div style={{ borderRadius: '50px' }}>
+                    <img
+                      src={userCredentials.avatarDetails.avatar}
+                      alt='avatar img'
+                      width={'80px'}
+                      height={'50px'}
+                    />
+                  </div>
                 )}
               </Dropdown.Toggle>
 
