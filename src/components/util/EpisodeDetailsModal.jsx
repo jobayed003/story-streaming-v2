@@ -73,7 +73,6 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
       opacity: 1,
       y: 0,
       transition: {
-        ease: 'linear',
         when: 'beforeChildren',
         staggerChildren: 0.1,
       },
