@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { Dropdown, Form, Modal } from 'react-bootstrap';
 import YouTube from 'react-youtube';
 import ChevronDownIcon from '../../assets/Icons/chevron-down.svg';
-import { getThumbnails } from '../../youtubeUtils';
 import classes from './EpisodeDetailsModal.module.css';
+import { getThumbnails } from './youtubeUtils';
 
 export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => {
   const [seasons, setSeasons] = useState([]);
@@ -41,9 +41,8 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
   }, []);
 
   const getSeason = (season) => {
-    console.log(season);
-
     if (season === 'View All') {
+      // const sortedEp =
       setEpisodes(details.episodes);
       return;
     }
@@ -73,6 +72,7 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
       opacity: 1,
       y: 0,
       transition: {
+        // ease: 'linear',
         when: 'beforeChildren',
         staggerChildren: 0.1,
       },

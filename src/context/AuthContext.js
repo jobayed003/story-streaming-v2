@@ -2,8 +2,8 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { collection, doc, onSnapshot, orderBy, query, updateDoc } from 'firebase/firestore';
 import { createContext, useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { fetchData } from '../components/util/youtubeUtils';
 import { db } from '../firebase.config';
-import { fetchData } from '../youtubeUtils';
 
 const AuthProvider = createContext({
   users: [],

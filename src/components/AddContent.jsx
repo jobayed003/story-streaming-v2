@@ -8,7 +8,6 @@ import { toast } from 'react-toastify';
 import AuthProvider from '../context/AuthContext';
 import VideoContextProvider from '../context/VideoContext';
 import { db } from '../firebase.config';
-import { getThumbnails, parseVideoIDFromYoutubeURL, ytDurationToSeconds } from '../youtubeUtils';
 import './AddContent.css';
 import Footer from './UI/Footer';
 import Header from './UI/Header';
@@ -17,6 +16,11 @@ import useStatus from './hooks/useStatus';
 import Slide from './util/Slide';
 import VideoCard from './util/VideoCard';
 import { getVideoUrls } from './util/videoUtil';
+import {
+  getThumbnails,
+  parseVideoIDFromYoutubeURL,
+  ytDurationToSeconds,
+} from './util/youtubeUtils';
 
 const AddContent = () => {
   const initialEpisode = {
@@ -88,7 +92,7 @@ const AddContent = () => {
     const finalSeries = {
       ...seriesDetails,
       episodes: episodes.sort((a, b) => a.episode - b.episode),
-      // id: seriesDetails.title.toLowerCase().replace(/ /g, '-'),
+      id: seriesDetails.uniqueId ? seriesDetails.uniqueId : uniqueId,
     };
     console.log(finalSeries);
 
@@ -115,11 +119,6 @@ const AddContent = () => {
       });
       console.log(error);
     }
-
-    // setting uniquesID
-    await updateDoc(seriesVideoRef, {
-      uniqueId: seriesDetails.uniqueId ? seriesDetails.uniqueId : uniqueId,
-    });
   };
 
   return (

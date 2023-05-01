@@ -15,12 +15,12 @@ const VideoCard = ({ imgSrc, scrollTo, video }) => {
   const navigate = useNavigate();
 
   const editVideo = async () => {
-    setSeriesDetails(await getSeriesData(video.uniqueId));
+    setSeriesDetails(await getSeriesData(video.id));
     scrollTo.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
   };
 
   const playVideo = () => {
-    navigate(`/watch/${video.uniqueId}`);
+    navigate(`/watch/${video.id}`);
     localStorage.removeItem('video');
     localStorage.setItem('video', JSON.stringify(video));
   };

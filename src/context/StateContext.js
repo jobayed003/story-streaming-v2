@@ -21,8 +21,8 @@ export const StateContext = ({ children }) => {
   const auth = getAuth();
 
   // Checking if favourite video is also available in series
-  const videosUniqueId = seriesVideos.map((vid) => vid.uniqueId);
-  const favVideosUniqueID = favouriteVideos.map((vid) => vid.uniqueId);
+  const videosUniqueId = seriesVideos.map((vid) => vid.id);
+  const favVideosUniqueID = favouriteVideos.map((vid) => vid.id);
 
   const VideoNotAvailableID = favVideosUniqueID.filter(
     (el) => !videosUniqueId.some((el1) => el === el1)

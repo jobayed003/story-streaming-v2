@@ -36,22 +36,20 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
   // Checking if the vidoe is a favourite video
   let favVideosUniqueID = [];
   for (let i = 0; i < favouriteVideos.length; i++) {
-    const favouriteVidIndex = seriesVideos.findIndex(
-      (vid) => vid.uniqueId === favouriteVideos[i].uniqueId
-    );
-    favVideosUniqueID.push(seriesVideos[favouriteVidIndex].uniqueId);
+    const favouriteVidIndex = seriesVideos.findIndex((vid) => vid.id === favouriteVideos[i].id);
+    favVideosUniqueID.push(seriesVideos[favouriteVidIndex].id);
   }
-  const isFavourite = favVideosUniqueID.includes(videoDetails.uniqueId);
+  const isFavourite = favVideosUniqueID.includes(videoDetails.id);
 
   const handleClick = (id) => {
     setClickedVideo(id);
     localStorage.removeItem('videoID');
     localStorage.setItem('videoID', JSON.stringify(id));
-    navigate(`/watch/${videoDetails.uniqueId}`);
+    navigate(`/watch/${videoDetails.id}`);
   };
 
   const saveFavourite = async () => {
-    const vidRef = doc(db, `users/${user.uid}/favourite_videos/${videoDetails.uniqueId}`);
+    const vidRef = doc(db, `users/${user.uid}/favourite_videos/${videoDetails.id}`);
 
     await setDoc(vidRef, {
       ...videoDetails,
@@ -60,7 +58,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
     });
   };
   const deleteFavourite = async () => {
-    const favouriteVidRef = doc(db, `users/${user.uid}/favourite_videos/${videoDetails.uniqueId}`);
+    const favouriteVidRef = doc(db, `users/${user.uid}/favourite_videos/${videoDetails.id}`);
     await deleteDoc(favouriteVidRef);
   };
 
@@ -156,7 +154,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
                 position: 'absolute',
                 background: 'rgba(0,0,0,0.2)',
                 width: '100%',
-                height: size.width > 1000 ? '250' : '200',
+                height: size.width > 1000 ? '250px' : '200px',
               }}
               className='cursor-pointer'
               onClick={() => handleClick(videoDetails.episodes[0].id)}

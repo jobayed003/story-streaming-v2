@@ -5,13 +5,13 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import StateContextProvider from '../context/StateContext';
 import VideoContextProvider from '../context/VideoContext';
 import { createCheckoutSession } from '../stripe/createCheckoutSession';
-import { getThumbnails } from '../youtubeUtils';
 import './Dashboard.css';
 import Footer from './UI/Footer';
 import Header from './UI/Header';
 import useLoadingState from './hooks/useLoadingState';
 import ListHoverContent from './util/ListHoverContent';
 import { getVideoUrls } from './util/videoUtil';
+import { getThumbnails } from './util/youtubeUtils';
 
 const Dashboard = () => {
   // Context Management
