@@ -9,10 +9,12 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
   const [seasons, setSeasons] = useState([]);
   const [episodes, setEpisodes] = useState([]);
   const [watchTime, setWatchTime] = useState(0);
-  const handleClose = () => setShow(false);
-
   const thumbnail = getThumbnails(episodes.map((episode) => episode.url));
 
+  const handleClose = () => {
+    setShow(false);
+    getSeason(1);
+  };
   const getDuration = (duration) => {
     // Hours, minutes and seconds
     const hrs = ~~(duration / 3600);
