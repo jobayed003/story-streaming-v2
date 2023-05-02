@@ -37,7 +37,7 @@ const Header = ({ headerRef }) => {
           element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - offset,
       });
     }
-    setScrollId('');
+//     setScrollId('');
   };
 
   const navLinks = [
