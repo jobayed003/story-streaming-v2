@@ -52,7 +52,7 @@ const Dashboard = () => {
             {/* Searched Videos List */}
             {searchedVideos.length > 0 && (
               <>
-                <Row className='mt-5' id='top-trending'>
+                <Row className='mt-5' id='searched-videos'>
                   <Col className='mt-5 text-light'>
                     <h1>Results for {searchedText}</h1>
                   </Col>
@@ -62,7 +62,7 @@ const Dashboard = () => {
             )}
             {/* Top trending videos list */}
 
-            <Row style={{ marginTop: '8rem' }} id={'my-list'}>
+            <Row style={{ marginTop: '8rem' }} id={'top-trending'}>
               <Col className='text-light'>
                 <h1>Top Trending</h1>
               </Col>
