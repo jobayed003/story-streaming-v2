@@ -9,6 +9,10 @@
   --footer-text-color: #898989;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--gray-color);
   color: var(--white);

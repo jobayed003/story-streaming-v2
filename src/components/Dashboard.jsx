@@ -15,7 +15,7 @@ import { getThumbnails } from './util/youtubeUtils';
 
 const Dashboard = () => {
   // Context Management
-  const { favouriteVideos } = useContext(StateContextProvider);
+  const { favouriteVideos, searchedVideos, searchedText } = useContext(StateContextProvider);
   const { seriesVideos } = useContext(VideoContextProvider);
 
   const trendingVideos = seriesVideos.filter((vid) => vid.type === 'movies');
@@ -29,11 +29,13 @@ const Dashboard = () => {
   const trendingVidUrls = getVideoUrls(trendingVideos);
   const tvShowUrls = getVideoUrls(tvShows);
   const favouriteVideoUrls = getVideoUrls(favouriteVideos);
+  const searchedVideosUrls = getVideoUrls(searchedVideos);
 
   // Getting thumbnail from video Urls
   const trendingVidThumbnail = getThumbnails(trendingVidUrls);
   const tvshowsThumbnail = getThumbnails(tvShowUrls);
   const favouriteVidThumbnail = getThumbnails(favouriteVideoUrls);
+  const searchedVideosThumbnail = getThumbnails(searchedVideosUrls);
 
   return (
     <>
@@ -47,9 +49,21 @@ const Dashboard = () => {
             className='fontFamily hide-scroll'
             style={{ overflow: 'hidden visible', paddingBottom: '8rem' }}
           >
+            {/* Searched Videos List */}
+            {searchedVideos.length > 0 && (
+              <>
+                <Row className='mt-5' id='top-trending'>
+                  <Col className='mt-5 text-light'>
+                    <h1>Results for {searchedText}</h1>
+                  </Col>
+                </Row>
+                <ListHoverContent videos={searchedVideos} thumbnail={searchedVideosThumbnail} />
+              </>
+            )}
             {/* Top trending videos list */}
-            <Row className='mt-5' id='top-trending'>
-              <Col className='mt-5 text-light'>
+
+            <Row style={{ marginTop: '8rem' }} id={'my-list'}>
+              <Col className='text-light'>
                 <h1>Top Trending</h1>
               </Col>
             </Row>
@@ -62,6 +76,7 @@ const Dashboard = () => {
                 <h1>My List</h1>
               </Col>
             </Row>
+
             <ListHoverContent videos={favouriteVideos} thumbnail={favouriteVidThumbnail} />
 
             <Row className='mt-5' id='tv-shows'>
@@ -103,7 +118,7 @@ const Dashboard = () => {
 
             {/* <TvShowCard videos={tvshows} thumbnail={tvshowsThumbnail} /> */}
 
-            {/* <Row className='mt-5' id='movies'>
+            <Row className='mt-5' id='movies'>
               <Col className='mt-5 text-light'>
                 <h1>Top Movies</h1>
               </Col>
@@ -113,7 +128,7 @@ const Dashboard = () => {
               <Col className='mt-5 text-light'>
                 <h1>Environment</h1>
               </Col>
-            </Row> */}
+            </Row>
           </Container>
           <Footer />
         </>

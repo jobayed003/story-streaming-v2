@@ -42,8 +42,8 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
 
   const getSeason = (season) => {
     if (season === 'View All') {
-      // const sortedEp =
-      setEpisodes(details.episodes);
+      const sortedEp = details.episodes.sort((a, b) => a.season - b.season);
+      setEpisodes(sortedEp);
       return;
     }
 
@@ -130,7 +130,7 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
 
             <motion.div variants={listVariants} initial='hidden' animate={'visible'}>
               {episodes.map((el, idx) => (
-                <motion.div variants={itemVariants} className='item' key={Math.random()}>
+                <motion.div variants={itemVariants} className='item'>
                   <div
                     className='d-flex justify-content gap-3 align-items-center mb-2 pb-1 cursor-pointer border-bottom'
                     onClick={() => handleClick(el.id)}

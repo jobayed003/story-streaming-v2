@@ -8,12 +8,18 @@ import VideoContextProvider from './VideoContext';
 const StateContextProvider = createContext({
   selectedAvatar: {},
   setSelectedAvatar: () => {},
+  fitlerSearchResult: () => {},
 });
 
 export const StateContext = ({ children }) => {
   const [clickedVideo, setClickedVideo] = useState('');
+  const [searchedText, setSearchedText] = useState('');
+
   const [selectedAvatar, setSelectedAvatar] = useState({});
   const [favouriteVideos, setFavouriteVideos] = useState([]);
+  const [searchedVideos, setSearchedVideos] = useState([]);
+
+  const [scrollId, setScrollId] = useState('');
 
   const { userCredentials } = useContext(AuthProvider);
   const { seriesVideos } = useContext(VideoContextProvider);
@@ -35,7 +41,7 @@ export const StateContext = ({ children }) => {
   });
 
   // Fetching Favourite Videos
-  const fetchingFavouriteVideos = async () => {
+  const fetchFavouriteVideos = async () => {
     const userFavouriteVideosRef = query(
       collection(db, 'users', auth.currentUser.uid, 'favourite_videos'),
       orderBy('timestamp', 'asc')
@@ -51,10 +57,19 @@ export const StateContext = ({ children }) => {
     });
   };
 
+  const fitlerSearchResult = (text) => {
+    setSearchedText(text);
+    let vid = [];
+    vid.push(seriesVideos.filter((el) => el.type.includes(text.toLowerCase())));
+    vid.push(seriesVideos.filter((el) => el.title.toLowerCase() === text.toLowerCase()));
+    vid.push(seriesVideos.filter((el) => el.genre.includes(text.toLowerCase())));
+
+    setSearchedVideos(vid.flat());
+  };
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        fetchingFavouriteVideos();
+        fetchFavouriteVideos();
       }
     });
 
@@ -68,9 +83,15 @@ export const StateContext = ({ children }) => {
     clickedVideo,
     favouriteVideos,
     selectedAvatar,
+    scrollId,
+    searchedVideos,
+    searchedText,
 
     setClickedVideo,
+    setScrollId,
     setSelectedAvatar,
+
+    fitlerSearchResult,
   };
 
   return (

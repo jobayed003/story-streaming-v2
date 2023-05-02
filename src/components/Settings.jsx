@@ -1,13 +1,6 @@
 import { getAuth, sendPasswordResetEmail, updatePassword } from 'firebase/auth';
-import {
-  getDownloadURL,
-  getStorage,
-  listAll,
-  ref,
-  uploadBytes,
-  uploadBytesResumable,
-} from 'firebase/storage';
-import { useContext, useEffect, useState } from 'react';
+
+import { useContext, useState } from 'react';
 import {
   Button,
   Col,
@@ -22,18 +15,12 @@ import {
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { FaEye } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import avatar1 from '../assets/avatar/avatar_1.png';
-import avatar2 from '../assets/avatar/avatar_2.png';
-import avatar3 from '../assets/avatar/avatar_3.png';
-import avatar4 from '../assets/avatar/avatar_4.png';
-import avatar5 from '../assets/avatar/avatar_5.png';
 import AuthProvider from '../context/AuthContext';
 import StateContextProvider from '../context/StateContext';
 import './Settings.css';
 import Footer from './UI/Footer';
 import Header from './UI/Header';
 import useLoadingState from './hooks/useLoadingState';
-import { getAllAvatar, getImgUrl } from './util/firebaseUtil';
 import { updateUserDoc } from './util/updateUserDoc';
 
 const Settings = () => {
@@ -270,6 +257,7 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
 
 const ChangeAvatar = () => {
   const avatarDetails = [];
+  const { userCredentials, avatarUrls } = useContext(AuthProvider);
 
   // const avatars = [
   //   '🤠',
@@ -323,40 +311,30 @@ const ChangeAvatar = () => {
   //   '👩‍💻',
   // ];
 
-  const avatars = ['avatar_1.png', 'avatar_2.png', 'avatar_3.png', 'avatar_4.png', 'avatar_5.png'];
-
-  avatars.map((el, idx) => {
-    avatarDetails.push({ id: idx + 1, avatar: el });
-  });
+  avatarUrls.map((el, idx) => avatarDetails.push({ id: idx + 1, avatar: el }));
 
   return (
     <div className='d-flex flex-wrap mt-3'>
-      {avatarDetails.map((el) => (
-        <Avatar avatarDetails={el} />
-      ))}
+      {avatarUrls.length > 0 &&
+        avatarDetails.map((el) => <Avatar avatarDetails={el} uid={userCredentials.uid} />)}
     </div>
   );
 };
 
-const Avatar = ({ avatarDetails }) => {
-  const [imgUrl, setImgUrl] = useState('');
-
+const Avatar = (props) => {
   const { selectedAvatar, setSelectedAvatar } = useContext(StateContextProvider);
-  const { userCredentials } = useContext(AuthProvider);
-  getImgUrl(avatarDetails.avatar);
 
-  useEffect(() => {
-    (async () => {
-      setImgUrl(await getImgUrl(avatarDetails.avatar));
-    })();
-  }, []);
+  const {
+    avatarDetails: { id, avatar },
+    uid,
+  } = props;
 
   const changeAvatar = async () => {
-    setSelectedAvatar(avatarDetails);
-    const details = { id: avatarDetails.id, avatar: imgUrl };
+    const details = { id: id, avatar: avatar };
+    setSelectedAvatar(details);
 
     try {
-      await updateUserDoc(userCredentials.uid, { avatarDetails: details });
+      await updateUserDoc(uid, { avatarDetails: details });
       toast.dark('Avatar updated successfully!');
     } catch (err) {
       toast.error('Something went wrong! Try again');
@@ -367,13 +345,13 @@ const Avatar = ({ avatarDetails }) => {
     <div
       style={{
         borderRadius: '50%',
-        background: selectedAvatar.id === avatarDetails.id && 'rgba(255, 255, 255, 0.2)',
+        background: selectedAvatar.id === id && 'rgba(255, 255, 255, 0.2)',
       }}
       className='cursor-pointer p-2'
       onClick={changeAvatar}
     >
       <img
-        src={imgUrl}
+        src={avatar}
         alt='avatar img'
         width={'70px'}
         height={'70px'}

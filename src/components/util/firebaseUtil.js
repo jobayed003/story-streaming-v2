@@ -33,8 +33,21 @@ import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 //   });
 //   return imageUrls;
 // };
+export const getAllAvatar = async (avatarName) => {
+  const storage = getStorage();
+  let imageUrls = [];
 
-export const getImgUrl = async (img) => {
+  const images = ['avatar_1.png', 'avatar_2.png', 'avatar_3.png', 'avatar_4.png', 'avatar_5.png'];
+
+  images.forEach(async (img) => {
+    const imgRef = ref(storage, `avatar/${img}`);
+    const url = getDownloadURL(imgRef);
+    imageUrls.push(url);
+  });
+  return await Promise.all(imageUrls);
+};
+
+const getImgUrl = async (img) => {
   const storage = getStorage();
   const imgRef = ref(storage, `avatar/${img}`);
   const imgUrl = await getDownloadURL(imgRef);

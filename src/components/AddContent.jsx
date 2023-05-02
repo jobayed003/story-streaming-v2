@@ -276,7 +276,7 @@ const VideoDetailsForm = () => {
 
   return (
     <>
-      <div className='d-flex justify-content-between align-items-center'>
+      <div className='d-flex justify-content-between align-items-center flex-column flex-sm-row gap-3 my-4'>
         <h2 className='mb-0'>Video Details</h2>
         <Form.Group>
           <Form.Label className='custom-label'>Choose Video Type</Form.Label>

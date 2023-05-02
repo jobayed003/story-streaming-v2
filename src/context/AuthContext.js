@@ -1,8 +1,8 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { collection, doc, onSnapshot, orderBy, query, updateDoc } from 'firebase/firestore';
 import { createContext, useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { fetchData } from '../components/util/youtubeUtils';
+
+import { getAllAvatar } from '../components/util/firebaseUtil';
 import { db } from '../firebase.config';
 
 const AuthProvider = createContext({
@@ -17,6 +17,8 @@ export const AuthContext = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [isDefaultAdmin, setIsDefaultAdmin] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [avatarUrls, setAvatarUrls] = useState([]);
+
   const [authStep, setAuthStep] = useState('login');
   const [userCredentials, setUserCredentials] = useState({
     name: '',
@@ -36,6 +38,7 @@ export const AuthContext = ({ children }) => {
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, async (user) => {
+      setAvatarUrls(await getAllAvatar());
       setIsAuthenticated(true);
 
       const { displayName, email, uid } = user;
@@ -77,6 +80,7 @@ export const AuthContext = ({ children }) => {
     users,
     userCredentials,
     isDefaultAdmin,
+    avatarUrls,
 
     setAuthStep,
     setUserCredentials,

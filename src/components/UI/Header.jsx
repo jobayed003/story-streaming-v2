@@ -4,23 +4,40 @@ import { Button, Container, Dropdown, Form, Image, Nav, Navbar } from 'react-boo
 import { FaBars, FaBell, FaSearch } from 'react-icons/fa';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
-import { Link, animateScroll } from 'react-scroll';
+import { Link } from 'react-scroll';
 import logo from '../../assets/Icons/StorySaloon_Logo.svg';
 import AuthProvider from '../../context/AuthContext';
+import StateContextProvider from '../../context/StateContext';
 import { ManageUser } from '../util/ManageUser';
 import classes from './Header.module.css';
 
 const Header = ({ headerRef }) => {
   const [show, setShow] = useState(false);
+  const [text, setText] = useState('');
+
+  const { scrollId, setScrollId, fitlerSearchResult } = useContext(StateContextProvider);
   const { isAdmin, users, userCredentials } = useContext(AuthProvider);
 
   const navigate = useNavigate();
-  const pathName = useLocation().pathname.replace('/', '');
+  const location = useLocation();
+  const path = location.pathname.replace('/', '');
 
   const handleLogout = () => {
     const auth = getAuth();
     localStorage.removeItem('video');
     auth.signOut();
+  };
+
+  const scrollToElement = (offset) => {
+    const element = document.getElementById(scrollId);
+    if (path === 'dashboard') {
+      window.scrollTo({
+        behavior: 'smooth',
+        top:
+          element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - offset,
+      });
+    }
+    setScrollId('');
   };
 
   const navLinks = [
@@ -29,9 +46,12 @@ const Header = ({ headerRef }) => {
     { name: 'Movies', link: 'movies' },
     { name: 'Environment', link: 'environment' },
   ];
-  const handleClick = (path) => {
-    navigate(path);
-  };
+
+  useEffect(() => {
+    if (scrollId !== '') {
+      scrollToElement(80);
+    }
+  }, []);
 
   return (
     <Navbar
@@ -59,25 +79,41 @@ const Header = ({ headerRef }) => {
                 smooth={true}
                 offset={-80}
                 duration={0}
-                // onClick={() => scrollToElement(`#${lnk.link}`)}
                 key={Math.random()}
               >
-                <NavLink to={'/dashboard'} className={classes.customLink}>
+                <NavLink
+                  to={'/dashboard'}
+                  className={classes.customLink}
+                  onClick={(e) => setScrollId(e.target.textContent.toLowerCase().replace(' ', '-'))}
+                >
                   {lnk.name}
                 </NavLink>
               </Link>
             ))}
           </Nav>
 
-          <Form className='d-flex' role='search' style={{ fontFamily: 'Roboto', color: '#fff' }}>
+          <Form
+            className='d-flex'
+            style={{ fontFamily: 'Roboto', color: '#fff' }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              fitlerSearchResult(text);
+            }}
+          >
             <Form.Control
               className='form-control me-2'
-              type='search'
-              placeholder='Search'
-              aria-label='Search'
+              type='text'
+              placeholder='Search for videos'
+              aria-label='Search for videos'
+              onChange={(e) => setText(e.target.value)}
             />
 
-            <Button variant='light' type='submit' style={{ paddingBlock: '0' }}>
+            <Button
+              variant='light'
+              type='button'
+              style={{ paddingBlock: '0' }}
+              onClick={() => fitlerSearchResult(text)}
+            >
               <FaSearch color='gray' />
             </Button>
           </Form>
@@ -121,17 +157,17 @@ const Header = ({ headerRef }) => {
               <Dropdown.Menu>
                 <Dropdown.Item
                   className={'dropLinks'}
-                  onClick={() => handleClick(pathName === 'dashboard' ? '/settings' : '/dashboard')}
+                  onClick={() => navigate(path === 'dashboard' ? '/settings' : '/dashboard')}
                 >
                   <NavLink
                     style={{ color: 'black' }}
-                    to={pathName === 'dashboard' ? '/settings' : '/dashboard'}
+                    to={path === 'dashboard' ? '/settings' : '/dashboard'}
                   >
-                    {pathName === 'dashboard' ? 'Settings' : 'Dashboard'}
+                    {path === 'dashboard' ? 'Settings' : 'Dashboard'}
                   </NavLink>
                 </Dropdown.Item>
-                {pathName === 'upload' && (
-                  <Dropdown.Item className={'dropLinks'} onClick={() => handleClick('/settings')}>
+                {path === 'upload' && (
+                  <Dropdown.Item className={'dropLinks'} onClick={() => navigate('/settings')}>
                     <NavLink style={{ color: 'black' }} to={'/settings'}>
                       Settings
                     </NavLink>
@@ -140,7 +176,7 @@ const Header = ({ headerRef }) => {
 
                 {isAdmin && (
                   <>
-                    <Dropdown.Item className={'dropLinks'} onClick={() => handleClick('/upload')}>
+                    <Dropdown.Item className={'dropLinks'} onClick={() => navigate('/upload')}>
                       <NavLink style={{ color: 'black' }} to={'/upload'}>
                         Upload Series
                       </NavLink>
