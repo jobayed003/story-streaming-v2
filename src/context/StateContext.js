@@ -35,6 +35,7 @@ export const StateContext = ({ children }) => {
   );
   // const result = favVideosUniqueID.find((elem) => !videosUniqueId.includes(elem));
   // console.log(result);
+
   VideoNotAvailableID.forEach(async (id) => {
     const favouriteVidRef = doc(db, `users/${userCredentials.uid}/favourite_videos/${id}`);
     await deleteDoc(favouriteVidRef);
@@ -60,14 +61,21 @@ export const StateContext = ({ children }) => {
   const fitlerSearchResult = (text) => {
     setSearchedText(text);
     let vid = [];
-
     const searchedText = text.toLowerCase().replace(' ', '').trim();
 
-    vid.push(seriesVideos.filter((el) => el.type.replace('-', '').startsWith(searchedText)));
-    vid.push(
-      seriesVideos.filter((el) => el.title.toLowerCase().replace(' ', '').startsWith(searchedText))
-    );
-    vid.push(seriesVideos.filter((el) => el.genre.startsWith(searchedText)));
+    const getVideos = (searchFor) => {
+      return seriesVideos.filter(
+        (el) =>
+          el[searchFor].toLowerCase().replace(' ', '').startsWith(searchedText) ||
+          el[searchFor].toLowerCase().replace(' ', '').includes(searchedText)
+      );
+    };
+
+    vid.push(getVideos('title'));
+    vid.push(getVideos('genre'));
+    vid.push(getVideos('type'));
+    vid.push(getVideos('description'));
+
     setSearchedVideos(vid.flat());
   };
 
@@ -81,8 +89,6 @@ export const StateContext = ({ children }) => {
     setSelectedAvatar(userCredentials.avatarDetails);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userCredentials.avatarDetails]);
-
-  // console.log(selectedAvatar);
 
   const contextValue = {
     clickedVideo,
