@@ -47,7 +47,7 @@ const Header = ({ headerRef }) => {
   ];
 
   useEffect(() => {
-    scrollId !== '' && scrollToElement(80);
+    scrollId !== '' && scrollToElement(-180);
   }, []);
 
   return (
