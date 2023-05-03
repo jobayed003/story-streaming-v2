@@ -59,7 +59,15 @@ const Register = ({ show, setShow }) => {
         displayName: name,
       });
 
-      const userCopy = { ...userCred, role: 'user' };
+      const userCopy = {
+        ...userCred,
+        role: 'user',
+        avatarDetails: {
+          id: 1,
+          avatar:
+            'https://firebasestorage.googleapis.com/v0/b/story-streaming-84a2e.appspot.com/o/avatar%2Favatar_1.png?alt=media&token=bc42b4b5-3712-4d97-a41a-fb7c53340a32',
+        },
+      };
       delete userCopy.password;
 
       userCopy.timestamp = serverTimestamp();

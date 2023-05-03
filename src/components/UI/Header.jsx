@@ -37,7 +37,7 @@ const Header = ({ headerRef }) => {
           element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - offset,
       });
     }
-    setScrollId('');
+    // setScrollId('');
   };
 
   const navLinks = [
@@ -137,21 +137,13 @@ const Header = ({ headerRef }) => {
                   border: 'none',
                 }}
               >
-                {!userCredentials.avatarDetails.avatar ? (
+                <div style={{ borderRadius: '50px' }}>
                   <img
-                    src='https://occ-0-58-64.1.nflxso.net/dnm/api/v6/K6hjPJd6cR6FpVELC5Pd6ovHRSk/AAAABZBe7K0DPia9LvzIkQ4yzqX9NocZlAjS1MOyEuBQD1WmFuLKZwvq0bxc4n4_EV73khqgwed0PYLNml0V8LCymt31e7x-8jQ.png?r=229'
-                    alt=''
+                    src={userCredentials.avatarDetails.avatar}
+                    alt='avatar img'
+                    height={'45px'}
                   />
-                ) : (
-                  <div style={{ borderRadius: '50px' }}>
-                    <img
-                      src={userCredentials.avatarDetails.avatar}
-                      alt='avatar img'
-                      width={'80px'}
-                      height={'50px'}
-                    />
-                  </div>
-                )}
+                </div>
               </Dropdown.Toggle>
 
               <Dropdown.Menu>

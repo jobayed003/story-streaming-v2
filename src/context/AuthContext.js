@@ -49,7 +49,13 @@ export const AuthContext = ({ children }) => {
           setUserCredentials({
             name: displayName,
             email,
-            avatarDetails: doc.data().avatarDetails || {},
+
+            //  for existing users
+            avatarDetails: doc.data().avatarDetails || {
+              id: 1,
+              avatar:
+                'https://firebasestorage.googleapis.com/v0/b/story-streaming-84a2e.appspot.com/o/avatar%2Favatar_1.png?alt=media&token=bc42b4b5-3712-4d97-a41a-fb7c53340a32',
+            },
             uid,
           });
           if (doc.data().role === 'admin') {

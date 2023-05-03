@@ -1,9 +1,11 @@
 import { Row } from 'react-bootstrap';
+import { useLocation } from 'react-router-dom';
 import Slider from 'react-slick';
 import './Slide.css';
 
 const Slide = ({ children, videoCount }) => {
   // const slidesToShow = videoCount > 4 ? 4 : videoCount;
+  const path = useLocation().pathname.replace('/', '');
 
   const settings = {
     // infinite: true,
@@ -12,7 +14,7 @@ const Slide = ({ children, videoCount }) => {
     slidesToScroll: 4,
     // autoplay: true,
     autoplaySpeed: 2500,
-    centerMode: true,
+    // centerMode: true,
     pauseonhover: true,
     // variableWidth: true,
     responsive: [
@@ -46,7 +48,7 @@ const Slide = ({ children, videoCount }) => {
       {
         breakpoint: 992,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: path.includes('upload') ? 2 : 3,
           slidesToScroll: 2,
           infinite: true,
           centerMode: false,
@@ -56,7 +58,7 @@ const Slide = ({ children, videoCount }) => {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: path.includes('upload') ? 1 : 2,
           slidesToScroll: 1,
           infinite: true,
 
@@ -67,7 +69,7 @@ const Slide = ({ children, videoCount }) => {
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: path.includes('upload') ? 1 : 2,
           slidesToScroll: 1,
         },
       },
