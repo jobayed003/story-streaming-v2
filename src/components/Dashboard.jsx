@@ -18,7 +18,7 @@ const Dashboard = () => {
   const { favouriteVideos, searchedVideos, searchedText } = useContext(StateContextProvider);
   const { seriesVideos } = useContext(VideoContextProvider);
 
-  const trendingVideos = seriesVideos.filter((vid) => vid.type === 'movies');
+  const trendingVideos = seriesVideos.filter((vid) => vid.type === 'others');
   const tvShows = seriesVideos.filter((vid) => vid.type === 'tv-shows');
 
   // Custom Hooks
@@ -50,7 +50,7 @@ const Dashboard = () => {
             style={{ overflow: 'hidden visible', paddingBottom: '8rem' }}
           >
             {/* Searched Videos List */}
-            {searchedVideos.length > 0 && (
+            {searchedText !== '' && (
               <>
                 <Row className='mt-5' id='searched-videos'>
                   <Col className='mt-5 text-light'>

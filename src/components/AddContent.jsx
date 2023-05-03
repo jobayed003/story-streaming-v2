@@ -92,15 +92,11 @@ const AddContent = () => {
     const finalSeries = {
       ...seriesDetails,
       episodes: episodes.sort((a, b) => a.episode - b.episode),
-      id: seriesDetails.uniqueId ? seriesDetails.uniqueId : uniqueId,
+      id: seriesDetails.id ? seriesDetails.id : uniqueId,
     };
     console.log(finalSeries);
 
-    const seriesVideoRef = doc(
-      db,
-      'series',
-      seriesDetails.uniqueId ? seriesDetails.uniqueId : uniqueId
-    );
+    const seriesVideoRef = doc(db, 'series', seriesDetails.id ? seriesDetails.id : uniqueId);
 
     try {
       await setDoc(seriesVideoRef, finalSeries);
@@ -276,8 +272,8 @@ const VideoDetailsForm = () => {
 
   return (
     <>
-      <div className='d-flex justify-content-between align-items-center flex-column flex-sm-row gap-3 my-4'>
-        <h2 className='mb-0'>Video Details</h2>
+      <div className='d-flex justify-content-between align-items-center flex-column-reverse flex-sm-row gap-3 my-4'>
+        <h2 className='mb-0 align-self-sm-center align-self-start'>Video Details</h2>
         <Form.Group>
           <Form.Label className='custom-label'>Choose Video Type</Form.Label>
           <Form.Select

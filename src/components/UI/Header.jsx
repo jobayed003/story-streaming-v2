@@ -105,7 +105,7 @@ const Header = ({ headerRef }) => {
               type='text'
               placeholder='Search for videos'
               aria-label='Search for videos'
-              onChange={(e) => setText(e.target.value)}
+              onChange={(e) => fitlerSearchResult(e.target.value)}
             />
 
             <Button
