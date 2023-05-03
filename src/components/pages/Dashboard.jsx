@@ -30,6 +30,8 @@ const Dashboard = () => {
   const favouriteVidThumbnail = getThumbnails(favouriteVideos.map((ep) => ep.episodes[0].url));
   const searchedVideosThumbnail = getThumbnails(searchedVideos.map((ep) => ep.episodes[0].url));
 
+  const rowStyle = { marginTop: '8rem', scrollMargin: '8rem' };
+
   return (
     <>
       {!user && loadingState}
@@ -55,7 +57,7 @@ const Dashboard = () => {
             )}
             {/* Top trending videos list */}
 
-            <Row style={{ marginTop: '8rem' }} id={'top-trending'}>
+            <Row style={{ ...rowStyle }} id={'top-trending'}>
               <Col className='text-light'>
                 <h1>Top Trending</h1>
               </Col>
@@ -64,7 +66,7 @@ const Dashboard = () => {
             <ListHoverContent videos={trendingVideos} thumbnail={trendingVidThumbnail} />
 
             {/* Favourite Videos List */}
-            <Row style={{ marginTop: '8rem' }} id={'my-list'}>
+            <Row style={{ ...rowStyle }} id={'my-list'}>
               <Col className='text-light'>
                 <h1>My List</h1>
               </Col>
@@ -72,7 +74,7 @@ const Dashboard = () => {
 
             <ListHoverContent videos={favouriteVideos} thumbnail={favouriteVidThumbnail} />
 
-            <Row className='mt-5' id='tv-shows'>
+            <Row style={{ ...rowStyle }} id='tv-shows'>
               <Col className='mt-5 text-light'>
                 <h1>TV Shows</h1>
               </Col>

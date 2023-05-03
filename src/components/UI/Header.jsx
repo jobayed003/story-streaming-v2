@@ -13,6 +13,7 @@ import classes from './Header.module.css';
 
 const Header = ({ headerRef }) => {
   const [show, setShow] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const { scrollId, setScrollId, searchedText, setSearchedText, fitlerSearchResult } =
     useContext(StateContextProvider);
@@ -27,15 +28,11 @@ const Header = ({ headerRef }) => {
     localStorage.removeItem('videoID');
     auth.signOut();
   };
-  const scrollToElement = (offset) => {
+
+  const scrollToElement = () => {
     const element = document.getElementById(scrollId);
     path === 'dashboard' &&
-      window.scroll({
-        top:
-          element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - offset,
-        behavior: 'smooth',
-      });
-
+      element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
     setScrollId('');
   };
 
@@ -47,14 +44,19 @@ const Header = ({ headerRef }) => {
   ];
 
   useEffect(() => {
-    scrollId !== '' && scrollToElement(80);
+    scrollId !== '' && scrollToElement();
   }, []);
 
   return (
     <Navbar
       expand='lg'
       className='fontFamily'
-      style={{ width: '100%', position: 'fixed', zIndex: '1000', background: '#303030' }}
+      style={{
+        width: '100%',
+        position: 'fixed',
+        zIndex: '1000',
+        background: '#303030',
+      }}
       ref={headerRef}
     >
       <Container>
