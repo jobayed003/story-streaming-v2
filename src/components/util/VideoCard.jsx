@@ -21,8 +21,8 @@ const VideoCard = ({ imgSrc, scrollTo, video }) => {
 
   const playVideo = () => {
     navigate(`/watch/${video.id}`);
-    localStorage.removeItem('video');
-    localStorage.setItem('video', JSON.stringify(video));
+    localStorage.removeItem('videoID');
+    localStorage.setItem('videoID', JSON.stringify(video.episodes[0].id));
   };
 
   const deleteVideo = async () => {

@@ -24,7 +24,7 @@ const Header = ({ headerRef }) => {
 
   const handleLogout = () => {
     const auth = getAuth();
-    localStorage.removeItem('video');
+    localStorage.removeItem('videoID');
     auth.signOut();
   };
 
@@ -37,7 +37,7 @@ const Header = ({ headerRef }) => {
           element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - offset,
       });
     }
-    //     setScrollId('');
+    // setScrollId('');
   };
 
   const navLinks = [
@@ -49,7 +49,7 @@ const Header = ({ headerRef }) => {
 
   useEffect(() => {
     if (scrollId !== '') {
-      scrollToElement(-80);
+      scrollToElement(80);
     }
   }, []);
 
