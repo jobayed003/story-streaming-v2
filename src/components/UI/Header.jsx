@@ -30,13 +30,12 @@ const Header = ({ headerRef }) => {
 
   const scrollToElement = (offset) => {
     const element = document.getElementById(scrollId);
-    if (path === 'dashboard') {
-      window.scrollTo({
+    path === 'dashboard' &&
+      window.scroll({
         behavior: 'smooth',
         top:
           element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - offset,
       });
-    }
     setScrollId('');
   };
 
