@@ -34,8 +34,6 @@ export const VideoContext = ({ children }) => {
   useEffect(() => {
     (async () => {
       try {
-        console.log('called');
-
         setSeriesVideos(await fetchVideos());
       } catch {
         toast.error('Something Went Wrong!');

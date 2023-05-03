@@ -90,8 +90,6 @@ const AddContent = () => {
       });
     }
 
-    console.log(seriesDetails);
-
     const finalSeries = {
       ...seriesDetails,
       episodes: episodes.sort((a, b) => a.episode - b.episode),

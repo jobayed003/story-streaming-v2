@@ -13,9 +13,9 @@ import classes from './Header.module.css';
 
 const Header = ({ headerRef }) => {
   const [show, setShow] = useState(false);
-  const [text, setText] = useState('');
 
-  const { scrollId, setScrollId, fitlerSearchResult } = useContext(StateContextProvider);
+  const { scrollId, setScrollId, searchedText, setSearchedText, fitlerSearchResult } =
+    useContext(StateContextProvider);
   const { isAdmin, users, userCredentials } = useContext(AuthProvider);
 
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const Header = ({ headerRef }) => {
           element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - offset,
       });
     }
-    // setScrollId('');
+    setScrollId('');
   };
 
   const navLinks = [
@@ -95,24 +95,36 @@ const Header = ({ headerRef }) => {
           <Form
             className='d-flex'
             style={{ fontFamily: 'Roboto', color: '#fff' }}
+            role='search'
             onSubmit={(e) => {
               e.preventDefault();
-              fitlerSearchResult(text);
+              window.scrollTo(0, 0);
+              navigate('/dashboard');
+              fitlerSearchResult(searchedText);
             }}
           >
             <Form.Control
               className='form-control me-2'
-              type='text'
+              type='search'
+              value={searchedText}
               placeholder='Search for videos'
               aria-label='Search for videos'
-              onChange={(e) => fitlerSearchResult(e.target.value)}
+              onChange={(e) => {
+                window.scrollTo(0, 0);
+                setSearchedText(e.target.value);
+                fitlerSearchResult(e.target.value);
+              }}
             />
 
             <Button
               variant='light'
               type='button'
               style={{ paddingBlock: '0' }}
-              onClick={() => fitlerSearchResult(text)}
+              onClick={() => {
+                window.scrollTo(0, 0);
+                navigate('/dashboard');
+                fitlerSearchResult(searchedText);
+              }}
             >
               <FaSearch color='gray' />
             </Button>

@@ -58,16 +58,15 @@ export const StateContext = ({ children }) => {
     });
   };
 
-  const fitlerSearchResult = (text) => {
-    setSearchedText(text);
+  const fitlerSearchResult = () => {
     let vid = [];
-    const searchedText = text.toLowerCase().replace(' ', '').trim();
+    const text = searchedText.toLowerCase().replace(' ', '').trim();
 
     const getVideos = (searchFor) => {
       return seriesVideos.filter(
         (el) =>
-          el[searchFor].toLowerCase().replace(' ', '').startsWith(searchedText) ||
-          el[searchFor].toLowerCase().replace(' ', '').includes(searchedText)
+          el[searchFor].toLowerCase().replace(' ', '').startsWith(text) ||
+          el[searchFor].toLowerCase().replace(' ', '').includes(text)
       );
     };
 
@@ -101,7 +100,7 @@ export const StateContext = ({ children }) => {
     setClickedVideo,
     setScrollId,
     setSelectedAvatar,
-
+    setSearchedText,
     fitlerSearchResult,
   };
 
