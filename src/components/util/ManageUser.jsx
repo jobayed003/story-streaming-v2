@@ -3,7 +3,7 @@ import { Badge, Button, Modal, Spinner } from 'react-bootstrap';
 import AuthProvider from '../../context/AuthContext';
 
 export const ManageUser = ({ show, setShow, users }) => {
-  const { updateUserRole } = useContext(AuthProvider);
+  const { userCredentials, updateUserRole } = useContext(AuthProvider);
 
   const handleClose = () => setShow(false);
 
@@ -36,7 +36,7 @@ export const ManageUser = ({ show, setShow, users }) => {
                 {el.role === 'admin' && <Badge bg='success'>Admin</Badge>}
               </p>
 
-              {el.email !== 'admin@admin.com' && (
+              {el.email !== 'admin@admin.com' && userCredentials.uid !== el.uid && (
                 <Button
                   variant='light'
                   className='bg-success'

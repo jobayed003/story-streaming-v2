@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { Dropdown, Form, Modal } from 'react-bootstrap';
+import { Form, Modal } from 'react-bootstrap';
 import YouTube from 'react-youtube';
 import ChevronDownIcon from '../../assets/Icons/chevron-down.svg';
 import classes from './EpisodeDetailsModal.module.css';
@@ -10,7 +10,6 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
   const [seasons, setSeasons] = useState([]);
   const [episodes, setEpisodes] = useState([]);
   const [watchTime, setWatchTime] = useState(0);
-  const [visibilty, setVisibilty] = useState('visible');
 
   const thumbnail = getThumbnails(episodes.map((episode) => episode.url));
 

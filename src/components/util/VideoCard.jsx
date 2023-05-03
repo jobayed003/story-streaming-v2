@@ -40,7 +40,7 @@ const VideoCard = ({ imgSrc, scrollTo, video }) => {
     <Card style={{ background: 'gray' }}>
       <div
         className='d-flex flex-column justify-content-between'
-        style={{ background: 'gray', height: '23rem', maxWidth: '265px' }}
+        style={{ background: 'gray', height: '23rem', maxWidth: '270px' }}
       >
         <Card.Img
           variant='top'

@@ -9,7 +9,6 @@ import Footer from '../UI/Footer';
 import Header from '../UI/Header';
 import useLoadingState from '../hooks/useLoadingState';
 import ListHoverContent from '../util/ListHoverContent';
-import { getVideoUrls } from '../util/videoUtil';
 import { getThumbnails } from '../util/youtubeUtils';
 import './Dashboard.css';
 
@@ -25,17 +24,11 @@ const Dashboard = () => {
   const [user] = useAuthState(getAuth());
   const loadingState = useLoadingState();
 
-  // getting the urls
-  const trendingVidUrls = getVideoUrls(trendingVideos);
-  const tvShowUrls = getVideoUrls(tvShows);
-  const favouriteVideoUrls = getVideoUrls(favouriteVideos);
-  const searchedVideosUrls = getVideoUrls(searchedVideos);
-
   // Getting thumbnail from video Urls
-  const trendingVidThumbnail = getThumbnails(trendingVidUrls);
-  const tvshowsThumbnail = getThumbnails(tvShowUrls);
-  const favouriteVidThumbnail = getThumbnails(favouriteVideoUrls);
-  const searchedVideosThumbnail = getThumbnails(searchedVideosUrls);
+  const trendingVidThumbnail = getThumbnails(trendingVideos.map((ep) => ep.episodes[0].url));
+  const tvshowsThumbnail = getThumbnails(tvShows.map((ep) => ep.episodes[0].url));
+  const favouriteVidThumbnail = getThumbnails(favouriteVideos.map((ep) => ep.episodes[0].url));
+  const searchedVideosThumbnail = getThumbnails(searchedVideos.map((ep) => ep.episodes[0].url));
 
   return (
     <>

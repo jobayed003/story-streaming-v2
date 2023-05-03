@@ -14,7 +14,6 @@ import useLoadingState from '../hooks/useLoadingState';
 import useStatus from '../hooks/useStatus';
 import Slide from '../util/Slide';
 import VideoCard from '../util/VideoCard';
-import { getVideoUrls } from '../util/videoUtil';
 import {
   getThumbnails,
   parseVideoIDFromYoutubeURL,
@@ -42,11 +41,8 @@ const AddContent = () => {
   const loadingState = useLoadingState();
   const [user] = useAuthState(getAuth());
 
-  // Getting the urls
-  const seriesVideosThumbnail = getVideoUrls(seriesVideos);
-
   // Getting thumbnail from video Urls
-  const thumbnail = getThumbnails(seriesVideosThumbnail);
+  const thumbnail = getThumbnails(seriesVideos.map((ep) => ep.episodes[0].url));
 
   const getVideoDetails = async (url) => {
     const videoID = parseVideoIDFromYoutubeURL(url);
