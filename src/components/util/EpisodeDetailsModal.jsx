@@ -105,7 +105,7 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
             <span>{details.description}</span>
             <span>{details.genre}</span>
           </div>
-          <div className='d-flex flex-column p-4'>
+          <div className='d-flex flex-column p-4' style={{}}>
             <div className='d-flex align-items-center justify-content-between mb-3 border-bottom'>
               <h2 className='text-bold'>Episodes</h2>
 
@@ -127,7 +127,13 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
               </Form.Select>
             </div>
 
-            <motion.div variants={listVariants} initial='hidden' animate={'visible'}>
+            <motion.div
+              variants={listVariants}
+              initial='hidden'
+              animate={'visible'}
+              className='hide-scroll'
+              style={{ maxHeight: '280px', overflowY: 'scroll' }}
+            >
               {episodes.map((el, idx) => (
                 <motion.div variants={itemVariants} className='item'>
                   <div
