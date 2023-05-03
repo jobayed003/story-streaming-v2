@@ -4,7 +4,6 @@ import { fetchVideos } from '../components/util/videoUtil';
 
 const VideoContextProvider = createContext({
   seriesVideos: [],
-  videoUrls: [],
   series: {},
 
   setSeriesVideos: () => {},
@@ -17,11 +16,12 @@ const initialEpisode = {
   episode: 0,
   title: '',
   url: '',
-  season: 0,
+  season: 1,
 };
 
 export const VideoContext = ({ children }) => {
   const [seriesVideos, setSeriesVideos] = useState([]);
+  const [updated, setUpdated] = useState(false);
 
   const [seriesDetails, setSeriesDetails] = useState({
     description: '',
@@ -31,29 +31,24 @@ export const VideoContext = ({ children }) => {
     type: 'movies',
   });
 
-  const getVideoUrls = (videos) => {
-    let videoUrl = [];
-    videos.forEach((el) => {
-      videoUrl.push(el.episodes[0].url);
-      // el.episodes.forEach((item) => videoUrl.push(item.url));
-    });
-    return videoUrl;
-  };
-
   useEffect(() => {
     (async () => {
       try {
+        console.log('called');
+
         setSeriesVideos(await fetchVideos());
       } catch {
         toast.error('Something Went Wrong!');
       }
     })();
-  }, [seriesDetails]);
+  }, [updated]);
 
   const contextValue = {
     seriesDetails,
     seriesVideos,
-    getVideoUrls,
+    updated,
+
+    setUpdated,
 
     setSeriesDetails,
   };

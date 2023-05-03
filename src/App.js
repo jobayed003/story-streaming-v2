@@ -6,13 +6,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import logo from './assets/Icons/StorySaloon_Logo.svg';
 
-import { Test } from './components/Dashboard';
+import { Test } from './components/pages/Dashboard';
 
-const Landing = lazy(() => import('./components/Landing'));
-const Dashboard = lazy(() => import('./components/Dashboard'));
-const Viewing = lazy(() => import('./components/Viewing'));
-const Settings = lazy(() => import('./components/Settings'));
-const AddContent = lazy(() => import('./components/AddContent'));
+const Landing = lazy(() => import('./components/pages/Landing'));
+const Dashboard = lazy(() => import('./components/pages/Dashboard'));
+const Viewing = lazy(() => import('./components/pages/Viewing'));
+const Settings = lazy(() => import('./components/pages/Settings'));
+const AddContent = lazy(() => import('./components/pages/AddContent'));
 
 const App = () => (
   <Router>

@@ -60,12 +60,17 @@ export const StateContext = ({ children }) => {
   const fitlerSearchResult = (text) => {
     setSearchedText(text);
     let vid = [];
-    vid.push(seriesVideos.filter((el) => el.type.includes(text.toLowerCase())));
-    vid.push(seriesVideos.filter((el) => el.title.toLowerCase() === text.toLowerCase()));
-    vid.push(seriesVideos.filter((el) => el.genre.includes(text.toLowerCase())));
 
+    const searchedText = text.toLowerCase().replace(' ', '').trim();
+
+    vid.push(seriesVideos.filter((el) => el.type.replace('-', '').startsWith(searchedText)));
+    vid.push(
+      seriesVideos.filter((el) => el.title.toLowerCase().replace(' ', '').startsWith(searchedText))
+    );
+    vid.push(seriesVideos.filter((el) => el.genre.startsWith(searchedText)));
     setSearchedVideos(vid.flat());
   };
+
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {

@@ -47,10 +47,9 @@ export const updateSeries = async (id, updatedDetails) => {
 
 export const getVideoUrls = (videos) => {
   let videoUrl = [];
-
   videos.forEach((el) => {
     videoUrl.push(el.episodes[0].url);
+    // el.episodes.forEach((item) => videoUrl.push(item.url));
   });
-
   return videoUrl;
 };

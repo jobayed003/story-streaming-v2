@@ -17,9 +17,7 @@ function ytDurationToSeconds(duration) {
   return hours * 3600 + minutes * 60 + seconds;
 }
 
-export { parseVideoIDFromYoutubeURL, ytDurationToSeconds };
-
-export const getThumbnails = (urls, size) => {
+const getThumbnails = (urls, size) => {
   let video, results;
   let img = [];
 
@@ -41,3 +39,5 @@ export const getThumbnails = (urls, size) => {
   });
   return img;
 };
+
+export { parseVideoIDFromYoutubeURL, ytDurationToSeconds, getThumbnails };
