@@ -30,9 +30,7 @@ const Landing = () => {
         navigate('/dashboard');
         return;
       }
-      if (!user) {
-        setIsLoading(false);
-      }
+      !user && setIsLoading(false);
     });
   }, []);
 

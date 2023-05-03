@@ -4,7 +4,7 @@ import { Button, Container, Dropdown, Form, Image, Nav, Navbar } from 'react-boo
 import { FaBars, FaBell, FaSearch } from 'react-icons/fa';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
-import { Link } from 'react-scroll';
+import Scroll, { Link } from 'react-scroll';
 import logo from '../../assets/Icons/StorySaloon_Logo.svg';
 import AuthProvider from '../../context/AuthContext';
 import StateContextProvider from '../../context/StateContext';
@@ -27,15 +27,15 @@ const Header = ({ headerRef }) => {
     localStorage.removeItem('videoID');
     auth.signOut();
   };
-
   const scrollToElement = (offset) => {
     const element = document.getElementById(scrollId);
     path === 'dashboard' &&
       window.scroll({
-        behavior: 'smooth',
         top:
           element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - offset,
+        behavior: 'smooth',
       });
+
     setScrollId('');
   };
 
@@ -47,9 +47,7 @@ const Header = ({ headerRef }) => {
   ];
 
   useEffect(() => {
-    if (scrollId !== '') {
-      scrollToElement(80);
-    }
+    scrollId !== '' && scrollToElement(80);
   }, []);
 
   return (

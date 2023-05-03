@@ -189,9 +189,9 @@ const AddContent = () => {
                       <Form.Group className='mb-3'>
                         <Form.Label className='custom-label'>Season Number</Form.Label>
                         <Form.Control
-                          min={1}
-                          max={40}
-                          type='number'
+                          // min={1}
+                          // max={40}
+                          type='text'
                           value={el.season}
                           placeholder='Select Season'
                           onChange={(e) => {
