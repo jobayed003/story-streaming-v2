@@ -70,12 +70,13 @@ export const StateContext = ({ children }) => {
       );
     };
 
-    vid.push(getVideos('title'));
-    vid.push(getVideos('genre'));
-    vid.push(getVideos('type'));
-    vid.push(getVideos('description'));
-
-    setSearchedVideos(vid.flat());
+    vid.push(
+      ...getVideos('title'),
+      ...getVideos('type'),
+      ...getVideos('genre'),
+      ...getVideos('description')
+    );
+    setSearchedVideos(vid.filter((el, idx) => vid.indexOf(el) === idx));
   };
 
   useEffect(() => {

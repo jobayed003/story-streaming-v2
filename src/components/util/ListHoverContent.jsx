@@ -14,24 +14,13 @@ const ListHoverContent = ({ videos, thumbnail }) => {
 
   return (
     <>
-      {/* <Slide videoCount={videos.length}>
-        {videos.map((el, idx) => (
-          <div
-            className='slide'
-            key={Math.random() + idx}
-            style={{ width: size > 500 ? '400px' : '300px' }}
-          >
-            <ListCard imgSrc={thumbnail[idx]} videoDetails={el} />
-          </div>
-        ))}
-      </Slide> */}
       {videos.length <= 0 ? (
         <Row>{status}</Row>
-      ) : videos.length <= 4 ? (
+      ) : size.width > 575 && videos.length < 4 ? (
         <div
           className='d-flex ms-3'
           style={{
-            gap: '4rem',
+            gap: size.width > 1200 ? '4.5rem' : '2rem',
             marginLeft: '2.5rem',
             marginBottom: '4rem',
             flexWrap: 'wrap',
@@ -48,7 +37,7 @@ const ListHoverContent = ({ videos, thumbnail }) => {
             <div
               className='slide'
               key={Math.random() + idx}
-              style={{ width: size > 500 ? '400px' : '300px' }}
+              style={{ width: size.width > 500 ? '400px' : '300px' }}
             >
               <ListCard imgSrc={thumbnail[idx]} videoDetails={el} />
             </div>

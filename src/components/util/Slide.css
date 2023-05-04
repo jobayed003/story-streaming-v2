@@ -33,8 +33,11 @@
   margin-left: 0 !important;
 }
 
-.slick-list > div {
-  margin-left: 0 !important;
-} 
 
 */
+
+@media only screen and (min-width: 480px) {
+  .slick-list > div {
+    margin-left: 0 !important;
+  }
+}

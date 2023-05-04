@@ -74,6 +74,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
     width: '100%',
     playerVars: {
       autoplay: 1,
+      mute: 1,
     },
   };
   const conditionalStyle =

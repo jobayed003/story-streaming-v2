@@ -11,9 +11,9 @@ const Slide = ({ children, videoCount }) => {
     // infinite: true,
     speed: 500,
     slidesToShow: 4,
-    slidesToScroll: 4,
+    slidesToScroll: 1,
     // autoplay: true,
-    autoplaySpeed: 2500,
+    autoplaySpeed: 2000,
     // centerMode: true,
     pauseonhover: true,
     // variableWidth: true,
@@ -21,10 +21,10 @@ const Slide = ({ children, videoCount }) => {
       {
         breakpoint: 1400,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 3.5,
           slidesToScroll: 3,
           infinite: true,
-          centerMode: true,
+          // centerMode: true,
         },
       },
       {
@@ -33,7 +33,7 @@ const Slide = ({ children, videoCount }) => {
           slidesToShow: 2.66,
           slidesToScroll: 3,
           infinite: true,
-          centerMode: true,
+          // centerMode: true,
         },
       },
       {
@@ -69,7 +69,7 @@ const Slide = ({ children, videoCount }) => {
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: path.includes('upload') ? 1 : 2,
+          slidesToShow: 1,
           slidesToScroll: 1,
         },
       },
@@ -78,6 +78,7 @@ const Slide = ({ children, videoCount }) => {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          centerMode: false,
         },
       },
     ],

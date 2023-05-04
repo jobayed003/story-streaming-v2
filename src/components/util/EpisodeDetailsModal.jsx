@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Form, Modal } from 'react-bootstrap';
 import YouTube from 'react-youtube';
 import ChevronDownIcon from '../../assets/Icons/chevron-down.svg';
+import useDimension from '../hooks/useDimension';
 import classes from './EpisodeDetailsModal.module.css';
 import { getThumbnails } from './youtubeUtils';
 
@@ -10,6 +11,7 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
   const [seasons, setSeasons] = useState([]);
   const [episodes, setEpisodes] = useState([]);
   const [watchTime, setWatchTime] = useState(0);
+  const { width } = useDimension();
 
   const thumbnail = getThumbnails(episodes.map((episode) => episode.url));
 

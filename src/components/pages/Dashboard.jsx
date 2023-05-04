@@ -75,7 +75,7 @@ const Dashboard = () => {
             <ListHoverContent videos={favouriteVideos} thumbnail={favouriteVidThumbnail} />
 
             <Row style={{ ...rowStyle }} id='tv-shows'>
-              <Col className='mt-5 text-light'>
+              <Col className='text-light'>
                 <h1>TV Shows</h1>
               </Col>
             </Row>

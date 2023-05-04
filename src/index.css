@@ -50,6 +50,10 @@ html::-webkit-scrollbar {
   display: none;
 }
 
+.row {
+  --bs-gutter-x: 2rem;
+}
+
 /* navbar */
 
 .nav-link {
@@ -359,5 +363,15 @@ nav .sign-in-button a {
   }
   .accordion-button {
     font-size: 20px;
+  }
+}
+
+/* media query */
+@media only screen and (max-width: 575px) {
+  .modal-dialog {
+    justify-content: center;
+  }
+  .modal-content {
+    width: 90% !important;
   }
 }

@@ -20,6 +20,7 @@ const Header = ({ headerRef }) => {
   const { isAdmin, users, userCredentials } = useContext(AuthProvider);
 
   const navigate = useNavigate();
+  const navRef = useRef();
   const location = useLocation();
   const path = location.pathname.replace('/', '');
 
@@ -29,10 +30,16 @@ const Header = ({ headerRef }) => {
     auth.signOut();
   };
 
-  const scrollToElement = () => {
+  const scrollToElement = (offset) => {
     const element = document.getElementById(scrollId);
     path === 'dashboard' &&
       element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+    // path === 'dashboard' && window.scrollTo({ top: y, behavior: 'smooth' });
+    // window.document.body.scrollTo({
+    //   top:
+    //     element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - offset,
+    //   behavior: 'smooth',
+    // });
     setScrollId('');
   };
 
@@ -44,17 +51,17 @@ const Header = ({ headerRef }) => {
   ];
 
   useEffect(() => {
-    scrollId !== '' && scrollToElement();
+    scrollId !== '' && scrollToElement(-100);
   }, []);
 
   return (
     <Navbar
       expand='lg'
+      collapseOnSelect
       className='fontFamily'
+      fixed='top'
+      // sticky='top'
       style={{
-        width: '100%',
-        position: 'fixed',
-        zIndex: '1000',
         background: '#303030',
       }}
       ref={headerRef}
@@ -68,8 +75,8 @@ const Header = ({ headerRef }) => {
         <Navbar.Toggle aria-controls='navbarScroll'>
           <FaBars />
         </Navbar.Toggle>
-        <Navbar.Collapse className='justify-content-center' id='navbarScroll'>
-          <Nav className='align-items-center me-auto mb-2 mb-lg-0' navbarScroll>
+        <Navbar.Collapse ref={navRef} className={`justify-content-center`} id='navbarScroll'>
+          <Nav className='align-items-center me-auto mb-2 mb-lg-0'>
             {navLinks.map((lnk) => (
               <Link
                 to={lnk.link}
@@ -100,6 +107,7 @@ const Header = ({ headerRef }) => {
               window.scrollTo(0, 0);
               navigate('/dashboard');
               fitlerSearchResult(searchedText);
+              navRef.current.classList.remove('show');
             }}
           >
             <Form.Control
@@ -114,7 +122,6 @@ const Header = ({ headerRef }) => {
                 fitlerSearchResult(e.target.value);
               }}
             />
-
             <Button
               variant='light'
               type='button'
@@ -123,19 +130,16 @@ const Header = ({ headerRef }) => {
                 window.scrollTo(0, 0);
                 navigate('/dashboard');
                 fitlerSearchResult(searchedText);
+                navRef.current.classList.remove('show');
               }}
             >
               <FaSearch color='gray' />
             </Button>
           </Form>
-          <Nav className='align-items-center ms-3 mb-2 mb-lg-0'>
-            <Nav.Item className='px-2'>
-              <NavLink className={'nav-link'}>
-                <FaBell fontSize={'1.5rem'} />
-              </NavLink>
-            </Nav.Item>
-          </Nav>
-          <Nav className='align-items-center'>
+          <div className='d-flex justify-content-center align-items-center ms-3'>
+            <NavLink className={'nav-link '}>
+              <FaBell fontSize={'1.5rem'} />
+            </NavLink>
             <Dropdown
               style={{ fontFamily: 'Roboto' }}
               className='d-flex flex-column align-items-center'
@@ -197,7 +201,7 @@ const Header = ({ headerRef }) => {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-          </Nav>
+          </div>
         </Navbar.Collapse>
       </Container>
     </Navbar>
