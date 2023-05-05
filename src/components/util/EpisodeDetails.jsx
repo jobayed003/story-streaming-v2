@@ -91,7 +91,7 @@ export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
           <div className={'d-flex flex-column p-4 pb-0'}>
             <span style={{ fontWeight: 'bold', fontSize: '2rem' }}>{details.title}</span>
             <span>{details.description}</span>
-            <span>{details.genre}a</span>
+            <span>{details.genre}</span>
           </div>
           <div className='d-flex flex-column p-4' style={{}}>
             <div className='d-flex align-items-center justify-content-between mb-3 border-bottom'>

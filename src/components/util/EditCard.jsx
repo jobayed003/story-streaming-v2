@@ -28,7 +28,9 @@ const EditCard = ({ imgSrc, scrollTo, video }) => {
   const deleteVideo = async () => {
     await deleteDoc(doc(db, 'series', video.id));
     setUpdated(!updated);
-    toast.success('Video Deleted Successfully');
+    toast.dark('Video Deleted Successfully!', {
+      theme: 'dark',
+    });
   };
 
   const btnStyles = {
