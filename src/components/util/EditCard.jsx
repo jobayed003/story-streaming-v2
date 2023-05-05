@@ -3,7 +3,6 @@ import { useContext } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import StateContextProvider from '../../context/StateContext';
 import VideoContextProvider from '../../context/VideoContext';
 import { db } from '../../firebase.config';
 import { getSeriesData } from './videoUtil';

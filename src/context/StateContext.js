@@ -60,13 +60,22 @@ export const StateContext = ({ children }) => {
 
   const fitlerSearchResult = () => {
     let vid = [];
-    const text = searchedText.toLowerCase().replace(' ', '').trim();
+    const text = searchedText
+      .toLowerCase()
+      .replace(/\b(?:-|' '|,)\b/gi, '')
+      .trim();
 
     const getVideos = (searchFor) => {
       return seriesVideos.filter(
         (el) =>
-          el[searchFor].toLowerCase().replace(' ', '').startsWith(text) ||
-          el[searchFor].toLowerCase().replace(' ', '').includes(text)
+          el[searchFor]
+            .toLowerCase()
+            .replace(/\b(?:-|' '|,)\b/gi, '')
+            .startsWith(text) ||
+          el[searchFor]
+            .toLowerCase()
+            .replace(/\b(?:-|' '|,)\b/gi, '')
+            .includes(text)
       );
     };
 

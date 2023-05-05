@@ -20,7 +20,8 @@ import StateContextProvider from '../../context/StateContext';
 import Footer from '../UI/Footer';
 import Header from '../UI/Header';
 import useLoadingState from '../hooks/useLoadingState';
-import { updateUserDoc } from '../util/updateUserDoc';
+
+import { updateUserDoc } from '../util/firebaseUtil';
 import './Settings.css';
 
 const Settings = () => {
