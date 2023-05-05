@@ -1,21 +1,17 @@
 import { getAuth } from 'firebase/auth';
+import { deleteDoc, doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import { useContext, useRef, useState } from 'react';
-import { Button, Card, Form, Modal } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
-
-import { deleteDoc, doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { FaHeart } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import YouTube from 'react-youtube';
-
 import StateContextProvider from '../../context/StateContext';
 import VideoContextProvider from '../../context/VideoContext';
-
 import { db } from '../../firebase.config';
-
 import useDimension from '../hooks/useDimension';
-import { EpisodeDetailsModal } from './EpisodeDetailsModal';
+import { EpisodeDetails } from './EpisodeDetails';
 
 export const ListCard = ({ imgSrc, videoDetails }) => {
   const [hovered, setHovered] = useState(false);
@@ -31,7 +27,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
 
   // Custom Hooks
   const [user] = useAuthState(getAuth());
-  const size = useDimension();
+  const { width } = useDimension();
 
   // Checking if the vidoe is a favourite video
   let favVideosUniqueID = [];
@@ -70,7 +66,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
   };
 
   const opts = {
-    height: size.width > 1000 ? '250' : '200',
+    height: width > 1000 ? '250' : '200',
     width: '100%',
     playerVars: {
       autoplay: 1,
@@ -84,6 +80,13 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
 
   return (
     <div className='position-relative' ref={ref}>
+      <EpisodeDetails
+        show={show}
+        setShow={setShow}
+        details={videoDetails}
+        handleClick={handleClick}
+      />
+
       <motion.div
         className='box'
         initial={{ opacity: 0, scale: 0.5 }}
@@ -102,16 +105,10 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
         <img
           src={imgSrc}
           alt='thumbnail'
-          width={size.width > 1000 ? '250px' : '200px'}
+          width={width > 1000 ? '250px' : '200px'}
           className='cursor-pointer'
         />
       </motion.div>
-      <EpisodeDetailsModal
-        show={show}
-        setShow={setShow}
-        details={videoDetails}
-        handleClick={handleClick}
-      />
 
       {hovered && (
         <motion.div
@@ -128,7 +125,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
           }}
           onMouseLeave={() => setHovered(false)}
           style={{
-            width: size.width > 1000 ? '350px' : '300px',
+            width: width > 1000 ? '350px' : '300px',
             position: 'absolute',
             top: '-25%',
             left: '-20%',
@@ -142,7 +139,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
               fontFamily: 'Roboto',
               background: 'gray',
               fontSize: '1.5rem',
-              transform: size.width > 768 && conditionalStyle,
+              transform: width > 768 && conditionalStyle,
               transition: 'all .3s',
               zIndex: '100000',
             }}
@@ -155,7 +152,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
                 position: 'absolute',
                 background: 'rgba(0,0,0,0.2)',
                 width: '100%',
-                height: size.width > 1000 ? '250px' : '200px',
+                height: width > 1000 ? '250px' : '200px',
               }}
               className='cursor-pointer'
               onClick={() => handleClick(videoDetails.episodes[0].id)}

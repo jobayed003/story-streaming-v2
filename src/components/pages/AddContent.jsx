@@ -1,5 +1,5 @@
 import { getAuth } from 'firebase/auth';
-import { addDoc, doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { useContext, useRef } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -120,9 +120,9 @@ const AddContent = () => {
       {!user && loadingState}
       {/* {!isAdmin && <Navigate to='/dashboard' />} */}
       {user && isAdmin && (
-        <div className='d-flex'>
+        <main className='d-flex container'>
           <Header />
-          <Container style={{ marginTop: '5rem' }}>
+          <Container style={{ marginTop: '5rem' }} as='section'>
             <Row ref={formRef}>
               <Col>
                 <h1 className='text-center text-white'>Add a video</h1>
@@ -257,7 +257,7 @@ const AddContent = () => {
             </Container>
             <Footer />
           </Container>
-        </div>
+        </main>
       )}
     </>
   );

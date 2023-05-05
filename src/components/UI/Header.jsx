@@ -60,7 +60,6 @@ const Header = ({ headerRef }) => {
       collapseOnSelect
       className='fontFamily'
       fixed='top'
-      // sticky='top'
       style={{
         background: '#303030',
       }}

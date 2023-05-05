@@ -17,11 +17,11 @@ import { FaEye } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import AuthProvider from '../../context/AuthContext';
 import StateContextProvider from '../../context/StateContext';
-import './Settings.css';
 import Footer from '../UI/Footer';
 import Header from '../UI/Header';
 import useLoadingState from '../hooks/useLoadingState';
 import { updateUserDoc } from '../util/updateUserDoc';
+import './Settings.css';
 
 const Settings = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -34,7 +34,7 @@ const Settings = () => {
   const loadingState = useLoadingState();
 
   return (
-    <>
+    <Container as='main'>
       {!user && loadingState}
 
       {user && (
@@ -55,7 +55,7 @@ const Settings = () => {
             className='mainsection'
             style={{ marginBlock: '5rem', marginTop: '8rem' }}
           >
-            <Row className='brdr py-3 align-items-center settings-container'>
+            <Row className='py-3 align-items-center settings-container'>
               <Col className='py-2 d-flex justify-content-around gap-4 flex-wrap'>
                 <h2>ACCOUNT SETTINGS</h2>
                 <div>
@@ -91,7 +91,7 @@ const Settings = () => {
           <Footer />
         </>
       )}
-    </>
+    </Container>
   );
 };
 

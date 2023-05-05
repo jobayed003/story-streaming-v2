@@ -3,15 +3,13 @@ import { useEffect, useState } from 'react';
 import { Form, Modal } from 'react-bootstrap';
 import YouTube from 'react-youtube';
 import ChevronDownIcon from '../../assets/Icons/chevron-down.svg';
-import useDimension from '../hooks/useDimension';
-import classes from './EpisodeDetailsModal.module.css';
+import classes from './EpisodeDetails.module.css';
 import { getThumbnails } from './youtubeUtils';
 
-export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => {
+export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
   const [seasons, setSeasons] = useState([]);
   const [episodes, setEpisodes] = useState([]);
   const [watchTime, setWatchTime] = useState(0);
-  const { width } = useDimension();
 
   const thumbnail = getThumbnails(episodes.map((episode) => episode.url));
 
@@ -39,6 +37,8 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
     const totalSeason = [...new Set(details.episodes.map((el) => el.season))];
     setSeasons(totalSeason);
     getSeason(1);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getSeason = (season) => {
@@ -105,7 +105,7 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
           <div className={'d-flex flex-column p-4 pb-0'}>
             <span style={{ fontWeight: 'bold', fontSize: '2rem' }}>{details.title}</span>
             <span>{details.description}</span>
-            <span>{details.genre}</span>
+            <span>{details.genre}a</span>
           </div>
           <div className='d-flex flex-column p-4' style={{}}>
             <div className='d-flex align-items-center justify-content-between mb-3 border-bottom'>
@@ -138,12 +138,14 @@ export const EpisodeDetailsModal = ({ show, setShow, details, handleClick }) => 
             >
               {episodes.map((el, idx) => (
                 <motion.div variants={itemVariants} className='item'>
-                  <div
-                    className='d-flex justify-content gap-3 align-items-center mb-2 pb-1 cursor-pointer border-bottom'
-                    onClick={() => handleClick(el.id)}
-                  >
+                  <div className='d-flex justify-content gap-3 align-items-center mb-2 pb-1 border-bottom'>
                     <span>{idx + 1}</span>
-                    <img alt='img' src={thumbnail[idx]} className={classes.episodesImg} />
+                    <img
+                      alt='img'
+                      src={thumbnail[idx]}
+                      className={`${classes.episodesImg} cursor-pointer`}
+                      onClick={() => handleClick(el.id)}
+                    />
 
                     <div
                       className='d-flex flex-column mt-2'

@@ -1,13 +1,11 @@
 import { Row } from 'react-bootstrap';
 import { ListCard } from './ListCard';
 
-import { SwiperSlide } from 'swiper/react';
 import useDimension from '../hooks/useDimension';
 import useStatus from '../hooks/useStatus';
-import Carousel from './Carousel';
 import Slide from './Slide';
 
-const ListHoverContent = ({ videos, thumbnail }) => {
+const CardContainer = ({ videos, thumbnail }) => {
   // Custom Hooks
   const status = useStatus(videos);
   const size = useDimension();
@@ -48,4 +46,4 @@ const ListHoverContent = ({ videos, thumbnail }) => {
   );
 };
 
-export default ListHoverContent;
+export default CardContainer;

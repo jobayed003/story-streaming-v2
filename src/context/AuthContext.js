@@ -44,12 +44,11 @@ export const AuthContext = ({ children }) => {
       const { displayName, email, uid } = user;
 
       (async () => {
-        // Getting Logged in user
+        // Getting Logged in user details
         onSnapshot(doc(db, 'users', uid), (doc) => {
           setUserCredentials({
             name: displayName,
             email,
-
             //  for existing users
             avatarDetails: doc.data().avatarDetails || {
               id: 1,

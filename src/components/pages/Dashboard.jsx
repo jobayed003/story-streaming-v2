@@ -8,7 +8,7 @@ import { createCheckoutSession } from '../../stripe/createCheckoutSession';
 import Footer from '../UI/Footer';
 import Header from '../UI/Header';
 import useLoadingState from '../hooks/useLoadingState';
-import ListHoverContent from '../util/ListHoverContent';
+import CardContainer from '../util/CardContainer';
 import { getThumbnails } from '../util/youtubeUtils';
 import './Dashboard.css';
 
@@ -33,7 +33,7 @@ const Dashboard = () => {
   const rowStyle = { marginTop: '8rem', scrollMargin: '8rem' };
 
   return (
-    <>
+    <Container as='main'>
       {!user && loadingState}
       {user && (
         <>
@@ -52,7 +52,7 @@ const Dashboard = () => {
                     <h1>Results for "{searchedText}"</h1>
                   </Col>
                 </Row>
-                <ListHoverContent videos={searchedVideos} thumbnail={searchedVideosThumbnail} />
+                <CardContainer videos={searchedVideos} thumbnail={searchedVideosThumbnail} />
               </>
             )}
             {/* Top trending videos list */}
@@ -63,7 +63,7 @@ const Dashboard = () => {
               </Col>
             </Row>
 
-            <ListHoverContent videos={trendingVideos} thumbnail={trendingVidThumbnail} />
+            <CardContainer videos={trendingVideos} thumbnail={trendingVidThumbnail} />
 
             {/* Favourite Videos List */}
             <Row style={{ ...rowStyle }} id={'my-list'}>
@@ -72,7 +72,7 @@ const Dashboard = () => {
               </Col>
             </Row>
 
-            <ListHoverContent videos={favouriteVideos} thumbnail={favouriteVidThumbnail} />
+            <CardContainer videos={favouriteVideos} thumbnail={favouriteVidThumbnail} />
 
             <Row style={{ ...rowStyle }} id='tv-shows'>
               <Col className='text-light'>
@@ -80,7 +80,7 @@ const Dashboard = () => {
               </Col>
             </Row>
 
-            <ListHoverContent videos={tvShows} thumbnail={tvshowsThumbnail} />
+            <CardContainer videos={tvShows} thumbnail={tvshowsThumbnail} />
             {/* {tvShows.length <= 0 ? (
               <Row>{status}</Row>
             ) : tvShows.length <= 4 ? (
@@ -128,7 +128,7 @@ const Dashboard = () => {
           <Footer />
         </>
       )}
-    </>
+    </Container>
   );
 };
 

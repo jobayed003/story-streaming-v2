@@ -3,6 +3,11 @@
   border-radius: 5px;
 }
 
+.episodesImg:hover {
+  transform: scale(0.9);
+  transition: all 0.3s;
+}
+
 /* media query */
 @media only screen and (max-width: 575px) {
   .episodesImg {
