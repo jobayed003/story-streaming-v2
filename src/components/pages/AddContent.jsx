@@ -12,8 +12,8 @@ import Footer from '../UI/Footer';
 import Header from '../UI/Header';
 import useLoadingState from '../hooks/useLoadingState';
 import useStatus from '../hooks/useStatus';
+import { default as EditCard, default as VideoCard } from '../util/EditCard';
 import Slide from '../util/Slide';
-import VideoCard from '../util/VideoCard';
 import {
   getThumbnails,
   parseVideoIDFromYoutubeURL,
@@ -108,7 +108,7 @@ const AddContent = () => {
         title: '',
       });
     } catch (error) {
-      toast.dark('Something Went Wrong', {
+      toast.dark('Something Went Wrong.Check the values and try again!', {
         theme: 'dark',
       });
       console.log(error);
@@ -191,6 +191,7 @@ const AddContent = () => {
                         <Form.Control
                           // min={1}
                           // max={40}
+                          required
                           type='text'
                           value={el.season}
                           placeholder='Select Season'
@@ -233,7 +234,7 @@ const AddContent = () => {
               </Col>
             </Row>
 
-            <Container as='section' className='listsection py-2 overflow-hidden'>
+            <Row className='listsection py-2 overflow-hidden'>
               {seriesVideos.length <= 0 ? (
                 status
               ) : seriesVideos.length <= 4 ? (
@@ -242,7 +243,7 @@ const AddContent = () => {
                   style={{ gap: '1rem', flexWrap: 'wrap', marginBottom: '4rem' }}
                 >
                   {seriesVideos.map((video, idx) => (
-                    <VideoCard video={video} imgSrc={thumbnail[idx]} scrollTo={formRef} />
+                    <EditCard video={video} imgSrc={thumbnail[idx]} scrollTo={formRef} />
                   ))}
                 </div>
               ) : (
@@ -254,7 +255,7 @@ const AddContent = () => {
                   ))}
                 </Slide>
               )}
-            </Container>
+            </Row>
             <Footer />
           </Container>
         </main>

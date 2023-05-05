@@ -19,16 +19,25 @@ const Dashboard = () => {
 
   const trendingVideos = seriesVideos.filter((vid) => vid.type === 'others');
   const tvShows = seriesVideos.filter((vid) => vid.type === 'tv-shows');
+  const movies = seriesVideos.filter((vid) => vid.type === 'movies');
+  const environment = seriesVideos.filter((vid) => vid.type === 'environment');
 
   // Custom Hooks
   const [user] = useAuthState(getAuth());
   const loadingState = useLoadingState();
 
   // Getting thumbnail from video Urls
-  const trendingVidThumbnail = getThumbnails(trendingVideos.map((ep) => ep.episodes[0].url));
-  const tvshowsThumbnail = getThumbnails(tvShows.map((ep) => ep.episodes[0].url));
-  const favouriteVidThumbnail = getThumbnails(favouriteVideos.map((ep) => ep.episodes[0].url));
-  const searchedVideosThumbnail = getThumbnails(searchedVideos.map((ep) => ep.episodes[0].url));
+
+  const videosUrl = (videos) => {
+    return videos.map((ep) => ep.episodes[0].url);
+  };
+
+  const trendingVidThumbnail = getThumbnails(videosUrl(trendingVideos));
+  const tvshowsThumbnail = getThumbnails(videosUrl(tvShows));
+  const favouriteVidThumbnail = getThumbnails(videosUrl(favouriteVideos));
+  const searchedVideosThumbnail = getThumbnails(videosUrl(searchedVideos));
+  const moviesThumbnail = getThumbnails(videosUrl(movies));
+  const environmentVideosThumbnail = getThumbnails(videosUrl(environment));
 
   const rowStyle = { marginTop: '8rem', scrollMargin: '8rem' };
 
@@ -81,49 +90,19 @@ const Dashboard = () => {
             </Row>
 
             <CardContainer videos={tvShows} thumbnail={tvshowsThumbnail} />
-            {/* {tvShows.length <= 0 ? (
-              <Row>{status}</Row>
-            ) : tvShows.length <= 4 ? (
-              <div
-                className='d-flex justify-content-start ms-3'
-                style={{
-                  gap: '4rem',
-                  marginLeft: '2.5rem',
-                  marginBottom: '4rem',
-                  flexWrap: 'wrap',
-                }}
-              >
-                {tvShows.map((el, idx) => (
-                  <TvShowCard imgSrc={tvshowsThumbnail[idx]} videoDetails={el} />
-                ))}
-              </div>
-            ) : (
-              <Slide>
-                {tvShows.map((el, idx) => (
-                  <div
-                    className='slide'
-                    key={Math.random() + idx}
-                    style={{ width: size > 500 ? '400px' : '300px' }}
-                  >
-                    <TvShowCard imgSrc={tvshowsThumbnail[idx]} videoDetails={el} />
-                  </div>
-                ))}
-              </Slide>
-            )} */}
-
-            {/* <TvShowCard videos={tvshows} thumbnail={tvshowsThumbnail} /> */}
-
-            <Row className='mt-5' id='movies'>
+            <Row style={{ ...rowStyle }} id='movies'>
               <Col className='mt-5 text-light'>
                 <h1>Top Movies</h1>
               </Col>
             </Row>
+            <CardContainer videos={movies} thumbnail={moviesThumbnail} />
 
-            <Row className='mt-5' id='environment'>
+            <Row style={{ ...rowStyle }} id='environment'>
               <Col className='mt-5 text-light'>
                 <h1>Environment</h1>
               </Col>
             </Row>
+            <CardContainer videos={environment} thumbnail={environmentVideosThumbnail} />
           </Container>
           <Footer />
         </>

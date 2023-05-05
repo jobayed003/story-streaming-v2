@@ -16,7 +16,7 @@ const initialEpisode = {
   episode: 0,
   title: '',
   url: '',
-  season: 1,
+  season: 0,
 };
 
 export const VideoContext = ({ children }) => {
