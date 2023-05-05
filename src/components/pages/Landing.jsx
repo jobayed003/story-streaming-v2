@@ -32,24 +32,25 @@ const Landing = () => {
       }
       !user && setIsLoading(false);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
+      {authStep === 'register' ? (
+        <Register show={show} setShow={setShow} />
+      ) : (
+        <Login show={show} setShow={setShow} />
+      )}
       {isLoading && (
         <Row className='justify-content-center align-items-center' style={{ height: '100vh' }}>
           <Image src={logo} alt='' style={{ width: '300px', height: '80px' }} />
         </Row>
       )}
       {!isLoading && (
-        <>
-          {authStep === 'register' ? (
-            <Register show={show} setShow={setShow} />
-          ) : (
-            <Login show={show} setShow={setShow} />
-          )}
-
+        <main>
           <Container
+            as='section'
             fluid
             style={{
               backgroundImage: `url(${placeholder})`,
@@ -259,7 +260,7 @@ const Landing = () => {
           {/* footer-start */}
           <Footer />
           {/* footer-end */}
-        </>
+        </main>
       )}
     </>
   );

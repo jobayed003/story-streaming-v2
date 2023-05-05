@@ -4,6 +4,7 @@ import { Form, Modal } from 'react-bootstrap';
 import YouTube from 'react-youtube';
 import ChevronDownIcon from '../../assets/Icons/chevron-down.svg';
 import classes from './EpisodeDetails.module.css';
+import { getDuration } from './videoUtil';
 import { getThumbnails } from './youtubeUtils';
 
 export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
@@ -16,21 +17,6 @@ export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
   const handleClose = () => {
     setShow(false);
     getSeason(1);
-  };
-
-  const getDuration = (duration) => {
-    // Hours, minutes and seconds
-    const hrs = ~~(duration / 3600);
-    const mins = ~~((duration % 3600) / 60);
-    const secs = ~~duration % 60;
-    let time = '';
-    if (hrs > 0) {
-      time += '' + hrs + 'h ' + (mins < 10 ? '0' : '');
-    }
-    time += '' + mins + 'm ' + (secs < 10 ? '0' : '');
-    time += '' + secs + 's';
-
-    return time;
   };
 
   useEffect(() => {

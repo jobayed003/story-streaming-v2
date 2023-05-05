@@ -32,6 +32,21 @@ export const updateSeries = async (id, updatedDetails) => {
   });
 };
 
+export const getDuration = (duration) => {
+  // Hours, minutes and seconds
+  const hrs = ~~(duration / 3600);
+  const mins = ~~((duration % 3600) / 60);
+  const secs = ~~duration % 60;
+  let time = '';
+  if (hrs > 0) {
+    time += '' + hrs + 'h ' + (mins < 10 ? '0' : '');
+  }
+  time += '' + mins + 'm ' + (secs < 10 ? '0' : '');
+  time += '' + secs + 's';
+
+  return time;
+};
+
 // export const getVideoUrls = (videos) => {
 //   return videos.map(
 //     (el) => el.episodes[0].url // el.episodes.forEach((item) => videoUrl.push(item.url));

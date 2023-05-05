@@ -4,16 +4,16 @@ import { Button, Container, Dropdown, Form, Image, Nav, Navbar } from 'react-boo
 import { FaBars, FaBell, FaSearch } from 'react-icons/fa';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
-import Scroll, { Link } from 'react-scroll';
+import { Link } from 'react-scroll';
 import logo from '../../assets/Icons/StorySaloon_Logo.svg';
 import AuthProvider from '../../context/AuthContext';
 import StateContextProvider from '../../context/StateContext';
+import useDimension from '../hooks/useDimension';
 import { ManageUser } from '../util/ManageUser';
 import classes from './Header.module.css';
 
 const Header = ({ headerRef }) => {
   const [show, setShow] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
   const { scrollId, setScrollId, searchedText, setSearchedText, fitlerSearchResult } =
     useContext(StateContextProvider);
@@ -23,6 +23,7 @@ const Header = ({ headerRef }) => {
   const navRef = useRef();
   const location = useLocation();
   const path = location.pathname.replace('/', '');
+  const { width } = useDimension();
 
   const handleLogout = () => {
     const auth = getAuth();
@@ -52,6 +53,7 @@ const Header = ({ headerRef }) => {
 
   useEffect(() => {
     scrollId !== '' && scrollToElement(-100);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -135,7 +137,11 @@ const Header = ({ headerRef }) => {
               <FaSearch color='gray' />
             </Button>
           </Form>
-          <div className='d-flex justify-content-center align-items-center ms-3'>
+          <div
+            className={`d-flex justify-content-center align-items-center ms-3 ${
+              width < 992 ? 'my-2' : ''
+            }`}
+          >
             <NavLink className={'nav-link '}>
               <FaBell fontSize={'1.5rem'} />
             </NavLink>

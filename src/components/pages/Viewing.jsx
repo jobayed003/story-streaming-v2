@@ -1,8 +1,13 @@
+import { getAuth } from 'firebase/auth';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { Container } from 'react-bootstrap';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import YouTube from 'react-youtube';
 import VideoContextProvider from '../../context/VideoContext';
 import Header from '../UI/Header';
 import useDimension from '../hooks/useDimension';
+import useLoadingState from '../hooks/useLoadingState';
+import { getDuration } from '../util/videoUtil';
 
 function getWidth() {
   return Math.max(
@@ -78,6 +83,9 @@ const Viewing = () => {
     onPlaybackRateChange: () => {},
     onPlaybackQualityChange: () => {},
   });
+  const [watchTime, setWatchTime] = useState(0);
+  const loadingState = useLoadingState();
+  const [user] = useAuthState(getAuth());
 
   useEffect(() => {
     setDetails((prev) => ({ ...prev, opts: { ...prev.opts, width: width, height: height } }));
@@ -85,11 +93,19 @@ const Viewing = () => {
 
   return (
     <>
-      <Header headerRef={headerRef} />
-      <div className='text-light'>
-        {/* <h1>{title}</h1> */}
-        <YouTube {...details} />
-      </div>
+      {!user && videoId === '' && loadingState}
+      {user && videoId !== '' && (
+        <div>
+          <Header headerRef={headerRef} />
+          <div className='text-light'>
+            {/* <h1>{title}</h1> */}
+            <YouTube
+              {...details}
+              onPause={(e) => setWatchTime(getDuration(e.target.playerInfo.currentTime))}
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 };

@@ -27,11 +27,9 @@ const Dashboard = () => {
   const loadingState = useLoadingState();
 
   // Getting thumbnail from video Urls
-
   const videosUrl = (videos) => {
     return videos.map((ep) => ep.episodes[0].url);
   };
-
   const trendingVidThumbnail = getThumbnails(videosUrl(trendingVideos));
   const tvshowsThumbnail = getThumbnails(videosUrl(tvShows));
   const favouriteVidThumbnail = getThumbnails(videosUrl(favouriteVideos));
