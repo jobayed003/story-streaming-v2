@@ -44,10 +44,8 @@ export const VideoContext = ({ children }) => {
   const contextValue = {
     seriesDetails,
     seriesVideos,
-    updated,
 
     setUpdated,
-
     setSeriesDetails,
   };
 

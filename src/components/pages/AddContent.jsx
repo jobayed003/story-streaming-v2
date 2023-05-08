@@ -32,7 +32,7 @@ const AddContent = () => {
   const formRef = useRef();
 
   // Context Management
-  const { seriesVideos, seriesDetails, updated, setUpdated, setSeriesDetails } =
+  const { seriesVideos, seriesDetails, setUpdated, setSeriesDetails } =
     useContext(VideoContextProvider);
   const { isAdmin } = useContext(AuthProvider);
 
@@ -100,7 +100,7 @@ const AddContent = () => {
       toast.dark('Video added successfully', {
         theme: 'dark',
       });
-      setUpdated(!updated);
+      setUpdated((prev) => !prev);
       setSeriesDetails({
         description: '',
         episodes: [initialEpisode],

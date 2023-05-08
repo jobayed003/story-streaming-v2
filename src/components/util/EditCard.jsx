@@ -8,7 +8,7 @@ import { db } from '../../firebase.config';
 import { getSeriesData } from './videoUtil';
 
 const EditCard = ({ imgSrc, scrollTo, video }) => {
-  const { updated, setUpdated, setSeriesDetails } = useContext(VideoContextProvider);
+  const { setUpdated, setSeriesDetails } = useContext(VideoContextProvider);
   // const { deleteFavouriteVideo } = useContext(StateContextProvider);
 
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const EditCard = ({ imgSrc, scrollTo, video }) => {
 
   const deleteVideo = async () => {
     await deleteDoc(doc(db, 'series', video.id));
-    setUpdated(!updated);
+    setUpdated((prev) => !prev);
     toast.dark('Video Deleted Successfully!', {
       theme: 'dark',
     });

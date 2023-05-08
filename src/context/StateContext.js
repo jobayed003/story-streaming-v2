@@ -8,7 +8,7 @@ import VideoContextProvider from './VideoContext';
 const StateContextProvider = createContext({
   selectedAvatar: {},
   setSelectedAvatar: () => {},
-  fitlerSearchResult: () => {},
+  filterVideos: () => {},
 });
 
 export const StateContext = ({ children }) => {
@@ -18,6 +18,7 @@ export const StateContext = ({ children }) => {
   const [selectedAvatar, setSelectedAvatar] = useState({});
   const [favouriteVideos, setFavouriteVideos] = useState([]);
   const [searchedVideos, setSearchedVideos] = useState([]);
+  const [searchTimeout, setSearchTimeout] = useState(null);
 
   const [scrollId, setScrollId] = useState('');
 
@@ -27,13 +28,11 @@ export const StateContext = ({ children }) => {
   const auth = getAuth();
 
   // Checking if favourite video is also available in series
-  const videosUniqueId = seriesVideos.map((vid) => vid.id);
-  const favVideosUniqueID = favouriteVideos.map((vid) => vid.id);
+  const allVidId = seriesVideos.map((vid) => vid.id);
+  const favVideosId = favouriteVideos.map((vid) => vid.id);
 
-  const VideoNotAvailableID = favVideosUniqueID.filter(
-    (el) => !videosUniqueId.some((el1) => el === el1)
-  );
-  // const result = favVideosUniqueID.find((elem) => !videosUniqueId.includes(elem));
+  const VideoNotAvailableID = favVideosId.filter((el) => !allVidId.some((el1) => el === el1));
+  // const result = favVideosId.find((elem) => !allVidId.includes(elem));
   // console.log(result);
 
   VideoNotAvailableID.forEach(async (id) => {
@@ -58,35 +57,31 @@ export const StateContext = ({ children }) => {
     });
   };
 
-  const fitlerSearchResult = () => {
-    let vid = [];
-    const text = searchedText
-      .toLowerCase()
-      .replace(/\b(?:-|' '|,)\b/gi, '')
-      .trim();
+  const filterVideos = () => {
+    const replaceAll = /\b(?:-| |,)\b/gi;
+    const text = searchedText.toLowerCase().replace(replaceAll, '').trim();
 
-    const getVideos = (searchFor) => {
-      return seriesVideos.filter(
-        (el) =>
-          el[searchFor]
-            .toLowerCase()
-            .replace(/\b(?:-|' '|,)\b/gi, '')
-            .startsWith(text) ||
-          el[searchFor]
-            .toLowerCase()
-            .replace(/\b(?:-|' '|,)\b/gi, '')
-            .includes(text)
-      );
-    };
-
-    vid.push(
-      ...getVideos('title'),
-      ...getVideos('type'),
-      ...getVideos('genre'),
-      ...getVideos('description')
+    const regex = new RegExp(text, 'i');
+    return seriesVideos.filter(
+      (vid) =>
+        regex.test(vid.title.replace(replaceAll, '').trim()) ||
+        regex.test(vid.type.replace(replaceAll, '').trim()) ||
+        regex.test(vid.genre.replace(replaceAll, '').trim()) ||
+        regex.test(vid.description.replace(replaceAll, '').trim())
     );
-    setSearchedVideos(vid.filter((el, idx) => vid.indexOf(el) === idx));
   };
+
+  useEffect(() => {
+    clearTimeout(searchTimeout);
+
+    setSearchTimeout(
+      setTimeout(() => {
+        setSearchedVideos(filterVideos());
+      }, 100)
+    );
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchedText]);
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -111,7 +106,7 @@ export const StateContext = ({ children }) => {
     setScrollId,
     setSelectedAvatar,
     setSearchedText,
-    fitlerSearchResult,
+    filterVideos,
   };
 
   return (

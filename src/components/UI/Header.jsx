@@ -15,7 +15,7 @@ import classes from './Header.module.css';
 const Header = ({ headerRef }) => {
   const [show, setShow] = useState(false);
 
-  const { scrollId, setScrollId, searchedText, setSearchedText, fitlerSearchResult } =
+  const { scrollId, setScrollId, searchedText, setSearchedText, filterVideos } =
     useContext(StateContextProvider);
   const { isAdmin, users, userCredentials } = useContext(AuthProvider);
 
@@ -107,7 +107,7 @@ const Header = ({ headerRef }) => {
               e.preventDefault();
               window.scrollTo(0, 0);
               navigate('/dashboard');
-              fitlerSearchResult(searchedText);
+              filterVideos(searchedText);
               navRef.current.classList.remove('show');
             }}
           >
@@ -120,7 +120,7 @@ const Header = ({ headerRef }) => {
               onChange={(e) => {
                 window.scrollTo(0, 0);
                 setSearchedText(e.target.value);
-                fitlerSearchResult(e.target.value);
+                filterVideos(e.target.value);
               }}
             />
             <Button
@@ -130,7 +130,7 @@ const Header = ({ headerRef }) => {
               onClick={() => {
                 window.scrollTo(0, 0);
                 navigate('/dashboard');
-                fitlerSearchResult(searchedText);
+                filterVideos(searchedText);
                 navRef.current.classList.remove('show');
               }}
             >
