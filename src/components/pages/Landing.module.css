@@ -3,11 +3,6 @@
   max-width: 150px;
 }
 
-/* .navbar-nav .nav-link.active,
-  .navbar-nav .show > .nav-link {
-      color: var(--white);
-  } */
-
 .navbar-toggler {
   color: var(--white);
 }

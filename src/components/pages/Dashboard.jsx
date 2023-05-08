@@ -49,7 +49,7 @@ const Dashboard = () => {
           <Container
             as='section'
             id={'videos-container'}
-            className='fontFamily hide-scroll'
+            className='custom_font hide-scroll'
             style={{ overflow: 'hidden visible', paddingBottom: '8rem' }}
           >
             {/* Searched Videos List */}
@@ -82,6 +82,7 @@ const Dashboard = () => {
 
             <CardContainer videos={favouriteVideos} thumbnail={favouriteVidThumbnail} />
 
+            {/* TV SHOWS LIST */}
             <Row style={{ ...rowStyle }} id='tv-shows'>
               <Col className='text-light'>
                 <h1>TV Shows</h1>
@@ -89,6 +90,8 @@ const Dashboard = () => {
             </Row>
 
             <CardContainer videos={tvShows} thumbnail={tvshowsThumbnail} />
+
+            {/* TOP MOVIES LIST */}
             <Row style={{ ...rowStyle }} id='movies'>
               <Col className='mt-5 text-light'>
                 <h1>Top Movies</h1>
@@ -96,6 +99,7 @@ const Dashboard = () => {
             </Row>
             <CardContainer videos={movies} thumbnail={moviesThumbnail} />
 
+            {/* ENVIRONMENT LIST */}
             <Row style={{ ...rowStyle }} id='environment'>
               <Col className='mt-5 text-light'>
                 <h1>Environment</h1>

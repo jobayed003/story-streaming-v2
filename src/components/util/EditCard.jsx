@@ -39,34 +39,35 @@ const EditCard = ({ imgSrc, scrollTo, video }) => {
   };
 
   return (
-    <Card style={{ background: 'gray' }}>
-      <div
-        className='d-flex flex-column justify-content-between'
-        style={{ background: 'gray', height: '23rem', maxWidth: '270px' }}
-      >
-        <Card.Img
-          variant='top'
-          src={imgSrc}
-          height={'200px'}
-          style={{ cursor: 'pointer' }}
-          onClick={playVideo}
-        />
-        <Card.Body>
-          <Card.Title>{video.episodes[0].title}</Card.Title>
-          <div className='overflow-scroll hide-scroll' style={{ height: '80px' }}>
-            <Card.Text>{video.episodes[0].description}</Card.Text>
-          </div>
+    <Card style={{ background: 'gray', height: '23rem', maxWidth: '270px' }}>
+      <Card.Img
+        variant='top'
+        src={imgSrc}
+        height={'200px'}
+        width={'100%'}
+        style={{ cursor: 'pointer' }}
+        onClick={playVideo}
+      />
 
-          <div className='d-flex justify-content-between'>
-            <Button className={'bg-primary'} style={{ ...btnStyles }} onClick={editVideo}>
-              Edit
-            </Button>
-            <Button className={'bg-danger'} style={{ ...btnStyles }} onClick={deleteVideo}>
-              Delete
-            </Button>
-          </div>
-        </Card.Body>
-      </div>
+      <Card.Body className='d-flex flex-column justify-content-between' style={{ height: '100%' }}>
+        <div
+          style={{
+            textOverflow: "ellipsis ' [...]",
+            overflow: 'hidden',
+          }}
+        >
+          <Card.Title>{video.title}</Card.Title>
+          <Card.Text style={{ height: '45px' }}>{video.description}</Card.Text>
+        </div>
+        <div className='d-flex justify-content-between'>
+          <Button className={'bg-primary'} style={{ ...btnStyles }} onClick={editVideo}>
+            Edit
+          </Button>
+          <Button className={'bg-danger'} style={{ ...btnStyles }} onClick={deleteVideo}>
+            Delete
+          </Button>
+        </div>
+      </Card.Body>
     </Card>
   );
 };

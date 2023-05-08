@@ -1,47 +1,9 @@
-:root {
-  --white: #fff;
-  --dark: #000000;
-  --button-color: #e40914;
-  --button-hover-collor: #f40612;
-  --gray-color: #303030;
-  --footer-text-color: #898989;
-}
-
 .settings-text-color {
   color: var(--dark);
 }
 
 .pdy {
   padding: 75px 0px;
-}
-.link-item {
-  color: #0087e9;
-  text-decoration: none;
-  font-size: 18px;
-  font-weight: 500;
-}
-.link-item:hover {
-  color: #0087e9;
-  text-decoration: underline;
-}
-
-.custom-item {
-  border-top: 1px solid var(--footer-text-color);
-  text-align: center;
-}
-/* nav */
-nav {
-  /* background-color: var(--dark); */
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-}
-
-.dropdown img {
-  /* max-width: 35px; */
-  border-radius: 5px;
 }
 
 /* mainsection */
@@ -80,7 +42,6 @@ nav {
   margin-left: -16px;
   overflow-y: scroll;
   width: 600px;
-  /* max-height: 200px; */
 }
 
 /* media query */

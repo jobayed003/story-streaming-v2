@@ -60,7 +60,7 @@ const Header = ({ headerRef }) => {
     <Navbar
       expand='lg'
       collapseOnSelect
-      className='fontFamily'
+      className='custom_font'
       fixed='top'
       style={{
         background: '#303030',

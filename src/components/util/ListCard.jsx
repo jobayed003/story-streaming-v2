@@ -158,16 +158,19 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
               onClick={() => handleClick(videoDetails.episodes[0].id)}
             />
             <Card.Body className='cursor-pointer' style={{ zIndex: '100000' }}>
-              <div className='d-flex align-items-center justify-content-between gap-1'>
-                <div onClick={() => handleClick(videoDetails.episodes[0].id)}>
-                  <Card.Title style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
-                    {videoDetails.title}
-                  </Card.Title>
-                  <Card.Text style={{ fontSize: '1.2rem', margin: 0 }}>
-                    {videoDetails.description}
-                  </Card.Text>
-                </div>
+              <div
+                onClick={() => handleClick(videoDetails.episodes[0].id)}
+                style={{ textOverflow: "ellipsis ' [...]", overflow: 'hidden' }}
+              >
+                <Card.Title style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
+                  {videoDetails.title}
+                </Card.Title>
+                <Card.Text style={{ fontSize: '1.2rem', margin: 0, height: '50px' }}>
+                  {videoDetails.description}
+                </Card.Text>
+              </div>
 
+              <div className='d-flex justify-content-end align-self-end gap-2 mt-2'>
                 <Button
                   variant='dark'
                   style={{
@@ -194,7 +197,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
                   </Button>
                 ) : (
                   <Button
-                    variant='success'
+                    variant='dark'
                     style={{
                       color: '#fff',
                       fontSize: '1rem',
