@@ -11,7 +11,7 @@ const Slide = ({ children, videoCount }) => {
     // infinite: true,
     speed: 500,
     slidesToShow: 4,
-    slidesToScroll: 1,
+    slidesToScroll: 4,
     // autoplay: true,
     autoplaySpeed: 2000,
     // centerMode: true,
@@ -40,7 +40,7 @@ const Slide = ({ children, videoCount }) => {
         breakpoint: 1024,
         settings: {
           slidesToShow: 3,
-          slidesToScroll: 2,
+          slidesToScroll: 3,
           infinite: true,
           centerMode: false,
         },

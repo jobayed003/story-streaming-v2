@@ -49,6 +49,12 @@ const Header = ({ headerRef }) => {
     { name: 'Tv Shows', link: 'tv-shows' },
     { name: 'Movies', link: 'movies' },
     { name: 'Environment', link: 'environment' },
+    { name: 'Action', link: 'tv-shows' },
+    { name: 'Comedy', link: 'tv-shows' },
+    { name: 'Drama', link: 'tv-shows' },
+    { name: 'Horror', link: 'tv-shows' },
+    { name: 'Sci-Fi', link: 'tv-shows' },
+    { name: 'Documentary', link: 'tv-shows' },
   ];
 
   useEffect(() => {

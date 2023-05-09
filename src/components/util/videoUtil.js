@@ -1,12 +1,21 @@
-import { collection, doc, getDoc, onSnapshot, updateDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  orderBy,
+  query,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
 import { db } from '../../firebase.config';
 
 export const fetchVideos = async (quer) => {
   let videos = [];
   const collectionRef = collection(db, 'series');
 
-  // const q = query(collectionRef, where('type', '==', quer));
-  onSnapshot(collectionRef, (querySnapshot) => {
+  const q = query(collectionRef, orderBy('timeStamp', 'desc'));
+  onSnapshot(q, (querySnapshot) => {
     querySnapshot.forEach((doc) => {
       videos.push({ ...doc.data() });
     });

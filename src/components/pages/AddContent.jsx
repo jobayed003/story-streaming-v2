@@ -1,5 +1,5 @@
 import { getAuth } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useContext, useRef } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -90,6 +90,7 @@ const AddContent = () => {
       ...seriesDetails,
       episodes: episodes.sort((a, b) => a.episode - b.episode),
       id: seriesDetails.id ? seriesDetails.id : uniqueId,
+      timeStamp: serverTimestamp(),
     };
 
     const seriesVideoRef = doc(db, 'series', seriesDetails.id ? seriesDetails.id : uniqueId);

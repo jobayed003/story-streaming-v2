@@ -77,6 +77,14 @@ export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
     },
   };
 
+  const textStyle = {
+    width: '80%',
+    display: 'inline-block',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  };
+
   return (
     <>
       <Modal show={show} onHide={handleClose} centered>
@@ -136,14 +144,22 @@ export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
                     <div
                       className='d-flex flex-column mt-2'
                       style={{
-                        textOverflow: 'ellipsis',
                         overflow: 'hidden',
                       }}
                     >
                       <div className={`d-flex justify-content-between ${classes.episodeDetails}`}>
-                        <span style={{ fontWeight: 'bold' }}>{el.title}</span>
+                        <span
+                          style={{
+                            fontWeight: 'bold',
+                            ...textStyle,
+                          }}
+                        >
+                          {el.title}
+                        </span>
 
-                        <span style={{ fontSize: '.9rem' }}>{getDuration(el.duration)}</span>
+                        <span style={{ fontSize: '.9rem', overflow: 'hidden' }}>
+                          {getDuration(el.duration)}
+                        </span>
                       </div>
                       <span className={`text-secondary`} style={{ height: '50px' }}>
                         {el.description}

@@ -78,6 +78,14 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
       ? 'translateX(3rem)'
       : coordinates.right > bodyRect.width - coordinates.right && 'translateX(-3rem)';
 
+  const textStyle = {
+    width: '100%',
+    display: 'inline-block',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  };
+
   return (
     <div className='position-relative' ref={ref}>
       <EpisodeDetails
@@ -160,12 +168,20 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
             <Card.Body className='cursor-pointer' style={{ zIndex: '100000' }}>
               <div
                 onClick={() => handleClick(videoDetails.episodes[0].id)}
-                style={{ textOverflow: "ellipsis ' [...]", overflow: 'hidden' }}
+                style={{ overflow: 'hidden' }}
               >
-                <Card.Title style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
+                <Card.Title
+                  style={{ fontSize: '1.5rem', fontWeight: 'bold', ...textStyle, margin: '0' }}
+                >
                   {videoDetails.title}
                 </Card.Title>
-                <Card.Text style={{ fontSize: '1.2rem', margin: 0, height: '50px' }}>
+                <Card.Text
+                  style={{
+                    fontSize: '1.2rem',
+                    margin: 0,
+                    height: '60px',
+                  }}
+                >
                   {videoDetails.description}
                 </Card.Text>
               </div>

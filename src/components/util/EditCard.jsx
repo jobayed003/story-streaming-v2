@@ -38,6 +38,14 @@ const EditCard = ({ imgSrc, scrollTo, video }) => {
     border: 'none',
   };
 
+  const textStyle = {
+    width: '100%',
+    display: 'inline-block',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  };
+
   return (
     <Card style={{ background: 'gray', height: '23rem', maxWidth: '270px' }}>
       <Card.Img
@@ -52,14 +60,13 @@ const EditCard = ({ imgSrc, scrollTo, video }) => {
       <Card.Body className='d-flex flex-column justify-content-between' style={{ height: '100%' }}>
         <div
           style={{
-            textOverflow: "ellipsis ' [...]",
             overflow: 'hidden',
           }}
         >
-          <Card.Title>{video.title}</Card.Title>
+          <Card.Title style={{ ...textStyle }}>{video.title}</Card.Title>
           <Card.Text style={{ height: '45px' }}>{video.description}</Card.Text>
         </div>
-        <div className='d-flex justify-content-between'>
+        <div className='d-flex justify-content-between mt-2'>
           <Button className={'bg-primary'} style={{ ...btnStyles }} onClick={editVideo}>
             Edit
           </Button>
