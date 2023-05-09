@@ -49,12 +49,6 @@ const Header = ({ headerRef }) => {
     { name: 'Tv Shows', link: 'tv-shows' },
     { name: 'Movies', link: 'movies' },
     { name: 'Environment', link: 'environment' },
-    { name: 'Action', link: 'tv-shows' },
-    { name: 'Comedy', link: 'tv-shows' },
-    { name: 'Drama', link: 'tv-shows' },
-    { name: 'Horror', link: 'tv-shows' },
-    { name: 'Sci-Fi', link: 'tv-shows' },
-    { name: 'Documentary', link: 'tv-shows' },
   ];
 
   useEffect(() => {
@@ -94,13 +88,31 @@ const Header = ({ headerRef }) => {
                 duration={0}
                 key={Math.random()}
               >
-                <NavLink
-                  to={'/dashboard'}
-                  className={classes.customLink}
-                  onClick={(e) => setScrollId(e.target.textContent.toLowerCase().replace(' ', '-'))}
-                >
-                  {lnk.name}
-                </NavLink>
+                {lnk.link !== 'tv-shows' && lnk.link !== 'movies' && (
+                  <NavLink
+                    to={'/dashboard'}
+                    className={classes.customLink}
+                    onClick={(e) =>
+                      setScrollId(e.target.textContent.toLowerCase().replace(' ', '-'))
+                    }
+                  >
+                    {lnk.name}
+                  </NavLink>
+                )}
+                {lnk.link === 'tv-shows' && (
+                  <CustomDropDown
+                    setScrollId={setScrollId}
+                    lnk={lnk}
+                    categories={['Documentary', 'Shows', 'Drama']}
+                  />
+                )}
+                {lnk.link === 'movies' && (
+                  <CustomDropDown
+                    setScrollId={setScrollId}
+                    lnk={lnk}
+                    categories={['Action', 'Horror', 'Sci-Fi']}
+                  />
+                )}
               </Link>
             ))}
           </Nav>
@@ -220,3 +232,29 @@ const Header = ({ headerRef }) => {
 };
 
 export default Header;
+
+const CustomDropDown = ({ setScrollId, lnk, categories }) => {
+  return (
+    <Dropdown className='d-flex flex-column align-items-center'>
+      <Dropdown.Toggle
+        id='dropdown-basic'
+        style={{ background: 'none', border: 'none' }}
+        className={`d-flex align-items-center ${classes.customLink}`}
+      >
+        <NavLink
+          to={'/dashboard'}
+          className={classes.customLink}
+          onClick={(e) => setScrollId(e.target.textContent.toLowerCase().replace(' ', '-'))}
+        >
+          {lnk.name}
+        </NavLink>{' '}
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu style={{ fontFamily: 'Roboto' }}>
+        {categories.map((el) => (
+          <Dropdown.Item href='#/action-3'>{el}</Dropdown.Item>
+        ))}
+      </Dropdown.Menu>
+    </Dropdown>
+  );
+};

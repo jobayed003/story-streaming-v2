@@ -1,0 +1,29 @@
+.bgContainer {
+  width: 100vw;
+  height: 100vh;
+  background-image: url('../../assets/images/hero.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  padding: 0;
+}
+
+.formContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: -2rem;
+  z-index: 100;
+}
+
+.inputBg > span,
+.inputBg > input,
+.inputBg > input:focus {
+  /* color: #eee; */
+  box-shadow: none;
+  border: none;
+  background-color: #fff;
+  /* background-color: #343434; */
+}
