@@ -235,7 +235,7 @@ const AddContent = () => {
               </Col>
             </Row>
 
-            <Row className='listsection py-2 overflow-hidden'>
+            <Row className='listsection py-2 overflow-hidden px-0 justify-content-center'>
               {seriesVideos.length <= 0 ? (
                 status
               ) : seriesVideos.length <= 4 ? (
@@ -250,7 +250,7 @@ const AddContent = () => {
               ) : (
                 <Slide videosCount={seriesVideos.length}>
                   {seriesVideos.map((video, idx) => (
-                    <div className='slide' key={Math.random()} style={{ width: '400px' }}>
+                    <div className='slide' key={Math.random()} style={{ width: '350px' }}>
                       <VideoCard video={video} imgSrc={thumbnail[idx]} scrollTo={formRef} />
                     </div>
                   ))}
