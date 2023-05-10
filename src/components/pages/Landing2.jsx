@@ -32,7 +32,7 @@ const Landing2 = () => {
       />
       <Row className={classes.formContainer}>
         <Col style={{ maxWidth: '600px' }} className=' d-flex flex-column align-items-center'>
-          <Image src={logo} alt='Logo' width={'500px'} height={'100px'} />
+          <Image src={logo} alt='Logo' className={classes.logo} />
           <Form
             onSubmit={handleSubmit}
             style={{
@@ -43,10 +43,8 @@ const Landing2 = () => {
               marginInline: '2rem',
             }}
           >
-            <h1 style={{ fontSize: '3rem' }}>Premium Account Generator</h1>
-            <Form.Label style={{ color: 'var(--button-color)', fontSize: '1.5rem' }}>
-              Enter your email address
-            </Form.Label>
+            <h1 className={classes.formTitle}>Premium Account Generator</h1>
+            <Form.Label className={classes.formLabel}>Enter your email address</Form.Label>
             <Form.Group className='mb-3' controlId='formBasicEmail' style={{ background: '#fff' }}>
               <InputGroup className={`mb-3 ${classes.inputBg}`}>
                 <InputGroup.Text className={classes.inputBg}>

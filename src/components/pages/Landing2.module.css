@@ -1,11 +1,19 @@
 .bgContainer {
   width: 100vw;
   height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-image: url('../../assets/images/hero.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
   padding: 0;
+}
+
+.logo {
+  width: 500px;
+  height: 100px;
 }
 
 .formContainer {
@@ -18,6 +26,15 @@
   z-index: 100;
 }
 
+.formTitle {
+  font-size: 2.8rem;
+}
+
+.formLabel {
+  color: var(--button-color);
+  font-size: 1.5rem;
+}
+
 .inputBg > span,
 .inputBg > input,
 .inputBg > input:focus {
@@ -26,4 +43,26 @@
   border: none;
   background-color: #fff;
   /* background-color: #343434; */
+}
+/* media query */
+@media only screen and (max-width: 575px) {
+  .logo {
+    width: 300px;
+    /* height: 100px; */
+  }
+  .formTitle {
+    font-size: 2rem;
+  }
+
+  .formLabel {
+    font-size: 1rem;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .logo {
+    width: 200px;
+  }
+  .formTitle {
+    font-size: 1.5rem;
+  }
 }

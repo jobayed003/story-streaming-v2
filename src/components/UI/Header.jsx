@@ -234,23 +234,24 @@ const Header = ({ headerRef }) => {
 export default Header;
 
 const CustomDropDown = ({ setScrollId, lnk, categories }) => {
+  const [toggle, setToggle] = useState(true);
+
   return (
-    <Dropdown className='d-flex flex-column align-items-center'>
+    <Dropdown
+      className={`d-flex flex-column align-items-center ${toggle ? 'show' : ''}`}
+      align='end'
+      // onToggle={(e) => console.log(e)}
+      // onToggle={(e) => setScrollId(e.target.textContent.toLowerCase().replace(' ', '-'))}
+    >
       <Dropdown.Toggle
         id='dropdown-basic'
         style={{ background: 'none', border: 'none' }}
-        className={`d-flex align-items-center ${classes.customLink}`}
+        className={`d-flex align-items-center ${classes.customLink} `}
       >
-        <NavLink
-          to={'/dashboard'}
-          className={classes.customLink}
-          onClick={(e) => setScrollId(e.target.textContent.toLowerCase().replace(' ', '-'))}
-        >
-          {lnk.name}
-        </NavLink>{' '}
+        {lnk.name}
       </Dropdown.Toggle>
 
-      <Dropdown.Menu style={{ fontFamily: 'Roboto' }}>
+      <Dropdown.Menu style={{ fontFamily: 'Roboto' }} variant='dark'>
         {categories.map((el) => (
           <Dropdown.Item href='#/action-3'>{el}</Dropdown.Item>
         ))}
