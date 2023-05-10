@@ -3,6 +3,10 @@
   height: 100vh;
   min-height: 100vh;
   height: fill-available;
+  min-height: 100vh; /* fall-back */
+  min-height: -moz-available;
+  min-height: -webkit-fill-available;
+  min-height: fill-available;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,7 +16,6 @@
   position: relative;
   padding: 0;
 }
-
 .logo {
   width: 500px;
   height: 100px;
