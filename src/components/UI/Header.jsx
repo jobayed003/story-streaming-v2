@@ -104,6 +104,7 @@ const Header = ({ headerRef }) => {
                     setScrollId={setScrollId}
                     lnk={lnk}
                     categories={['Documentary', 'Shows', 'Drama']}
+                    path={path}
                   />
                 )}
                 {lnk.link === 'movies' && (
@@ -111,6 +112,7 @@ const Header = ({ headerRef }) => {
                     setScrollId={setScrollId}
                     lnk={lnk}
                     categories={['Action', 'Horror', 'Sci-Fi']}
+                    path={path}
                   />
                 )}
               </Link>
@@ -233,29 +235,34 @@ const Header = ({ headerRef }) => {
 
 export default Header;
 
-const CustomDropDown = ({ setScrollId, lnk, categories }) => {
-  const [toggle, setToggle] = useState(true);
-
+const CustomDropDown = ({ setScrollId, lnk, categories, path }) => {
   return (
-    <Dropdown
-      className={`d-flex flex-column align-items-center ${toggle ? 'show' : ''}`}
-      align='end'
-      // onToggle={(e) => console.log(e)}
-      // onToggle={(e) => setScrollId(e.target.textContent.toLowerCase().replace(' ', '-'))}
-    >
-      <Dropdown.Toggle
-        id='dropdown-basic'
-        style={{ background: 'none', border: 'none' }}
-        className={`d-flex align-items-center ${classes.customLink} `}
-      >
-        {lnk.name}
-      </Dropdown.Toggle>
+    <>
+      {path === 'dashboard' ? (
+        <Dropdown className={`d-flex flex-column align-items-center`} align='end'>
+          <Dropdown.Toggle
+            id='dropdown-basic'
+            style={{ background: 'none', border: 'none' }}
+            className={`d-flex align-items-center ${classes.customLink} `}
+          >
+            {lnk.name}
+          </Dropdown.Toggle>
 
-      <Dropdown.Menu style={{ fontFamily: 'Roboto' }} variant='dark'>
-        {categories.map((el) => (
-          <Dropdown.Item href='#/action-3'>{el}</Dropdown.Item>
-        ))}
-      </Dropdown.Menu>
-    </Dropdown>
+          <Dropdown.Menu style={{ fontFamily: 'Roboto' }} variant='dark'>
+            {categories.map((el) => (
+              <Dropdown.Item href='#/action-3'>{el}</Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+      ) : (
+        <NavLink
+          to={'/dashboard'}
+          className={classes.customLink}
+          onClick={(e) => setScrollId(e.target.textContent.toLowerCase().replace(' ', '-'))}
+        >
+          {lnk.name}
+        </NavLink>
+      )}
+    </>
   );
 };
