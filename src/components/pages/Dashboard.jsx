@@ -9,7 +9,6 @@ import Footer from '../UI/Footer';
 import Header from '../UI/Header';
 import useLoadingState from '../hooks/useLoadingState';
 import CardContainer from '../util/CardContainer';
-import { getThumbnails } from '../util/youtubeUtils';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -25,18 +24,6 @@ const Dashboard = () => {
   // Custom Hooks
   const [user] = useAuthState(getAuth());
   const loadingState = useLoadingState();
-
-  // Getting thumbnail from video Urls
-  const videosUrl = (videos) => {
-    return videos.map((ep) => ep.episodes[0].url);
-  };
-
-  const trendingVidThumbnail = getThumbnails(videosUrl(trendingVideos));
-  const tvshowsThumbnail = getThumbnails(videosUrl(tvShows));
-  const favouriteVidThumbnail = getThumbnails(videosUrl(favouriteVideos));
-  const searchedVideosThumbnail = getThumbnails(videosUrl(searchedVideos));
-  const moviesThumbnail = getThumbnails(videosUrl(movies));
-  const environmentVideosThumbnail = getThumbnails(videosUrl(environment));
 
   const rowStyle = { marginTop: '8rem', scrollMargin: '8rem' };
 
@@ -60,7 +47,7 @@ const Dashboard = () => {
                     <h1>Results for "{searchedText}"</h1>
                   </Col>
                 </Row>
-                <CardContainer videos={searchedVideos} thumbnail={searchedVideosThumbnail} />
+                <CardContainer videos={searchedVideos} />
               </>
             )}
             {/* Top trending videos list */}
@@ -71,7 +58,7 @@ const Dashboard = () => {
               </Col>
             </Row>
 
-            <CardContainer videos={trendingVideos} thumbnail={trendingVidThumbnail} />
+            <CardContainer videos={trendingVideos} />
 
             {/* Favourite Videos List */}
             <Row style={{ ...rowStyle }} id={'my-list'}>
@@ -80,7 +67,7 @@ const Dashboard = () => {
               </Col>
             </Row>
 
-            <CardContainer videos={favouriteVideos} thumbnail={favouriteVidThumbnail} />
+            <CardContainer videos={favouriteVideos} />
 
             {/* TV SHOWS LIST */}
             <Row style={{ ...rowStyle }} id='tv-shows'>
@@ -89,7 +76,7 @@ const Dashboard = () => {
               </Col>
             </Row>
 
-            <CardContainer videos={tvShows} thumbnail={tvshowsThumbnail} />
+            <CardContainer videos={tvShows} />
 
             {/* TOP MOVIES LIST */}
             <Row style={{ ...rowStyle }} id='movies'>
@@ -97,7 +84,7 @@ const Dashboard = () => {
                 <h1>Top Movies</h1>
               </Col>
             </Row>
-            <CardContainer videos={movies} thumbnail={moviesThumbnail} />
+            <CardContainer videos={movies} />
 
             {/* ENVIRONMENT LIST */}
             <Row style={{ ...rowStyle }} id='environment'>
@@ -105,7 +92,7 @@ const Dashboard = () => {
                 <h1>Environment</h1>
               </Col>
             </Row>
-            <CardContainer videos={environment} thumbnail={environmentVideosThumbnail} />
+            <CardContainer videos={environment} />
           </Container>
           <Footer />
         </>

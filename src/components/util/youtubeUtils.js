@@ -39,5 +39,26 @@ const getThumbnails = (urls, size) => {
   });
   return img;
 };
+const getThumbnail = (url, size) => {
+  let video, results;
+  let img = [];
 
-export { parseVideoIDFromYoutubeURL, ytDurationToSeconds, getThumbnails };
+  const getThumb = () => {
+    if (url === null) {
+      return '';
+    }
+    size = size === null ? 'big' : size;
+    results = url.match('[\\?&]v=([^&#]*)');
+    video = results === null ? url : results[1];
+
+    if (size === 'small') {
+      return 'http://img.youtube.com/vi/' + video + '/2.jpg';
+    }
+    return 'http://img.youtube.com/vi/' + video + '/0.jpg';
+  };
+  // img.push(getThumb());
+
+  return getThumb();
+};
+
+export { parseVideoIDFromYoutubeURL, ytDurationToSeconds, getThumbnails, getThumbnail };

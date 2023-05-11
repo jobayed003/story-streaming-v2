@@ -136,7 +136,7 @@ export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
                     <span>{idx + 1}</span>
                     <img
                       alt='img'
-                      src={thumbnail[idx]}
+                      src={el.thumbnail}
                       className={`${classes.episodesImg} cursor-pointer`}
                       onClick={() => handleClick(el.id)}
                     />

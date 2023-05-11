@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import logo from './assets/Icons/StorySaloon_Logo.svg';
+import Category from './components/pages/Category';
 import { Test } from './components/pages/Dashboard';
 
 const Landing = lazy(() => import('./components/pages/Landing'));
@@ -30,6 +31,7 @@ const App = () => (
         <Route path='/watch/:movieID' element={<Viewing />} />
         <Route path='/upload' element={<AddContent />} />
         <Route path='/test' element={<Test />} />
+        <Route path='/category/:categoryName' element={<Category />} />
         <Route path='/landing' element={<Landing2 />} />
       </Routes>
     </Suspense>

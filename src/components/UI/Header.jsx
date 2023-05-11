@@ -49,6 +49,7 @@ const Header = ({ headerRef }) => {
     { name: 'Tv Shows', link: 'tv-shows' },
     { name: 'Movies', link: 'movies' },
     { name: 'Environment', link: 'environment' },
+    { name: 'Categories', link: 'categories' },
   ];
 
   useEffect(() => {
@@ -88,7 +89,7 @@ const Header = ({ headerRef }) => {
                 duration={0}
                 key={Math.random()}
               >
-                {lnk.link !== 'tv-shows' && lnk.link !== 'movies' && (
+                {lnk.link !== 'categories' && (
                   <NavLink
                     to={'/dashboard'}
                     className={classes.customLink}
@@ -99,19 +100,25 @@ const Header = ({ headerRef }) => {
                     {lnk.name}
                   </NavLink>
                 )}
-                {lnk.link === 'tv-shows' && (
+                {lnk.link === 'categories' && (
                   <CustomDropDown
-                    setScrollId={setScrollId}
                     lnk={lnk}
-                    categories={['Documentary', 'Shows', 'Drama']}
-                    path={path}
-                  />
-                )}
-                {lnk.link === 'movies' && (
-                  <CustomDropDown
-                    setScrollId={setScrollId}
-                    lnk={lnk}
-                    categories={['Action', 'Horror', 'Sci-Fi']}
+                    categories={[
+                      'Drama',
+                      'Action',
+                      'Comedy',
+                      'Horror',
+                      'Sci-Fi',
+                      'Thriller',
+                      'Fantasy',
+                      'Short Story',
+                      'Fiction',
+                      'Humor',
+                      'Realty TV',
+                      'Crime Fiction',
+                      'Documentary',
+                      'Science And Education',
+                    ]}
                     path={path}
                   />
                 )}
@@ -198,7 +205,7 @@ const Header = ({ headerRef }) => {
                     {path === 'dashboard' ? 'Settings' : 'Dashboard'}
                   </NavLink>
                 </Dropdown.Item>
-                {path === 'upload' && (
+                {path !== 'dashboard' && path !== 'settings' && (
                   <Dropdown.Item className={'dropLinks'} onClick={() => navigate('/settings')}>
                     <NavLink style={{ color: 'black' }} to={'/settings'}>
                       Settings
@@ -235,34 +242,33 @@ const Header = ({ headerRef }) => {
 
 export default Header;
 
-const CustomDropDown = ({ setScrollId, lnk, categories, path }) => {
-  return (
-    <>
-      {path === 'dashboard' ? (
-        <Dropdown className={`d-flex flex-column align-items-center`} align='end'>
-          <Dropdown.Toggle
-            id='dropdown-basic'
-            style={{ background: 'none', border: 'none' }}
-            className={`d-flex align-items-center ${classes.customLink} `}
-          >
-            {lnk.name}
-          </Dropdown.Toggle>
+const CustomDropDown = ({ lnk, categories, path }) => {
+  const navigate = useNavigate();
 
-          <Dropdown.Menu style={{ fontFamily: 'Roboto' }} variant='dark'>
-            {categories.map((el) => (
-              <Dropdown.Item href='#/action-3'>{el}</Dropdown.Item>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
-      ) : (
-        <NavLink
-          to={'/dashboard'}
-          className={classes.customLink}
-          onClick={(e) => setScrollId(e.target.textContent.toLowerCase().replace(' ', '-'))}
-        >
-          {lnk.name}
-        </NavLink>
-      )}
-    </>
+  return (
+    <Dropdown className={`d-flex flex-column align-items-center`} align='end'>
+      <Dropdown.Toggle
+        id='dropdown-basic'
+        style={{ background: 'none', border: 'none' }}
+        className={`d-flex align-items-center ${classes.customLink} `}
+      >
+        {lnk.name}
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu style={{ fontFamily: 'Roboto', textAlign: 'center' }}>
+        {categories.map((el) => (
+          <Dropdown.Item
+            onClick={() => navigate(`/category/${el.toLowerCase().replaceAll(' ', '_')}`)}
+          >
+            <NavLink
+              style={{ color: 'black' }}
+              to={`/category/${el.toLowerCase().replaceAll(' ', '_')}`}
+            >
+              {el}
+            </NavLink>
+          </Dropdown.Item>
+        ))}
+      </Dropdown.Menu>
+    </Dropdown>
   );
 };

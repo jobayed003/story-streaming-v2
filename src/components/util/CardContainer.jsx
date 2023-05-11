@@ -5,11 +5,10 @@ import useDimension from '../hooks/useDimension';
 import useStatus from '../hooks/useStatus';
 import Slide from './Slide';
 
-const CardContainer = ({ videos, thumbnail }) => {
+const CardContainer = ({ videos }) => {
   // Custom Hooks
   const status = useStatus(videos);
   const size = useDimension();
-
   return (
     <>
       {videos.length <= 0 ? (
@@ -25,8 +24,8 @@ const CardContainer = ({ videos, thumbnail }) => {
             justifyContent: size.width > 575 ? 'start' : 'center',
           }}
         >
-          {videos.map((el, idx) => (
-            <ListCard imgSrc={thumbnail[idx]} videoDetails={el} />
+          {videos.map((el) => (
+            <ListCard imgSrc={el.episodes[0].thumbnail} videoDetails={el} />
           ))}
         </div>
       ) : (
@@ -37,7 +36,7 @@ const CardContainer = ({ videos, thumbnail }) => {
               key={Math.random() + idx}
               style={{ width: size.width > 500 ? '400px' : '300px' }}
             >
-              <ListCard imgSrc={thumbnail[idx]} videoDetails={el} />
+              <ListCard imgSrc={el.episodes[0].thumbnail} videoDetails={el} />
             </div>
           ))}
         </Slide>

@@ -15,6 +15,7 @@ import useStatus from '../hooks/useStatus';
 import { default as EditCard, default as VideoCard } from '../util/EditCard';
 import Slide from '../util/Slide';
 import {
+  getThumbnail,
   getThumbnails,
   parseVideoIDFromYoutubeURL,
   ytDurationToSeconds,
@@ -61,6 +62,7 @@ const AddContent = () => {
         return {
           ...episode,
           season: seriesDetails.season,
+
           [field]: value,
         };
       }
@@ -79,10 +81,12 @@ const AddContent = () => {
       const episode = seriesDetails.episodes[x];
 
       const videoDetails = await getVideoDetails(episode.url);
+      const vidThumbnail = getThumbnail(episode.url);
 
       episodes.push({
         ...episode,
         ...videoDetails,
+        thumbnail: vidThumbnail,
       });
     }
 
@@ -244,14 +248,22 @@ const AddContent = () => {
                   style={{ gap: '1rem', flexWrap: 'wrap', marginBottom: '4rem' }}
                 >
                   {seriesVideos.map((video, idx) => (
-                    <EditCard video={video} imgSrc={thumbnail[idx]} scrollTo={formRef} />
+                    <EditCard
+                      video={video}
+                      imgSrc={video.episodes[0].thumbnail}
+                      scrollTo={formRef}
+                    />
                   ))}
                 </div>
               ) : (
                 <Slide videosCount={seriesVideos.length}>
                   {seriesVideos.map((video, idx) => (
                     <div className='slide' key={Math.random()} style={{ width: '350px' }}>
-                      <VideoCard video={video} imgSrc={thumbnail[idx]} scrollTo={formRef} />
+                      <VideoCard
+                        video={video}
+                        imgSrc={video.episodes[0].thumbnail}
+                        scrollTo={formRef}
+                      />
                     </div>
                   ))}
                 </Slide>
