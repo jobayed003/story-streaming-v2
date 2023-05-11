@@ -16,6 +16,7 @@ const Dashboard = () => {
   const { favouriteVideos, searchedVideos, searchedText } = useContext(StateContextProvider);
   const { seriesVideos } = useContext(VideoContextProvider);
 
+  // Getting list videos
   const trendingVideos = seriesVideos.filter((vid) => vid.type === 'others');
   const tvShows = seriesVideos.filter((vid) => vid.type === 'tv-shows');
   const movies = seriesVideos.filter((vid) => vid.type === 'movies');

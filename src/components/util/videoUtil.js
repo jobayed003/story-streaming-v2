@@ -1,29 +1,18 @@
-import {
-  collection,
-  doc,
-  getDoc,
-  onSnapshot,
-  orderBy,
-  query,
-  updateDoc,
-  where,
-} from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, orderBy, query, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase.config';
 
-export const fetchVideos = async (quer) => {
+export const fetchVideos = async () => {
   let videos = [];
   const collectionRef = collection(db, 'series');
 
   const q = query(collectionRef, orderBy('timeStamp', 'desc'));
-  onSnapshot(q, (querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      videos.push({ ...doc.data() });
-    });
+
+  const qSnapshot = await getDocs(q);
+  qSnapshot.forEach((doc) => {
+    videos.push(doc.data());
   });
   return videos;
 };
-
-fetchVideos();
 
 export const getSeriesData = async (id) => {
   const seriesRef = doc(db, 'series', id);
@@ -55,9 +44,3 @@ export const getDuration = (duration) => {
 
   return time;
 };
-
-// export const getVideoUrls = (videos) => {
-//   return videos.map(
-//     (el) => el.episodes[0].url // el.episodes.forEach((item) => videoUrl.push(item.url));
-//   );
-// };

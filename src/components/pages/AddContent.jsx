@@ -16,7 +16,6 @@ import { default as EditCard, default as VideoCard } from '../util/EditCard';
 import Slide from '../util/Slide';
 import {
   getThumbnail,
-  getThumbnails,
   parseVideoIDFromYoutubeURL,
   ytDurationToSeconds,
 } from '../util/youtubeUtils';
@@ -43,8 +42,6 @@ const AddContent = () => {
   const [user] = useAuthState(getAuth());
 
   // Getting thumbnail from video Urls
-  const thumbnail = getThumbnails(seriesVideos.map((ep) => ep.episodes[0].url));
-
   const getVideoDetails = async (url) => {
     const videoID = parseVideoIDFromYoutubeURL(url);
 
@@ -105,6 +102,7 @@ const AddContent = () => {
       toast.dark('Video added successfully', {
         theme: 'dark',
       });
+
       setUpdated((prev) => !prev);
       setSeriesDetails({
         description: '',

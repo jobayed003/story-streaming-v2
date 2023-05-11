@@ -32,13 +32,14 @@ export const VideoContext = ({ children }) => {
   });
 
   useEffect(() => {
-    (async () => {
+    const getVideos = async () => {
       try {
         setSeriesVideos(await fetchVideos());
       } catch {
         toast.error('Something Went Wrong!');
       }
-    })();
+    };
+    getVideos();
   }, [updated]);
 
   const contextValue = {
