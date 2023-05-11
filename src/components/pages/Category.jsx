@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import VideoContextProvider from '../../context/VideoContext';
 import Footer from '../UI/Footer';
@@ -26,17 +26,23 @@ const Category = () => {
 
   return (
     <>
+      <Header />
       <Container
         className={classes.container}
         style={{
-          gridTemplateRows: `1fr ${filteredVideos.length < 4 ? '60vh' : 'max-content'} 1fr`,
+          gridTemplateRows: `1fr ${filteredVideos.length < 4 ? '30vh' : 'max-content'} 1fr`,
         }}
       >
         <Row>
-          <Header />
+          <Col
+            className='text-light custom_font'
+            style={{ marginTop: '8rem', marginLeft: '4.9rem' }}
+          >
+            <h1>{path.toUpperCase()}</h1>
+          </Col>
         </Row>
         <Row
-          className={`hide-scroll ${classes.videoContainer}`}
+          className={`hide-scroll ${classes.videoContainer} custom_font`}
           style={{ left: filteredVideos.length <= 0 ? '' : '6%' }}
         >
           <div

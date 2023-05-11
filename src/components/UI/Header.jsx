@@ -35,12 +35,6 @@ const Header = ({ headerRef }) => {
     const element = document.getElementById(scrollId);
     path === 'dashboard' &&
       element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-    // path === 'dashboard' && window.scrollTo({ top: y, behavior: 'smooth' });
-    // window.document.body.scrollTo({
-    //   top:
-    //     element.getBoundingClientRect().top - document.body.getBoundingClientRect().top - offset,
-    //   behavior: 'smooth',
-    // });
     setScrollId('');
   };
 
@@ -193,34 +187,47 @@ const Header = ({ headerRef }) => {
                 </div>
               </Dropdown.Toggle>
 
-              <Dropdown.Menu>
-                <Dropdown.Item
-                  className={'dropLinks'}
-                  onClick={() => navigate(path === 'dashboard' ? '/settings' : '/dashboard')}
-                >
-                  <NavLink
-                    style={{ color: 'black' }}
-                    to={path === 'dashboard' ? '/settings' : '/dashboard'}
+              <Dropdown.Menu
+                style={{
+                  fontFamily: 'Roboto',
+                  textAlign: 'center',
+                  background: '#f0e4d4',
+                }}
+              >
+                <NavLink to={path === 'dashboard' ? '/settings' : '/dashboard'}>
+                  <Dropdown.Item
+                    className={`${classes.dropDownLink}`}
+                    onClick={() => navigate(path === 'dashboard' ? '/settings' : '/dashboard')}
                   >
                     {path === 'dashboard' ? 'Settings' : 'Dashboard'}
-                  </NavLink>
-                </Dropdown.Item>
-                {path !== 'dashboard' && path !== 'settings' && (
-                  <Dropdown.Item className={'dropLinks'} onClick={() => navigate('/settings')}>
-                    <NavLink style={{ color: 'black' }} to={'/settings'}>
-                      Settings
-                    </NavLink>
                   </Dropdown.Item>
+                </NavLink>
+                {path !== 'dashboard' && path !== 'settings' && (
+                  <NavLink to={'/settings'}>
+                    <Dropdown.Item
+                      className={`${classes.dropDownLink}`}
+                      onClick={() => navigate('/settings')}
+                    >
+                      Settings
+                    </Dropdown.Item>
+                  </NavLink>
                 )}
 
                 {isAdmin && (
                   <>
-                    <Dropdown.Item className={'dropLinks'} onClick={() => navigate('/upload')}>
-                      <NavLink style={{ color: 'black' }} to={'/upload'}>
+                    <NavLink to={'/upload'}>
+                      <Dropdown.Item
+                        className={`${classes.dropDownLink}`}
+                        onClick={() => navigate('/upload')}
+                      >
                         Upload Series
-                      </NavLink>
-                    </Dropdown.Item>
-                    <Dropdown.Item className={'dropLinks'} href='' onClick={() => setShow(true)}>
+                      </Dropdown.Item>
+                    </NavLink>
+                    <Dropdown.Item
+                      className={`${classes.dropDownLink}`}
+                      href=''
+                      onClick={() => setShow(true)}
+                    >
                       Manage Users
                     </Dropdown.Item>
 
@@ -228,7 +235,11 @@ const Header = ({ headerRef }) => {
                   </>
                 )}
 
-                <Dropdown.Item href='/' className={'customItem dropLinks'} onClick={handleLogout}>
+                <Dropdown.Item
+                  href='/'
+                  className={`customItem ${classes.dropDownLink}`}
+                  onClick={handleLogout}
+                >
                   Sign Out
                 </Dropdown.Item>
               </Dropdown.Menu>
@@ -255,18 +266,22 @@ const CustomDropDown = ({ lnk, categories, path }) => {
         {lnk.name}
       </Dropdown.Toggle>
 
-      <Dropdown.Menu style={{ fontFamily: 'Roboto', textAlign: 'center' }}>
+      <Dropdown.Menu
+        style={{
+          fontFamily: 'Roboto',
+          textAlign: 'center',
+          background: '#F0E4D4',
+        }}
+      >
         {categories.map((el) => (
-          <Dropdown.Item
-            onClick={() => navigate(`/category/${el.toLowerCase().replaceAll(' ', '_')}`)}
-          >
-            <NavLink
-              style={{ color: 'black' }}
-              to={`/category/${el.toLowerCase().replaceAll(' ', '_')}`}
+          <NavLink to={`/category/${el.toLowerCase().replaceAll(' ', '_')}`}>
+            <Dropdown.Item
+              onClick={() => navigate(`/category/${el.toLowerCase().replaceAll(' ', '_')}`)}
+              className={`${classes.dropDownLink}`}
             >
               {el}
-            </NavLink>
-          </Dropdown.Item>
+            </Dropdown.Item>
+          </NavLink>
         ))}
       </Dropdown.Menu>
     </Dropdown>

@@ -11,6 +11,17 @@
   src: url(./assets/fonts/MAGNETO_GRUNGE.TTF) format('truetype');
   font-weight: '700';
 }
+@font-face {
+  font-family: 'LosBanditos';
+  src: url(./assets/fonts/IFC_LOS_BANDITOS.ttf) format('truetype');
+  font-weight: '700';
+}
+
+@font-face {
+  font-family: 'DustWest';
+  src: url(./assets/fonts/Dust_West.otf) format('truetype');
+  font-weight: '700';
+}
 
 :root {
   --white: #fff;
@@ -169,11 +180,6 @@ nav .sign-in-button a {
 }
 
 /* Navlinks */
-.dropLinks {
-  display: flex;
-  justify-content: center;
-  color: #000;
-}
 
 .dropdown button {
   color: white;

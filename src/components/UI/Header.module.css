@@ -21,6 +21,16 @@
   color: var(--white) !important;
 }
 
+.dropDownLink {
+  background-color: #f0e4d4;
+  color: #6d5241;
+}
+
+.dropDownLink:hover {
+  background-color: #f0e4d4;
+  color: #714635;
+}
+
 @media (max-width: 1200px) {
   .customLink {
     font-size: 1.5rem;
