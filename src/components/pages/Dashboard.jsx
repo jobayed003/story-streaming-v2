@@ -36,7 +36,7 @@ const Dashboard = () => {
           <Container
             as='section'
             id={'videos-container'}
-            className='custom_font hide-scroll'
+            className='fontMagneto hide-scroll'
             style={{ overflow: 'hidden visible', paddingBottom: '8rem' }}
           >
             {/* Searched Videos List */}

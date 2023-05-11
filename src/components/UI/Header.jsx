@@ -55,7 +55,7 @@ const Header = ({ headerRef }) => {
     <Navbar
       expand='lg'
       collapseOnSelect
-      className='custom_font'
+      className='fontMagneto'
       fixed='top'
       style={{
         background: '#303030',

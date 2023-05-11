@@ -72,8 +72,14 @@ html::-webkit-scrollbar {
 }
 
 /* Custom fonts */
-.custom_font {
-  font-family: 'MagnetoBold', sans-serif;
+.fontMagneto {
+  font-family: 'MagnetoBold', 'Roboto', sans-serif;
+}
+.fontLosBanditos {
+  font-family: 'LosBanditos', 'Roboto', sans-serif;
+}
+.fontDustWest {
+  font-family: 'DustWest', 'Roboto', sans-serif;
 }
 
 /* navbar */

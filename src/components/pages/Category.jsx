@@ -30,19 +30,19 @@ const Category = () => {
       <Container
         className={classes.container}
         style={{
-          gridTemplateRows: `1fr ${filteredVideos.length < 4 ? '30vh' : 'max-content'} 1fr`,
+          gridTemplateRows: `max-content ${filteredVideos.length < 4 ? '30vh' : 'max-content'} 1fr`,
         }}
       >
         <Row>
           <Col
-            className='text-light custom_font'
+            className='text-light fontMagneto'
             style={{ marginTop: '8rem', marginLeft: '4.9rem' }}
           >
             <h1>{path.toUpperCase()}</h1>
           </Col>
         </Row>
         <Row
-          className={`hide-scroll ${classes.videoContainer} custom_font`}
+          className={`hide-scroll ${classes.videoContainer} fontMagneto`}
           style={{ left: filteredVideos.length <= 0 ? '' : '6%' }}
         >
           <div
