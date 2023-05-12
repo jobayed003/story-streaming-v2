@@ -30,7 +30,9 @@ const Category = () => {
       <Container
         className={classes.container}
         style={{
-          gridTemplateRows: `max-content ${filteredVideos.length < 4 ? '45vh' : 'max-content'} 1fr`,
+          gridTemplateRows: `max-content ${
+            filteredVideos.length < 4 ? 'max-content' : 'max-content'
+          } 1fr`,
         }}
       >
         <Row>
@@ -57,7 +59,7 @@ const Category = () => {
             )}
           </div>
         </Row>
-        <div className='justify-self-end'>
+        <div style={{ alignSelf: 'end' }}>
           <Footer />
         </div>
       </Container>
