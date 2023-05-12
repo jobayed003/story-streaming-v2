@@ -25,16 +25,9 @@ const Category = () => {
   );
 
   return (
-    <>
+    <Container as='main'>
       <Header />
-      <Container
-        className={classes.container}
-        style={{
-          gridTemplateRows: `max-content ${
-            filteredVideos.length < 4 ? 'max-content' : 'max-content'
-          } 1fr`,
-        }}
-      >
+      <Container className={classes.container}>
         <Row>
           <Col
             className='text-light fontMagneto'
@@ -45,7 +38,7 @@ const Category = () => {
         </Row>
         <Row
           className={`hide-scroll ${classes.videoContainer} fontMagneto`}
-          style={{ left: filteredVideos.length <= 0 ? '' : '6%' }}
+          style={{ left: filteredVideos.length <= 0 || width < 475 ? '' : '6%' }}
         >
           <div
             className={`d-flex gap-4 flex-wrap justify-content-${width > 475 ? 'start' : 'center'}`}
@@ -63,7 +56,7 @@ const Category = () => {
           <Footer />
         </div>
       </Container>
-    </>
+    </Container>
   );
 };
 

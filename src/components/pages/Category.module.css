@@ -1,8 +1,7 @@
 .container {
   height: 100dvh;
   display: grid;
-  /* grid-template-rows: 1fr minmax(max-content, 60vh) 1fr; */
-  /* align-items: center; */
+  grid-template-rows: max-content max-content 1fr;
 }
 
 .videoContainer {
