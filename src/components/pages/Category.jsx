@@ -31,7 +31,7 @@ const Category = () => {
         <Row>
           <Col
             className='text-light fontMagneto'
-            style={{ marginTop: '8rem', marginLeft: '4.9rem' }}
+            style={{ marginTop: '8rem', marginLeft: '3.9rem' }}
           >
             <h1>{path.toUpperCase()}</h1>
           </Col>
