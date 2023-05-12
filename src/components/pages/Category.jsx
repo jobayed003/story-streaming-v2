@@ -30,7 +30,7 @@ const Category = () => {
       <Container
         className={classes.container}
         style={{
-          gridTemplateRows: `max-content ${filteredVideos.length < 4 ? '30vh' : 'max-content'} 1fr`,
+          gridTemplateRows: `max-content ${filteredVideos.length < 4 ? '45vh' : 'max-content'} 1fr`,
         }}
       >
         <Row>
