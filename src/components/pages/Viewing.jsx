@@ -46,9 +46,6 @@ const Viewing = () => {
     videoId = videoIDfromStorage;
     // title = videofromStorage.episodes[0].title;
   }
-
-  const headerRef = useRef();
-
   const [details, setDetails] = useState({
     videoId,
     id: '',
@@ -96,7 +93,7 @@ const Viewing = () => {
       {!user && videoId === '' && loadingState}
       {user && videoId !== '' && (
         <div>
-          <Header headerRef={headerRef} />
+          <Header />
           <div className='text-light'>
             {/* <h1>{title}</h1> */}
             <YouTube

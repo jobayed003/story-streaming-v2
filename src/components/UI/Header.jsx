@@ -12,15 +12,17 @@ import useDimension from '../hooks/useDimension';
 import { ManageUser } from '../util/ManageUser';
 import classes from './Header.module.css';
 
-const Header = ({ headerRef }) => {
+const Header = () => {
   const [show, setShow] = useState(false);
 
   const { scrollId, setScrollId, searchedText, setSearchedText, filterVideos } =
     useContext(StateContextProvider);
   const { isAdmin, users, userCredentials } = useContext(AuthProvider);
 
-  const navigate = useNavigate();
   const navRef = useRef();
+  const navToggleRef = useRef();
+
+  const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname.replace('/', '');
   const { width } = useDimension();
@@ -31,11 +33,16 @@ const Header = ({ headerRef }) => {
     auth.signOut();
   };
 
-  const scrollToElement = (offset) => {
+  const scrollToElement = () => {
     const element = document.getElementById(scrollId);
     path === 'dashboard' &&
       element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
     setScrollId('');
+  };
+
+  const closeNavbar = () => {
+    navRef.current.classList.remove('show');
+    navToggleRef.current.classList.add('collapsed');
   };
 
   const navLinks = [
@@ -60,7 +67,7 @@ const Header = ({ headerRef }) => {
       style={{
         background: '#303030',
       }}
-      ref={headerRef}
+      ref={navRef}
     >
       <Container>
         <Navbar.Brand href='/'>
@@ -68,7 +75,7 @@ const Header = ({ headerRef }) => {
             <Image src={logo} alt='' className={classes.logo} />
           </HashLink>
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls='navbarScroll'>
+        <Navbar.Toggle aria-controls='navbarScroll' ref={navToggleRef}>
           <FaBars />
         </Navbar.Toggle>
         <Navbar.Collapse ref={navRef} className={`justify-content-center`} id='navbarScroll'>
@@ -113,7 +120,7 @@ const Header = ({ headerRef }) => {
                       'Documentary',
                       'Science And Education',
                     ]}
-                    path={path}
+                    closeNavbar={closeNavbar}
                   />
                 )}
               </Link>
@@ -253,15 +260,20 @@ const Header = ({ headerRef }) => {
 
 export default Header;
 
-const CustomDropDown = ({ lnk, categories, path }) => {
+const CustomDropDown = ({ lnk, categories, closeNavbar }) => {
+  const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
 
+  const setDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
   return (
-    <Dropdown className={`d-flex flex-column align-items-center`} align='end'>
+    <Dropdown show={showDropdown} className={`d-flex flex-column align-items-center`} align='end'>
       <Dropdown.Toggle
         id='dropdown-basic'
         style={{ background: 'none', border: 'none' }}
         className={`d-flex align-items-center ${classes.customLink} `}
+        onClick={setDropdown}
       >
         {lnk.name}
       </Dropdown.Toggle>
@@ -272,11 +284,18 @@ const CustomDropDown = ({ lnk, categories, path }) => {
           textAlign: 'center',
           background: '#F0E4D4',
         }}
+        onClick={() => {
+          setDropdown();
+          closeNavbar();
+        }}
       >
         {categories.map((el) => (
-          <NavLink to={`/category/${el.toLowerCase().replaceAll(' ', '_')}`}>
+          <NavLink to={`/category/${el.toLowerCase().replaceAll(' ', '_')}`} onClick={closeNavbar}>
             <Dropdown.Item
-              onClick={() => navigate(`/category/${el.toLowerCase().replaceAll(' ', '_')}`)}
+              onClick={(e) => {
+                navigate(`/category/${el.toLowerCase().replaceAll(' ', '_')}`);
+                closeNavbar();
+              }}
               className={`${classes.dropDownLink}`}
             >
               {el}
