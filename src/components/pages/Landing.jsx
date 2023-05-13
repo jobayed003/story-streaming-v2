@@ -261,7 +261,7 @@ const Landing = () => {
           </Container>
           {/* question-section-end */}
           {/* footer-start */}
-          {/* <Footer /> */}
+          <Footer />
           {/* footer-end */}
         </main>
       )}
