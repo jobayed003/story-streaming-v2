@@ -27,22 +27,21 @@
 }
 
 .formTitle {
+  color: #f2e6d2;
   font-size: 2.8rem;
 }
 
 .formLabel {
-  color: var(--button-color);
+  color: #f2e6d2;
   font-size: 1.5rem;
 }
 
 .inputBg > span,
 .inputBg > input,
 .inputBg > input:focus {
-  /* color: #eee; */
   box-shadow: none;
   border: none;
   background-color: #fff;
-  /* background-color: #343434; */
 }
 /* media query */
 @media only screen and (max-width: 575px) {

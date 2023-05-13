@@ -91,7 +91,13 @@ const Register = ({ show, setShow }) => {
         centered
       >
         {/* <Modal.Header closeButton><Modal.Title>Register Now</Modal.Title></Modal.Header> */}
-        <Modal.Body>
+        <Modal.Body
+          style={{
+            background: 'var(--form-bg)',
+            borderRadius: '5px',
+          }}
+        >
+          <h1 className='text-center form-label'>Sign Up</h1>
           <Form onSubmit={handleSubmit}>
             <Form.Group className='mb-3' controlId='formGroupName'>
               <Form.Label>Full Name</Form.Label>
@@ -116,7 +122,7 @@ const Register = ({ show, setShow }) => {
             </Form.Group>
             <Form.Group className='mb-3' controlId='formGroupPassword'>
               <Form.Label>Password</Form.Label>
-              <InputGroup>
+              <InputGroup className={'inputBg'}>
                 <Form.Control
                   type={isClicked ? 'text' : 'password'}
                   placeholder='Password'
@@ -126,6 +132,7 @@ const Register = ({ show, setShow }) => {
                 />
                 <InputGroup.Text
                   style={{ cursor: 'pointer' }}
+                  className={'inputBg'}
                   onClick={() => setIsClicked(!isClicked)}
                 >
                   <FaEye />
@@ -136,9 +143,8 @@ const Register = ({ show, setShow }) => {
             <div className='d-flex flex-column justify-content-between align-items-center'>
               <Button
                 type='submit'
-                variant='success'
                 style={{
-                  // background: '#',
+                  background: 'var(--button-color)',
                   border: 'none',
                   height: '2.5rem',
                 }}
@@ -158,12 +164,12 @@ const Register = ({ show, setShow }) => {
                 )}
               </Button>
 
-              <p style={{ marginTop: '1rem', color: '#000' }}>
+              <p style={{ marginTop: '1rem', color: '#f2e6d2' }}>
                 Already have an account?{' '}
                 <NavLink
                   to='/'
                   onClick={() => setAuthStep('login')}
-                  style={{ color: '#000', textDecoration: 'underline' }}
+                  style={{ color: 'var(--button-color)', textDecoration: 'none' }}
                 >
                   Login
                 </NavLink>

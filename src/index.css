@@ -26,11 +26,13 @@
 :root {
   --white: #fff;
   --dark: #000000;
-  --button-color: #e40914;
+  /* --button-color: #e40914; */
   --button-hover-collor: #f40612;
   --gray-color: #303030;
   --footer-text-color: #898989;
-  --text-color: #9b6c3b;
+  --button-color: #a6723d;
+  --form-text-color: '#f2e6d2';
+  --form-bg: #4c4544;
 }
 
 html {
@@ -118,13 +120,19 @@ html::-webkit-scrollbar {
   border-bottom: 7px solid var(--gray-color);
 }
 .custom-btn {
-  font-size: 26px;
   background-color: var(--button-color);
-  color: var(--white);
+  font-size: 26px;
+  border: none;
 }
-.custom-btn:hover {
-  background-color: var(--button-hover-collor) !;
-  color: var(--white);
+
+.custom-btn:hover,
+.custom-btn:active,
+.custom-btn:focus,
+.custom-btn:focus-visible,
+.custom-btn {
+  border: none !important;
+  box-shadow: none !important;
+  background-color: var(--button-color) !important;
 }
 
 header {
@@ -158,6 +166,20 @@ nav .logo img {
 }
 nav .sign-in-button a {
   background-color: var(--button-color);
+}
+
+/* Forms styles */
+.form-label {
+  color: #f2e6d2;
+  font-size: 1.5rem;
+}
+
+.inputBg > span,
+.inputBg > input,
+.inputBg > input:focus {
+  box-shadow: none;
+  border: none;
+  background-color: #fff;
 }
 
 /* herosection*/
@@ -245,10 +267,6 @@ nav .sign-in-button a {
 }
 .accordion-item:not(:first-of-type) {
   border: 0;
-}
-
-.form-label {
-  color: #000000;
 }
 
 /* footer */

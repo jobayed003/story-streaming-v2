@@ -12,11 +12,20 @@
   height: 50px;
 }
 
+.sloganText {
+  text-align: left;
+}
+
 @media (max-width: 1200px) {
   .customLink {
     font-size: 1.5rem;
   }
   .logo {
     max-width: 150px;
+  }
+}
+@media (max-width: 575px) {
+  .sloganText {
+    text-align: center;
   }
 }

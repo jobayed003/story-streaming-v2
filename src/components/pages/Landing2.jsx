@@ -36,7 +36,7 @@ const Landing2 = () => {
           <Form
             onSubmit={handleSubmit}
             style={{
-              background: 'var(--gray-color)',
+              background: 'var(--form-bg)',
               padding: '2rem',
               textAlign: 'center',
               borderRadius: '5px',
@@ -46,8 +46,8 @@ const Landing2 = () => {
             <h1 className={classes.formTitle}>Premium Account Generator</h1>
             <Form.Label className={classes.formLabel}>Enter your email address</Form.Label>
             <Form.Group className='mb-3' controlId='formBasicEmail' style={{ background: '#fff' }}>
-              <InputGroup className={`mb-3 ${classes.inputBg}`}>
-                <InputGroup.Text className={classes.inputBg}>
+              <InputGroup className={`mb-3 inputBg`}>
+                <InputGroup.Text className={'inputBg'}>
                   <FaRegEnvelope fontSize={'1.5rem'} color='#929292' />
                 </InputGroup.Text>
                 <Form.Control

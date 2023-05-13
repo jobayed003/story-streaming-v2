@@ -4,8 +4,8 @@ import { Accordion, Button, Col, Container, Image, Nav, Navbar, Row } from 'reac
 import { FaChevronRight } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/Icons/StorySaloon_Logo.svg';
+import placeholder from '../../assets/images/hero.jpg';
 import left from '../../assets/images/left.png';
-import placeholder from '../../assets/images/placeholder.jpg';
 import tv from '../../assets/images/tv.png';
 import AuthProvider from '../../context/AuthContext';
 import '../../index.css';
@@ -44,18 +44,22 @@ const Landing = () => {
       )}
       {isLoading && (
         <Row className='justify-content-center align-items-center' style={{ height: '100vh' }}>
-          <Image src={logo} alt='' style={{ width: '300px', height: '80px' }} />
+          <Image src={logo} alt='' style={{ width: '300px', height: '80px', zIndex: '10000' }} />
         </Row>
       )}
       {!isLoading && (
         <main>
-          <Container
-            as='section'
-            fluid
-            style={{
-              backgroundImage: `url(${placeholder})`,
-            }}
-          >
+          <Container as='section' fluid className='ps-0 position-relative'>
+            <div
+              style={{
+                position: 'absolute',
+                backgroundImage: `url(${placeholder})`,
+                filter: 'brightness(40%)',
+                zIndex: '-1',
+                width: '100%',
+                height: '100%',
+              }}
+            />
             {/* nav-start */}
             <Navbar>
               <Container>
@@ -64,7 +68,14 @@ const Landing = () => {
                 </Navbar.Brand>
                 <Nav className=''>
                   <Nav.Link href='#'>
-                    <Button variant='danger' onClick={handleShow}>
+                    <Button
+                      className='custom-btn'
+                      style={{
+                        fontSize: '1rem',
+                        height: '2.5rem',
+                      }}
+                      onClick={handleShow}
+                    >
                       Sign In
                     </Button>
                   </Nav.Link>
@@ -83,9 +94,7 @@ const Landing = () => {
                 <div>
                   <Button
                     className='py-2 px-4 custom-btn'
-                    variant='danger'
-                    // style={{ outline: 'none', border: 'none' }}
-                    onClick={(_) => {
+                    onClick={() => {
                       setAuthStep('register');
                       handleShow();
                     }}
@@ -97,12 +106,11 @@ const Landing = () => {
             </Container>
             {/* herosection-end */}
           </Container>
-          {/* nav-end */}
 
           {/* first-slogansection-start */}
-          <Container as={'section'}>
-            <Row className='my-5 align-items-center'>
-              <Col className='d-flex flex-column justify-content-center'>
+          <Container as={'section'} className='p-0'>
+            <Row className='flex-column flex-sm-row my-5 align-items-center'>
+              <Col className='d-flex flex-column text-center text-lg-start'>
                 <h1>Enjoy on your TV.</h1>
                 <h2>
                   Watch on Smart TVs, Playstation, Xbox, Chromecast, Apple TV, Blu-ray players, and
@@ -114,30 +122,28 @@ const Landing = () => {
                 <img style={{ width: '100%' }} src={tv} alt='tv' />
               </Col>
             </Row>
-          </Container>
-          {/* first-slogansection-end */}
 
-          {/* second-slogansection-sttart */}
-          <Container as='section'>
-            <Row className='justify-content-xs-center align-items-center'>
+            {/* first-slogansection-end */}
+
+            {/* second-slogansection-sttart */}
+
+            <Row className='flex-column-reverse flex-sm-row justify-content-xs-center align-items-center'>
               <Col>
                 <div>
                   <img style={{ width: '100%' }} src={left} alt='' />
                 </div>
               </Col>
               <Col>
-                <div className='right d-flex flex-column justify-content-center ps-lg-5 text-center text-lg-start h-100'>
+                <div className='right d-flex flex-column justify-content-center ps-lg-5 text-center text-lg-start h-100 w-75 w-xs-100 m-auto'>
                   <h1>Download your shows to watch offline.</h1>
                   <h2>Save your favorites easily and always have something to watch.</h2>
                 </div>
               </Col>
             </Row>
-          </Container>
-          {/* second-slogansection-end */}
+            {/* second-slogansection-end */}
 
-          {/* third-slogansectionn-start */}
-          <Container as='section' className='py-5'>
-            <Row className='justify-content-xs-center '>
+            {/* third-slogansectionn-start */}
+            <Row className='justify-lg-content-center py-4'>
               <Col xs lg='5'>
                 <div className='left text-center text-lg-start'>
                   <h1>Watch everywhere.</h1>
@@ -147,19 +153,18 @@ const Landing = () => {
                 </div>
               </Col>
             </Row>
-          </Container>
-          {/* third-slogansectionn-end */}
 
-          {/* second-slogansection-sttart */}
-          <Container as='section'>
-            <Row className='justify-content-xs-center align-items-center'>
+            {/* third-slogansectionn-end */}
+
+            {/* second-slogansection-sttart */}
+            <Row className='flex-column-reverse flex-sm-row  justify-content-xs-center align-items-center '>
               <Col>
                 <div className='left'>
                   <img style={{ width: '100%' }} src={left} alt='' />
                 </div>
               </Col>
               <Col>
-                <div className='right d-flex flex-column justify-content-center ps-lg-5 text-center text-lg-start h-100'>
+                <div className='right d-flex flex-column justify-content-center ps-lg-5 text-center text-lg-start h-100 w-75 w-sm-100 m-auto'>
                   <h1>Create profiles for kids.</h1>
                   <h2>
                     Send kids on adventures with their favorite characters in a space made just for
@@ -244,7 +249,6 @@ const Landing = () => {
               <Col className='text-center'>
                 <Button
                   className='py-2 px-4 custom-btn'
-                  variant='danger'
                   onClick={(_) => {
                     setAuthStep('register');
                     handleShow();
@@ -254,12 +258,12 @@ const Landing = () => {
                 </Button>
               </Col>
             </Row>
+
+            {/* footer-start */}
+            <Footer />
+            {/* footer-end */}
           </Container>
           {/* question-section-end */}
-
-          {/* footer-start */}
-          <Footer />
-          {/* footer-end */}
         </main>
       )}
     </>
