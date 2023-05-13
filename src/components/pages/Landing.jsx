@@ -49,7 +49,7 @@ const Landing = () => {
       )}
       {!isLoading && (
         <main>
-          <Container as='section' fluid className='ps-0 position-relative'>
+          <Container as='section' fluid className='px-0 position-relative'>
             <div
               style={{
                 position: 'absolute',
@@ -83,7 +83,7 @@ const Landing = () => {
               </Container>
             </Navbar>
             {/* herosection-start */}
-            <Container as='section' style={{ height: '50vh', zIndex: 100 }}>
+            <Container as='section' className='px-0' style={{ height: '60vh', zIndex: 100 }}>
               <Row className='my-5 text-center'>
                 <h5 className='mb-3'>Welcome back!</h5>
                 <h1 className='mb-3'>
@@ -108,9 +108,9 @@ const Landing = () => {
           </Container>
 
           {/* first-slogansection-start */}
-          <Container as={'section'} className='p-0'>
+          <Container as={'section'} className='px-0'>
             <Row className='flex-column flex-sm-row my-5 align-items-center'>
-              <Col className='d-flex flex-column text-center text-lg-start'>
+              <Col className='d-flex flex-column text-center text-lg-start  w-75 w-xs-100 m-auto'>
                 <h1>Enjoy on your TV.</h1>
                 <h2>
                   Watch on Smart TVs, Playstation, Xbox, Chromecast, Apple TV, Blu-ray players, and
@@ -177,7 +177,7 @@ const Landing = () => {
           {/* second-slogansection-end */}
 
           {/* question-section-start */}
-          <Container className='mt-5'>
+          <Container className='mt-5 px-0'>
             <Row>
               <Col className='text-center'>
                 <h1>Frequently Asked Questions</h1>
@@ -249,7 +249,7 @@ const Landing = () => {
               <Col className='text-center'>
                 <Button
                   className='py-2 px-4 custom-btn'
-                  onClick={(_) => {
+                  onClick={() => {
                     setAuthStep('register');
                     handleShow();
                   }}
@@ -258,12 +258,11 @@ const Landing = () => {
                 </Button>
               </Col>
             </Row>
-
-            {/* footer-start */}
-            <Footer />
-            {/* footer-end */}
           </Container>
           {/* question-section-end */}
+          {/* footer-start */}
+          {/* <Footer /> */}
+          {/* footer-end */}
         </main>
       )}
     </>

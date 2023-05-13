@@ -11,7 +11,7 @@ const useLoadingState = () => {
 
   useEffect(() => {
     setLoadingState(
-      <Row className='justify-content-center align-items-center' style={{ height: '100vh' }}>
+      <Row className='justify-content-center align-items-center' style={{ height: '100dvh' }}>
         <Image src={logo} alt='' style={{ width: '300px', height: '80px' }} />
       </Row>
     );

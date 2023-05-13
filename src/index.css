@@ -32,6 +32,7 @@
   --footer-text-color: #898989;
   --button-color: #a6723d;
   --form-text-color: '#f2e6d2';
+  --text-color: #9b6c3b;
   --form-bg: #4c4544;
 }
 
@@ -51,6 +52,7 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
 h1 {
   font-size: 55px;
   font-weight: 700;
@@ -71,6 +73,13 @@ html {
 }
 html::-webkit-scrollbar {
   display: none;
+}
+
+/* Removing bootstrap default margin and padding */
+.row,
+.row > * {
+  padding-right: 0px;
+  margin-right: 0px;
 }
 
 /* Custom fonts */
