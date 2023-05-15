@@ -201,8 +201,8 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
                 />
               </FloatingLabel>
               <InputGroup.Text
-                className={passwords.confirmpass === '' ? 'pe-none' : 'cursor-pointer'}
-                style={{ cursor: 'pointer' }}
+                className={` ${passwords.confirmpass === '' ? 'pe-none' : 'cursor-pointer'}`}
+                style={{ cursor: 'pointer', border: '' }}
                 onClick={() => setIsClicked(!isClicked)}
               >
                 <FaEye />

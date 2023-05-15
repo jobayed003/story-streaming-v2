@@ -7,9 +7,6 @@ import classes from './Landing2.module.css';
 
 const Landing2 = () => {
   const [email, setEmail] = useState('');
-
-  const [isValidated, setIsValidated] = useState();
-
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {

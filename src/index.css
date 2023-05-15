@@ -82,6 +82,32 @@ html::-webkit-scrollbar {
   margin-right: 0px;
 }
 
+/* Global custom styles */
+.cursor-pointer {
+  cursor: pointer;
+}
+.boxShadow {
+  box-shadow: none !important;
+}
+
+.textEllipsis {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.customItem {
+  margin-top: 1rem;
+  border-top: 1px solid var(--footer-text-color);
+}
+
+/* Forms styles */
+.form-label {
+  color: #f2e6d2;
+  font-size: 1.5rem;
+}
+
 /* Custom fonts */
 .fontMagneto {
   font-family: 'MagnetoBold', 'Roboto', sans-serif;
@@ -91,6 +117,31 @@ html::-webkit-scrollbar {
 }
 .fontDustWest {
   font-family: 'DustWest', 'Roboto', sans-serif;
+}
+
+.hide-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-btn {
+  background-color: var(--button-color);
+  font-size: 26px;
+  border: none;
+}
+
+.custom-btn:hover,
+.custom-btn:active,
+.custom-btn:focus,
+.custom-btn:focus-visible,
+.custom-btn {
+  border: none !important;
+  box-shadow: none !important;
+  background-color: var(--button-color) !important;
 }
 
 /* navbar */
@@ -113,41 +164,13 @@ html::-webkit-scrollbar {
   border-radius: 5px;
 }
 
-.hide-scroll {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.hide-scroll::-webkit-scrollbar {
-  display: none;
-}
-
 .pdy {
   padding: 75px 0px;
 }
 .border-bm {
   border-bottom: 7px solid var(--gray-color);
 }
-.custom-btn {
-  background-color: var(--button-color);
-  font-size: 26px;
-  border: none;
-}
 
-.custom-btn:hover,
-.custom-btn:active,
-.custom-btn:focus,
-.custom-btn:focus-visible,
-.custom-btn {
-  border: none !important;
-  box-shadow: none !important;
-  background-color: var(--button-color) !important;
-}
-
-header {
-  overflow: hidden;
-  position: relative;
-}
 .bg-img-1 {
   opacity: 0.6;
   position: absolute;
@@ -175,12 +198,6 @@ nav .logo img {
 }
 nav .sign-in-button a {
   background-color: var(--button-color);
-}
-
-/* Forms styles */
-.form-label {
-  color: #f2e6d2;
-  font-size: 1.5rem;
 }
 
 .inputBg > span,
@@ -220,11 +237,6 @@ nav .sign-in-button a {
 
 .dropdown button {
   color: white;
-}
-
-.customItem {
-  margin-top: 1rem;
-  border-top: 1px solid var(--footer-text-color);
 }
 
 /*  questionsection  */
@@ -298,19 +310,11 @@ nav .sign-in-button a {
   text-decoration: underline;
 }
 
-.cursor-pointer {
-  cursor: pointer;
-}
-
 .Toastify__toast-theme--dark {
   background-color: #303030 !important;
 }
 .Toastify__progress-bar-theme--dark {
   background-color: #007bff !important;
-}
-
-.boxShadow {
-  box-shadow: none !important;
 }
 
 /* Dot animation */

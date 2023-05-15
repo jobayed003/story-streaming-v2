@@ -10,6 +10,7 @@ import VideoContextProvider from '../../context/VideoContext';
 import { db } from '../../firebase.config';
 import Footer from '../UI/Footer';
 import Header from '../UI/Header';
+import useDimension from '../hooks/useDimension';
 import useLoadingState from '../hooks/useLoadingState';
 import useStatus from '../hooks/useStatus';
 import { default as EditCard, default as VideoCard } from '../util/EditCard';
@@ -28,6 +29,7 @@ const AddContent = () => {
     episode: 0,
     title: '',
     url: '',
+    season: 1,
   };
   const formRef = useRef();
 
@@ -58,9 +60,8 @@ const AddContent = () => {
       if (index === currentIndex) {
         return {
           ...episode,
-          season: seriesDetails.season,
-
           [field]: value,
+          // season: seriesDetails.season,
         };
       }
       return episode;
@@ -109,6 +110,7 @@ const AddContent = () => {
         episodes: [initialEpisode],
         genre: '',
         title: '',
+        type: 'movies',
       });
     } catch (error) {
       toast.dark('Something Went Wrong.Check the values and try again!', {
@@ -192,10 +194,11 @@ const AddContent = () => {
                       <Form.Group className='mb-3'>
                         <Form.Label className='custom-label'>Season Number</Form.Label>
                         <Form.Control
-                          // min={1}
-                          // max={40}
+                          min={1}
+                          max={40}
                           required
-                          type='text'
+                          defaultValue={1}
+                          type='number'
                           value={el.season}
                           placeholder='Select Season'
                           onChange={(e) => {
@@ -206,7 +209,7 @@ const AddContent = () => {
                     </span>
                   ))}
 
-                  <div className='d-flex align-items-center flex-column'>
+                  <div className='text-center'>
                     <Button
                       variant='link'
                       style={{ paddingLeft: 0, textDecoration: 'none' }}
@@ -224,14 +227,37 @@ const AddContent = () => {
                       Add another episode
                     </Button>
 
-                    <Button
-                      className='my-4 w-50'
-                      variant='primary'
-                      type='button'
-                      onClick={AddVideo}
-                    >
-                      Submit
-                    </Button>
+                    <div className='d-flex flex-column flex-sm-row gap-4 my-4 mx-5 flex-grow-1'>
+                      <Button
+                        className='flex-grow-1'
+                        variant='primary'
+                        type='button'
+                        onClick={AddVideo}
+                      >
+                        Submit
+                      </Button>
+                      <Button
+                        className='flex-grow-1'
+                        variant='primary'
+                        type='button'
+                        onClick={() => {
+                          formRef.current.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'end',
+                            inline: 'nearest',
+                          });
+                          setSeriesDetails({
+                            description: '',
+                            episodes: [initialEpisode],
+                            genre: '',
+                            title: '',
+                            type: 'movies',
+                          });
+                        }}
+                      >
+                        Reset
+                      </Button>
+                    </div>
                   </div>
                 </Form>
               </Col>
@@ -278,14 +304,15 @@ const AddContent = () => {
 export default AddContent;
 
 const VideoDetailsForm = () => {
+  const { width } = useDimension();
   // Context Management
   const { seriesDetails, setSeriesDetails } = useContext(VideoContextProvider);
 
   return (
     <>
-      <div className='d-flex justify-content-between align-items-center flex-column-reverse flex-sm-row gap-3 my-4'>
+      <div className='d-flex justify-content-between align-items-center flex-column flex-sm-row gap-3 my-4'>
         <h2 className='mb-0 align-self-sm-center align-self-start'>Video Details</h2>
-        <Form.Group>
+        <Form.Group className={width <= 575 ? 'w-100' : 'w-auto'}>
           <Form.Label className='custom-label'>Choose Video Type</Form.Label>
           <Form.Select
             aria-label='Video Type Select'

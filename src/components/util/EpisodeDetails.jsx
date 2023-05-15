@@ -98,7 +98,7 @@ export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
           </div>
           <div className={'d-flex flex-column p-4 pb-0'}>
             <span style={{ fontWeight: 'bold', fontSize: '2rem' }}>{details.title}</span>
-            <span>{details.description}</span>
+            <span className={'textEllipsis'}>{details.description}</span>
             <span>{details.genre}</span>
           </div>
           <div className='d-flex flex-column p-4' style={{}}>
@@ -161,9 +161,7 @@ export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
                           {getDuration(el.duration)}
                         </span>
                       </div>
-                      <span className={`text-secondary`} style={{ height: '50px' }}>
-                        {el.description}
-                      </span>
+                      <span className={`text-secondary textEllipsis`}>{el.description}</span>
                     </div>
                   </div>
                 </motion.div>
