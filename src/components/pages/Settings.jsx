@@ -107,7 +107,7 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
   const user = auth.currentUser;
 
   const handleChange = ({ target }) => {
-    const targetId = target.id.replace('floating', '').toLowerCase();
+    const targetId = target.id.replace('formGroup', '').toLowerCase();
     setPasswords((prevstate) => ({
       ...prevstate,
       [targetId]: target.value,
@@ -124,7 +124,9 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
       .then(async () => {
         setIsLoading(false);
         setShowPasswordModal(false);
-        toast.success('Password changed successfully!');
+        toast.dark('Password changed successfully!', {
+          theme: 'dark',
+        });
       })
       .catch((error) => {
         toast.error('An error ocurred! Try again');
@@ -143,7 +145,9 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
 
     sendPasswordResetEmail(auth, userDetails.email, actionCodeSettings)
       .then(() => {
-        toast.success('Password reset email has been sent, please check your inbox');
+        toast.dark('Password reset email has been sent, please check your inbox', {
+          theme: 'dark',
+        });
       })
       .catch((error) => {
         toast.error();
@@ -153,6 +157,7 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
         console.log(errorCode, errorMessage);
       });
   };
+
   return (
     <Modal
       show={showPasswordModal}
@@ -161,48 +166,46 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
       centered
       className='settings-text-color'
     >
-      <Modal.Header closeButton className='border-0'>
-        <Modal.Title>Change Password</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
+      <Modal.Body
+        className='rounded'
+        style={{
+          background: 'var(--form-bg)',
+        }}
+      >
+        <Modal.Title className='text-center pb-3  form-label'>Change Password</Modal.Title>
         <Form>
-          <Form.Group className='mb-4' controlId='formGroupPassword'>
-            <InputGroup>
-              <FloatingLabel controlId='floatingNewPass' label='New Password'>
-                <Form.Control
-                  type={isClicked ? 'text' : 'password'}
-                  placeholder='New Password'
-                  controlId='password'
-                  onChange={handleChange}
-                  className='boxShadow'
-                />
-              </FloatingLabel>
+          <Form.Group className='mb-3' controlId='formGroupNewPass'>
+            <Form.Label>New password</Form.Label>
+            <InputGroup className={'inputBg'}>
+              <Form.Control
+                type={isClicked ? 'text' : 'password'}
+                placeholder='New Password'
+                controlId='password'
+                onChange={handleChange}
+                className='boxShadow'
+              />
               <InputGroup.Text
-                className={passwords.newpass === '' ? 'pe-none' : 'cursor-pointer'}
                 style={{ cursor: 'pointer' }}
+                className={'inputBg'}
                 onClick={() => setIsClicked(!isClicked)}
-                required
               >
                 <FaEye />
               </InputGroup.Text>
             </InputGroup>
           </Form.Group>
-          <Form.Group controlId='formGroupPassword'>
-            <InputGroup>
-              <FloatingLabel controlId='floatingConfirmPass' label='Confirm Password'>
-                <Form.Control
-                  type={isClicked ? 'text' : 'password'}
-                  placeholder='Confirm Password'
-                  controlId='password'
-                  onChange={handleChange}
-                  style={{ boxShadow: 'none' }}
-                  className='boxShadow'
-                  required
-                />
-              </FloatingLabel>
+          <Form.Group className='mb-3' controlId='formGroupConfirmPass'>
+            <Form.Label>Confirm password</Form.Label>
+            <InputGroup className={'inputBg'}>
+              <Form.Control
+                type={isClicked ? 'text' : 'password'}
+                placeholder='Confirm Password'
+                controlId='password'
+                onChange={handleChange}
+                className='boxShadow'
+              />
               <InputGroup.Text
-                className={` ${passwords.confirmpass === '' ? 'pe-none' : 'cursor-pointer'}`}
-                style={{ cursor: 'pointer', border: '' }}
+                style={{ cursor: 'pointer' }}
+                className={'inputBg'}
                 onClick={() => setIsClicked(!isClicked)}
               >
                 <FaEye />
@@ -213,7 +216,7 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
         <Button
           style={{
             background: 'none',
-            color: 'blue',
+            color: '#f2e6d2',
             textDecoration: 'underline',
             border: 'none',
             paddingLeft: '0',
@@ -222,22 +225,20 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
           }}
           onClick={(e) => {
             sendResetMail();
-            e.currentTarget.style.color = 'darkblue';
+            e.currentTarget.style.color = 'var(--text-color)';
           }}
         >
-          or get a password reset email
+          Or get a password reset email
         </Button>
-      </Modal.Body>
-      <Modal.Footer className='border-0 justify-content-center'>
-        <div className='d-flex flex-column justify-content-between align-items-center'>
+
+        <div className='d-flex flex-column justify-content-between align-items-center pt-2'>
           <Button
             style={{
-              // background: '#',
+              background: 'var(--button-color)',
               border: 'none',
               height: '2.5rem',
             }}
             type='submit'
-            variant='success'
             onClick={changePassword}
             disabled={passwords.newpass === '' || passwords.confirmpass === '' ? true : isLoading}
           >
@@ -251,7 +252,7 @@ const ResetPass = ({ showPasswordModal, setShowPasswordModal, userDetails }) => 
             )}
           </Button>
         </div>
-      </Modal.Footer>
+      </Modal.Body>
     </Modal>
   );
 };

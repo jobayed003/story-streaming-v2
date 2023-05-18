@@ -314,7 +314,7 @@ nav .sign-in-button a {
   background-color: #303030 !important;
 }
 .Toastify__progress-bar-theme--dark {
-  background-color: #007bff !important;
+  background-color: var(--text-color) !important;
 }
 
 /* Dot animation */
