@@ -1,11 +1,11 @@
-.container {
+/* .container {
   height: 100dvh;
   display: grid;
   grid-template-rows: max-content max-content 1fr;
-}
+} */
 
-.videoContainer {
+/* .videoContainer {
   position: relative;
   margin-bottom: 3rem;
   justify-content: center;
-}
+} */

@@ -428,3 +428,12 @@ nav .sign-in-button a {
     width: 90% !important;
   }
 }
+
+/* Changing container width for whole app  */
+
+@media only screen and (min-width: 1400px) {
+  .container {
+    padding-inline: 1rem !important;
+    max-width: 1400px !important;
+  }
+}

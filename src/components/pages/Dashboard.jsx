@@ -20,7 +20,6 @@ const Dashboard = () => {
   const trendingVideos = seriesVideos.filter((vid) => vid.type === 'others');
   const tvShows = seriesVideos.filter((vid) => vid.type === 'tv-shows');
   const movies = seriesVideos.filter((vid) => vid.type === 'movies');
-  const environment = seriesVideos.filter((vid) => vid.type === 'environment');
 
   // Custom Hooks
   const [user] = useAuthState(getAuth());
@@ -29,7 +28,7 @@ const Dashboard = () => {
   const rowStyle = { marginTop: '8rem', scrollMargin: '8rem' };
 
   return (
-    <Container as='main'>
+    <main>
       {!user && loadingState}
       {user && (
         <>
@@ -38,7 +37,7 @@ const Dashboard = () => {
             as='section'
             id={'videos-container'}
             className='fontMagneto hide-scroll'
-            style={{ overflow: 'hidden visible', paddingBottom: '8rem' }}
+            style={{ overflow: 'hidden visible', paddingBottom: '20vh' }}
           >
             {/* Searched Videos List */}
             {searchedText !== '' && (
@@ -86,19 +85,11 @@ const Dashboard = () => {
               </Col>
             </Row>
             <CardContainer videos={movies} />
-
-            {/* ENVIRONMENT LIST */}
-            <Row style={{ ...rowStyle }} id='environment'>
-              <Col className='mt-5 text-light'>
-                <h1>Environment</h1>
-              </Col>
-            </Row>
-            <CardContainer videos={environment} />
           </Container>
           <Footer />
         </>
       )}
-    </Container>
+    </main>
   );
 };
 

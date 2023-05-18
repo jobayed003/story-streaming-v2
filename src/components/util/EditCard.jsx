@@ -47,7 +47,7 @@ const EditCard = ({ imgSrc, scrollTo, video }) => {
   };
 
   return (
-    <Card style={{ background: 'gray', height: '23rem', maxWidth: '270px' }}>
+    <Card style={{ background: 'gray', height: '20rem', maxWidth: '230px' }}>
       <Card.Img
         variant='top'
         src={imgSrc}

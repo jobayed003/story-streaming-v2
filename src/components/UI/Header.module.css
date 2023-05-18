@@ -14,21 +14,27 @@
 .customLink:focus {
   padding-inline: 0.4rem;
   font-size: 2rem;
-  color: var(--text-color) !important;
+  color: var(--text-color);
 }
 
 .customLink:hover {
   color: var(--white) !important;
 }
 
+.activeStyle {
+  color: var(--white) !important;
+}
+
 .dropDownLink {
-  background-color: #f0e4d4;
-  color: #6d5241;
+  /* background-color: #4c4544; */
+  /* background-color: #f0e4d4; */
+  color: #fff;
+  /* color: #6d5241; */
 }
 
 .dropDownLink:hover {
   background-color: #f0e4d4;
-  color: #714635;
+  color: #000;
 }
 
 @media (max-width: 1200px) {

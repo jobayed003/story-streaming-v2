@@ -75,8 +75,8 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
   };
   const conditionalStyle =
     coordinates.left < bodyRect.width - coordinates.left
-      ? 'translateX(3rem)'
-      : coordinates.right > bodyRect.width - coordinates.right && 'translateX(-3rem)';
+      ? 'translateX(2.8rem)'
+      : coordinates.right > bodyRect.width - coordinates.right && 'translateX(-4.4rem)';
 
   const textStyle = {
     width: '100%',
@@ -113,7 +113,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
         <img
           src={imgSrc}
           alt='thumbnail'
-          width={width > 1000 ? '250px' : '200px'}
+          width={width > 1000 ? '230px' : '200px'}
           className='cursor-pointer'
         />
       </motion.div>
@@ -165,7 +165,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
               className='cursor-pointer'
               onClick={() => handleClick(videoDetails.episodes[0].id)}
             />
-            <Card.Body className='cursor-pointer' style={{ zIndex: '100000' }}>
+            <Card.Body className='cursor-pointer ' style={{ zIndex: '100000' }}>
               <div
                 onClick={() => handleClick(videoDetails.episodes[0].id)}
                 style={{ overflow: 'hidden' }}

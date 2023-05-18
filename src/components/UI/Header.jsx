@@ -40,16 +40,15 @@ const Header = () => {
     setScrollId('');
   };
 
-  const closeNavbar = () => {
-    navRef.current.classList.remove('show');
-    navToggleRef.current.classList.add('collapsed');
-  };
+  // const closeNavbar = () => {
+  //   navRef.current.classList.remove('show');
+  //   navToggleRef.current.classList.add('collapsed');
+  // };
 
   const navLinks = [
     { name: 'My List', link: 'my-list' },
     { name: 'Tv Shows', link: 'tv-shows' },
     { name: 'Movies', link: 'movies' },
-    { name: 'Environment', link: 'environment' },
     { name: 'Categories', link: 'categories' },
   ];
 
@@ -79,7 +78,7 @@ const Header = () => {
           <FaBars />
         </Navbar.Toggle>
         <Navbar.Collapse ref={navRef} className={`justify-content-center`} id='navbarScroll'>
-          <Nav className='align-items-center me-auto mb-2 mb-lg-0'>
+          <Nav className='align-items-center me-auto mb-2 mb-lg-0 gap-3'>
             {navLinks.map((lnk) => (
               <Link
                 to={lnk.link}
@@ -90,39 +89,14 @@ const Header = () => {
                 duration={0}
                 key={Math.random()}
               >
-                {lnk.link !== 'categories' && (
-                  <NavLink
-                    to={'/dashboard'}
-                    className={classes.customLink}
-                    onClick={(e) =>
-                      setScrollId(e.target.textContent.toLowerCase().replace(' ', '-'))
-                    }
-                  >
-                    {lnk.name}
-                  </NavLink>
-                )}
-                {lnk.link === 'categories' && (
-                  <CustomDropDown
-                    lnk={lnk}
-                    categories={[
-                      'Drama',
-                      'Action',
-                      'Comedy',
-                      'Horror',
-                      'Sci-Fi',
-                      'Thriller',
-                      'Fantasy',
-                      'Short Story',
-                      'Fiction',
-                      'Humor',
-                      'Realty TV',
-                      'Crime Fiction',
-                      'Documentary',
-                      'Science And Education',
-                    ]}
-                    closeNavbar={closeNavbar}
-                  />
-                )}
+                <NavLink
+                  to={lnk.link !== 'categories' ? '/dashboard' : '/categories'}
+                  className={classes.customLink}
+                  style={{ color: scrollId === lnk.link ? '#fff' : 'var(--text-color)' }}
+                  onClick={(e) => setScrollId(e.target.textContent.toLowerCase().replace(' ', '-'))}
+                >
+                  {lnk.name}
+                </NavLink>
               </Link>
             ))}
           </Nav>
@@ -174,7 +148,9 @@ const Header = () => {
               <FaBell fontSize={'1.5rem'} />
             </NavLink>
             <Dropdown
-              style={{ fontFamily: 'Roboto' }}
+              style={{
+                fontFamily: 'Roboto',
+              }}
               className='d-flex flex-column align-items-center'
               align='end'
             >
@@ -198,7 +174,9 @@ const Header = () => {
                 style={{
                   fontFamily: 'Roboto',
                   textAlign: 'center',
-                  background: '#f0e4d4',
+                  // background: '#f0e4d4',
+                  background: 'var(--gray-color)',
+                  boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
                 }}
               >
                 <NavLink to={path === 'dashboard' ? '/settings' : '/dashboard'}>
@@ -260,49 +238,49 @@ const Header = () => {
 
 export default Header;
 
-const CustomDropDown = ({ lnk, categories, closeNavbar }) => {
-  const [showDropdown, setShowDropdown] = useState(false);
-  const navigate = useNavigate();
+// const CustomDropDown = ({ lnk, categories, closeNavbar }) => {
+//   const [showDropdown, setShowDropdown] = useState(false);
+//   const navigate = useNavigate();
 
-  const setDropdown = () => {
-    setShowDropdown(!showDropdown);
-  };
-  return (
-    <Dropdown show={showDropdown} className={`d-flex flex-column align-items-center`} align='end'>
-      <Dropdown.Toggle
-        id='dropdown-basic'
-        style={{ background: 'none', border: 'none' }}
-        className={`d-flex align-items-center ${classes.customLink} `}
-        onClick={setDropdown}
-      >
-        {lnk.name}
-      </Dropdown.Toggle>
+//   const setDropdown = () => {
+//     setShowDropdown(!showDropdown);
+//   };
+//   return (
+//     <Dropdown show={showDropdown} className={`d-flex flex-column align-items-center`} align='end'>
+//       <Dropdown.Toggle
+//         id='dropdown-basic'
+//         style={{ background: 'none', border: 'none' }}
+//         className={`d-flex align-items-center ${classes.customLink} `}
+//         onClick={setDropdown}
+//       >
+//         {lnk.name}
+//       </Dropdown.Toggle>
 
-      <Dropdown.Menu
-        style={{
-          fontFamily: 'Roboto',
-          textAlign: 'center',
-          background: '#F0E4D4',
-        }}
-        onClick={() => {
-          setDropdown();
-          closeNavbar();
-        }}
-      >
-        {categories.map((el) => (
-          <NavLink to={`/category/${el.toLowerCase().replaceAll(' ', '_')}`} onClick={closeNavbar}>
-            <Dropdown.Item
-              onClick={(e) => {
-                navigate(`/category/${el.toLowerCase().replaceAll(' ', '_')}`);
-                closeNavbar();
-              }}
-              className={`${classes.dropDownLink}`}
-            >
-              {el}
-            </Dropdown.Item>
-          </NavLink>
-        ))}
-      </Dropdown.Menu>
-    </Dropdown>
-  );
-};
+//       <Dropdown.Menu
+//         style={{
+//           fontFamily: 'Roboto',
+//           textAlign: 'center',
+//           background: '#F0E4D4',
+//         }}
+//         onClick={() => {
+//           setDropdown();
+//           closeNavbar();
+//         }}
+//       >
+//         {categories.map((el) => (
+//           <NavLink to={`/category/${el.toLowerCase().replaceAll(' ', '_')}`} onClick={closeNavbar}>
+//             <Dropdown.Item
+//               onClick={(e) => {
+//                 navigate(`/category/${el.toLowerCase().replaceAll(' ', '_')}`);
+//                 closeNavbar();
+//               }}
+//               className={`${classes.dropDownLink}`}
+//             >
+//               {el}
+//             </Dropdown.Item>
+//           </NavLink>
+//         ))}
+//       </Dropdown.Menu>
+//     </Dropdown>
+//   );
+// };

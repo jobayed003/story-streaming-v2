@@ -5,14 +5,11 @@ import YouTube from 'react-youtube';
 import ChevronDownIcon from '../../assets/Icons/chevron-down.svg';
 import classes from './EpisodeDetails.module.css';
 import { getDuration } from './videoUtil';
-import { getThumbnails } from './youtubeUtils';
 
 export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
   const [seasons, setSeasons] = useState([]);
   const [episodes, setEpisodes] = useState([]);
   const [watchTime, setWatchTime] = useState(0);
-
-  const thumbnail = getThumbnails(episodes.map((episode) => episode.url));
 
   const handleClose = () => {
     setShow(false);
@@ -88,7 +85,7 @@ export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
   return (
     <>
       <Modal show={show} onHide={handleClose} centered>
-        <Modal.Body className='bg-dark p-0 rounded'>
+        <Modal.Body className='p-0 rounded ' style={{ backgroundColor: 'var(--gray-color)' }}>
           <div style={{ borderRadius: '5px' }}>
             <YouTube
               videoId={details.episodes[0].id}
@@ -96,10 +93,10 @@ export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
               onPause={(e) => setWatchTime(getDuration(e.target.playerInfo.currentTime))}
             />
           </div>
-          <div className={'d-flex flex-column p-4 pb-0'}>
+          <div className={'d-flex flex-column p-4 pb-0 '}>
             <span style={{ fontWeight: 'bold', fontSize: '2rem' }}>{details.title}</span>
             <span className={'textEllipsis'}>{details.description}</span>
-            <span>{details.genre}</span>
+            <span style={{ fontStyle: 'italic' }}>{details.genre}</span>
           </div>
           <div className='d-flex flex-column p-4' style={{}}>
             <div className='d-flex align-items-center justify-content-between mb-3 border-bottom'>
@@ -107,9 +104,10 @@ export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
 
               <Form.Select
                 aria-label='Season No. Select'
-                className='bg-dark text-white align-self-end cursor-pointer mb-2'
+                className='text-white align-self-end cursor-pointer mb-2'
                 style={{
                   width: 'max-content',
+                  backgroundColor: 'var(--gray-color)',
                   backgroundImage: `url(${ChevronDownIcon})`,
                 }}
                 onChange={(e) => getSeason(e.target.value)}
@@ -161,7 +159,9 @@ export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
                           {getDuration(el.duration)}
                         </span>
                       </div>
-                      <span className={`text-secondary textEllipsis`}>{el.description}</span>
+                      <span className={`textEllipsis`} style={{ color: '#898989' }}>
+                        {el.description}
+                      </span>
                     </div>
                   </div>
                 </motion.div>

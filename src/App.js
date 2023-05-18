@@ -31,7 +31,7 @@ const App = () => (
         <Route path='/watch/:movieID' element={<Viewing />} />
         <Route path='/upload' element={<AddContent />} />
         <Route path='/test' element={<Test />} />
-        <Route path='/category/:categoryName' element={<Category />} />
+        <Route path='/categories' element={<Category />} />
         <Route path='/landing' element={<Landing2 />} />
       </Routes>
     </Suspense>

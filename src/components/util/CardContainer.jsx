@@ -13,15 +13,15 @@ const CardContainer = ({ videos }) => {
     <>
       {videos.length <= 0 ? (
         <Row>{status}</Row>
-      ) : size.width > 575 && videos.length < 4 ? (
+      ) : size.width > 575 && videos.length < 5 ? (
         <div
           className='d-flex ms-3'
           style={{
-            gap: size.width > 1200 ? '4.5rem' : '2rem',
+            gap: size.width > 1200 ? '2.5rem' : '2rem',
             marginLeft: '2.5rem',
             marginBottom: '4rem',
             flexWrap: 'wrap',
-            justifyContent: size.width > 575 ? 'start' : 'center',
+            justifyContent: size.width > 500 ? 'start' : 'center',
           }}
         >
           {videos.map((el) => (
@@ -31,11 +31,7 @@ const CardContainer = ({ videos }) => {
       ) : (
         <Slide>
           {videos.map((el, idx) => (
-            <div
-              className='slide'
-              key={Math.random() + idx}
-              style={{ width: size.width > 500 ? '400px' : '300px' }}
-            >
+            <div className='slide' key={Math.random() + idx}>
               <ListCard imgSrc={el.episodes[0].thumbnail} videoDetails={el} />
             </div>
           ))}

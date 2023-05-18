@@ -1,6 +1,6 @@
 import { getAuth } from 'firebase/auth';
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
-import { useContext, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -13,7 +13,7 @@ import Header from '../UI/Header';
 import useDimension from '../hooks/useDimension';
 import useLoadingState from '../hooks/useLoadingState';
 import useStatus from '../hooks/useStatus';
-import { default as EditCard, default as VideoCard } from '../util/EditCard';
+import { default as EditCard } from '../util/EditCard';
 import Slide from '../util/Slide';
 import {
   getThumbnail,
@@ -120,6 +120,17 @@ const AddContent = () => {
     }
   };
 
+  useEffect(() => {
+    setSeriesDetails({
+      description: '',
+      episodes: [initialEpisode],
+      genre: '',
+      title: '',
+      type: 'movies',
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       {!user && loadingState}
@@ -127,7 +138,7 @@ const AddContent = () => {
       {user && isAdmin && (
         <main className='d-flex container'>
           <Header />
-          <Container style={{ marginTop: '5rem' }} as='section'>
+          <Container style={{ marginTop: '5rem', overflow: 'hidden' }} as='section'>
             <Row ref={formRef}>
               <Col>
                 <h1 className='text-center text-white'>Add a video</h1>
@@ -263,7 +274,7 @@ const AddContent = () => {
               </Col>
             </Row>
 
-            <Row className='listsection py-2 overflow-hidden px-0 justify-content-center'>
+            <Row className='listsection py-20' style={{ marginLeft: '.1rem' }}>
               {seriesVideos.length <= 0 ? (
                 status
               ) : seriesVideos.length <= 4 ? (
@@ -280,10 +291,12 @@ const AddContent = () => {
                   ))}
                 </div>
               ) : (
-                <Slide videosCount={seriesVideos.length}>
+                <Slide
+                  change={{ infinite: false, centerMode: false, slidesToScroll: 1, autoplay: true }}
+                >
                   {seriesVideos.map((video, idx) => (
-                    <div className='slide' key={Math.random()} style={{ width: '350px' }}>
-                      <VideoCard
+                    <div className='slide' key={Math.random() + idx}>
+                      <EditCard
                         video={video}
                         imgSrc={video.episodes[0].thumbnail}
                         scrollTo={formRef}

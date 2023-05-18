@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Badge, Button, Modal, Spinner } from 'react-bootstrap';
+import { Badge, Form, Modal, Spinner } from 'react-bootstrap';
 import AuthProvider from '../../context/AuthContext';
 
 export const ManageUser = ({ show, setShow, users }) => {
@@ -18,42 +18,47 @@ export const ManageUser = ({ show, setShow, users }) => {
         onHide={handleClose}
         aria-labelledby='contained-modal-title-vcenter'
         centered
-        closeButton
       >
-        <Modal.Header closeButton className='border-0 text-dark'>
-          <Modal.Title>Manage Users</Modal.Title>
-        </Modal.Header>
-        <div className='px-4 my-4' closeButton>
-          {users === undefined && (
-            <Spinner animation='border' role='status' style={{ width: '100px', height: '100px' }}>
-              <span className='visually-hidden'>Loading...</span>
-            </Spinner>
-          )}
-          {users.map((el, idx) => (
-            <div className='d-flex justify-content-between gap-5 text-dark' key={idx}>
-              <p>
-                {idx + 1 + '. ' + el.name}{' '}
-                {el.role === 'admin' && <Badge bg='success'>Admin</Badge>}
-              </p>
+        <Modal.Body className='rounded'>
+          <Modal.Title className='border-0 text-center text-dark p-1'>Manage Users</Modal.Title>
+          <div className='px-4'>
+            {users === undefined && (
+              <Spinner animation='border' role='status' style={{ width: '100px', height: '100px' }}>
+                <span className='visually-hidden'>Loading...</span>
+              </Spinner>
+            )}
+            {users.map((el, idx) => (
+              <div
+                className='d-flex justify-content-between align-items-center gap-5 text-dark'
+                key={idx}
+              >
+                <p>
+                  {idx + 1 + '. ' + el.name}{' '}
+                  {el.role === 'admin' && (
+                    <Badge
+                      bg='success'
+                      style={{ fontSize: '.7rem', backgroundColor: 'var(--text-color)' }}
+                    >
+                      Admin
+                    </Badge>
+                  )}
+                </p>
 
-              {el.email !== 'admin@admin.com' && userCredentials.uid !== el.uid && (
-                <Button
-                  variant='light'
-                  className='bg-success'
-                  onClick={() => handleClick(el.uid, el.role === 'admin' ? 'user' : 'admin')}
-                  style={{
-                    color: '#fff',
-                    width: '',
-                    paddingBlock: '10px',
-                    fontSize: '.8rem',
-                  }}
-                >
-                  {el.role === 'admin' ? 'Remove Admin' : 'Make Admin'}
-                </Button>
-              )}
-            </div>
-          ))}
-        </div>
+                {el.email !== 'admin@admin.com' && userCredentials.uid !== el.uid && (
+                  <Form.Select
+                    className='w-auto'
+                    onChange={(e) => handleClick(el.uid, e.target.value)}
+                    style={{ marginBlock: '.4rem' }}
+                    value={el.role}
+                  >
+                    <option value={'admin'}>Admin</option>
+                    <option value={'user'}>User</option>
+                  </Form.Select>
+                )}
+              </div>
+            ))}
+          </div>
+        </Modal.Body>
       </Modal>
     </>
   );

@@ -86,15 +86,15 @@ const Register = ({ show, setShow }) => {
       <Modal
         show={show}
         onHide={handleClose}
-        backdrop='static'
+        // backdrop='static'
         aria-labelledby='contained-modal-title-vcenter'
         centered
       >
         {/* <Modal.Header closeButton><Modal.Title>Register Now</Modal.Title></Modal.Header> */}
         <Modal.Body
+          className='rounded'
           style={{
             background: 'var(--form-bg)',
-            borderRadius: '5px',
           }}
         >
           <h1 className='text-center form-label'>Sign Up</h1>
