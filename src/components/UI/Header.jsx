@@ -53,7 +53,7 @@ const Header = () => {
   ];
 
   useEffect(() => {
-    scrollId !== '' && scrollToElement(-100);
+    scrollId !== '' && scrollId !== 'categories' && scrollToElement(-100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

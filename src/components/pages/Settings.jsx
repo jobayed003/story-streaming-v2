@@ -1,17 +1,7 @@
 import { getAuth, sendPasswordResetEmail, updatePassword } from 'firebase/auth';
 
 import { useContext, useState } from 'react';
-import {
-  Button,
-  Col,
-  Container,
-  FloatingLabel,
-  Form,
-  InputGroup,
-  Modal,
-  Row,
-  Spinner,
-} from 'react-bootstrap';
+import { Button, Col, Container, Form, InputGroup, Modal, Row, Spinner } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { FaEye } from 'react-icons/fa';
 import { toast } from 'react-toastify';
