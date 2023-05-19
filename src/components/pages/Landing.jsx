@@ -54,6 +54,8 @@ const Landing = () => {
               style={{
                 position: 'absolute',
                 backgroundImage: `url(${placeholder})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
                 filter: 'brightness(40%)',
                 zIndex: '-1',
                 width: '100%',

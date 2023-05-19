@@ -6,8 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import logo from './assets/Icons/StorySaloon_Logo.svg';
 import Category from './components/pages/Category';
-import { Test } from './components/pages/Dashboard';
-
+import Upgrade from './components/pages/Upgrade';
 const Landing = lazy(() => import('./components/pages/Landing'));
 const Dashboard = lazy(() => import('./components/pages/Dashboard'));
 const Viewing = lazy(() => import('./components/pages/Viewing'));
@@ -41,7 +40,7 @@ const App = () => (
         <Route path='/documentary' element={<Documentary />} />
         <Route path='/music&podcast' element={<MusicAndPodcast />} />
         <Route path='/my-list' element={<MyList />} />
-        <Route path='/test' element={<Test />} />
+        <Route path='/upgrade' element={<Upgrade />} />
         <Route path='/landing' element={<Landing2 />} />
       </Routes>
     </Suspense>

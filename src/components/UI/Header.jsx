@@ -33,25 +33,13 @@ const Header = () => {
     auth.signOut();
   };
 
-  // const scrollToElement = () => {
-  //   const element = document.getElementById(scrollId);
-  //   path === 'dashboard' &&
-  //     element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-  //   setScrollId('');
-  // };
-
-  // const closeNavbar = () => {
-  //   navRef.current.classList.remove('show');
-  //   navToggleRef.current.classList.add('collapsed');
-  // };
-
   const navLinks = [
     { name: 'My List', link: 'my-list' },
     { name: 'Tv Shows', link: 'tv-shows' },
     { name: 'Movies', link: 'movies' },
-    { name: 'Categories', link: 'categories' },
     { name: 'Documentary', link: 'documentary' },
     { name: 'Music/Podcast', link: 'music&podcast' },
+    { name: 'Categories', link: 'categories' },
   ];
 
   useEffect(() => {
