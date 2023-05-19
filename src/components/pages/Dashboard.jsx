@@ -5,11 +5,10 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import StateContextProvider from '../../context/StateContext';
 import VideoContextProvider from '../../context/VideoContext';
 import { createCheckoutSession } from '../../stripe/createCheckoutSession';
-import Footer from '../UI/Footer';
-import Header from '../UI/Header';
 import CardContainer from '../VideoCards/CardContainer';
 import useLoadingState from '../hooks/useLoadingState';
 import './Dashboard.css';
+import Layout from '../UI/Layout';
 
 const Dashboard = () => {
   // Context Management
@@ -23,11 +22,10 @@ const Dashboard = () => {
   const rowStyle = { marginTop: '8rem', scrollMargin: '8rem' };
 
   return (
-    <main>
+    <>
       {!user && loadingState}
       {user && (
-        <>
-          <Header />
+        <Layout>
           <Container
             as='section'
             id={'videos-container'}
@@ -78,10 +76,9 @@ const Dashboard = () => {
             </Row>
             <CardContainer videos={movies} />
           </Container>
-          <Footer />
-        </>
+        </Layout>
       )}
-    </main>
+    </>
   );
 };
 

@@ -1,27 +1,9 @@
 import { useContext, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
+import { categories } from '../../categories';
 import VideoContextProvider from '../../context/VideoContext';
 import CardContainer from '../VideoCards/CardContainer';
 import Slide from '../util/Slide';
-
-const categories = [
-  'Drama',
-  'Action',
-  'Comedy',
-  'Horror',
-  'Sci-Fi',
-  'Thriller',
-  'Fantasy',
-  'Short Story',
-  'Fiction',
-  'Humor',
-  'Music',
-  'Podcast',
-  'Realty TV',
-  'Crime Fiction',
-  'Documentary',
-  'Science And Education',
-];
 
 const CategoriesCard = ({ sx }) => {
   const [clickedText, setClickedText] = useState('');

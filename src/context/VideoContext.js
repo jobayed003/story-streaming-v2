@@ -31,7 +31,9 @@ export const VideoContext = ({ children }) => {
     type: 'movies',
   });
 
-  const musics = seriesVideos.filter((vid) => vid.type === 'musics');
+  const musicsAndPodcast = seriesVideos.filter(
+    (vid) => vid.type === 'musics' || vid.type === 'podcast'
+  );
   const tvShows = seriesVideos.filter((vid) => vid.type === 'tv-shows');
   const movies = seriesVideos.filter((vid) => vid.type === 'movies');
   const documentary = seriesVideos.filter((vid) => vid.type === 'documentary');
@@ -50,7 +52,7 @@ export const VideoContext = ({ children }) => {
   const contextValue = {
     seriesDetails,
     seriesVideos,
-    musics,
+    musicsAndPodcast,
     tvShows,
     movies,
     documentary,

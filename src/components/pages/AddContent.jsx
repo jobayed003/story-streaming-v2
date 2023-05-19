@@ -8,8 +8,6 @@ import { toast } from 'react-toastify';
 import AuthProvider from '../../context/AuthContext';
 import VideoContextProvider from '../../context/VideoContext';
 import { db } from '../../firebase.config';
-import Footer from '../UI/Footer';
-import Header from '../UI/Header';
 import useDimension from '../hooks/useDimension';
 import useLoadingState from '../hooks/useLoadingState';
 import useStatus from '../hooks/useStatus';
@@ -22,6 +20,7 @@ import {
   ytDurationToSeconds,
 } from '../util/youtubeUtils';
 import './AddContent.css';
+import Layout from '../UI/Layout';
 
 const AddContent = () => {
   const initialEpisode = {
@@ -137,8 +136,7 @@ const AddContent = () => {
       {!user && loadingState}
       {/* {!isAdmin && <Navigate to='/dashboard' />} */}
       {user && isAdmin && (
-        <main className='d-flex container'>
-          <Header />
+        <Layout>
           <Container style={{ marginTop: '5rem', overflow: 'hidden' }} as='section'>
             <Row ref={formRef}>
               <Col>
@@ -307,9 +305,8 @@ const AddContent = () => {
                 </Slide>
               )}
             </Row>
-            <Footer />
           </Container>
-        </main>
+        </Layout>
       )}
     </>
   );

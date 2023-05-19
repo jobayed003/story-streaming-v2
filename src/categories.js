@@ -1,0 +1,18 @@
+export const categories = [
+  'Drama',
+  'Action',
+  'Comedy',
+  'Horror',
+  'Sci-Fi',
+  'Thriller',
+  'Fantasy',
+  'Short Story',
+  'Fiction',
+  'Humor',
+  'Music',
+  'Podcast',
+  'Realty TV',
+  'Crime Fiction',
+  'Documentary',
+  'Science And Education',
+];

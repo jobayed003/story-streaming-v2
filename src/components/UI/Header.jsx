@@ -8,8 +8,8 @@ import { Link } from 'react-scroll';
 import logo from '../../assets/Icons/StorySaloon_Logo.svg';
 import AuthProvider from '../../context/AuthContext';
 import StateContextProvider from '../../context/StateContext';
-import useDimension from '../hooks/useDimension';
 import { ManageUser } from '../auth/ManageUser';
+import useDimension from '../hooks/useDimension';
 import classes from './Header.module.css';
 
 const Header = () => {
@@ -50,12 +50,19 @@ const Header = () => {
     { name: 'Tv Shows', link: 'tv-shows' },
     { name: 'Movies', link: 'movies' },
     { name: 'Categories', link: 'categories' },
+    { name: 'Documentary', link: 'documentary' },
+    { name: 'Music/Podcast', link: 'music&podcast' },
   ];
 
   useEffect(() => {
     if (path === 'dashboard') {
       setScrollId('');
+      return;
     }
+    if (path === 'music&podcast') {
+      setScrollId('music&podcast');
+    }
+
     // scrollId !== '' && scrollId !== 'categories' && scrollToElement(-100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -81,7 +88,7 @@ const Header = () => {
           <FaBars />
         </Navbar.Toggle>
         <Navbar.Collapse ref={navRef} className={`justify-content-center`} id='navbarScroll'>
-          <Nav className='align-items-center me-auto mb-2 mb-lg-0 gap-3'>
+          <Nav className='align-items-center me-auto mb-2 mb-lg-0 gap-2'>
             {navLinks.map((lnk) => (
               <Link
                 to={lnk.link}
@@ -94,7 +101,6 @@ const Header = () => {
               >
                 <NavLink
                   to={`/${lnk.link}`}
-                  // to={lnk.link !== 'categories' ? '/dashboard' : '/categories'}
                   className={classes.customLink}
                   style={{ color: scrollId === lnk.link ? '#fff' : 'var(--text-color)' }}
                   onClick={(e) => setScrollId(e.target.textContent.toLowerCase().replace(' ', '-'))}

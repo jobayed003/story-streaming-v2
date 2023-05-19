@@ -1,6 +1,5 @@
 import { getAuth } from 'firebase/auth';
-import { useContext, useEffect, useRef, useState } from 'react';
-import { Container } from 'react-bootstrap';
+import { useContext, useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import YouTube from 'react-youtube';
 import VideoContextProvider from '../../context/VideoContext';

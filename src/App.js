@@ -13,9 +13,11 @@ const Dashboard = lazy(() => import('./components/pages/Dashboard'));
 const Viewing = lazy(() => import('./components/pages/Viewing'));
 const Settings = lazy(() => import('./components/pages/Settings'));
 const AddContent = lazy(() => import('./components/pages/AddContent'));
-const Movies = lazy(() => import('./components/pages/Movies'));
-const TVShows = lazy(() => import('./components/pages/TVShows'));
-const MyList = lazy(() => import('./components/pages/MyList'));
+const Movies = lazy(() => import('./components/pages/Genres/Movies'));
+const TVShows = lazy(() => import('./components/pages/Genres/TVShows'));
+const MyList = lazy(() => import('./components/pages/Genres/MyList'));
+const Documentary = lazy(() => import('./components/pages/Genres/Documentary'));
+const MusicAndPodcast = lazy(() => import('./components/pages/Genres/MusicAndPodcast'));
 const Landing2 = lazy(() => import('./components/pages/Landing2'));
 
 const App = () => (
@@ -36,6 +38,8 @@ const App = () => (
         <Route path='/categories' element={<Category />} />
         <Route path='/tv-shows' element={<TVShows />} />
         <Route path='/movies' element={<Movies />} />
+        <Route path='/documentary' element={<Documentary />} />
+        <Route path='/music&podcast' element={<MusicAndPodcast />} />
         <Route path='/my-list' element={<MyList />} />
         <Route path='/test' element={<Test />} />
         <Route path='/landing' element={<Landing2 />} />

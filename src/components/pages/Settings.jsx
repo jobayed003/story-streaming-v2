@@ -7,10 +7,9 @@ import { FaEye } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import AuthProvider from '../../context/AuthContext';
 import StateContextProvider from '../../context/StateContext';
-import Footer from '../UI/Footer';
-import Header from '../UI/Header';
 import useLoadingState from '../hooks/useLoadingState';
 
+import Layout from '../UI/Layout';
 import { updateUserDoc } from '../util/firebaseUtil';
 import './Settings.css';
 
@@ -25,11 +24,10 @@ const Settings = () => {
   const loadingState = useLoadingState();
 
   return (
-    <Container as='main'>
+    <>
       {!user && loadingState}
-
       {user && (
-        <>
+        <Layout>
           <ResetPass
             showPasswordModal={showPasswordModal}
             setShowPasswordModal={setShowPasswordModal}
@@ -37,7 +35,7 @@ const Settings = () => {
           />
 
           {/* nav-start */}
-          <Header />
+
           {/* nav-end */}
           {/* xs={8} md={8} sm={8} */}
           {/* main-section-start */}
@@ -78,11 +76,9 @@ const Settings = () => {
             </Row>
           </Container>
           {/* main-secction-end */}
-
-          <Footer />
-        </>
+        </Layout>
       )}
-    </Container>
+    </>
   );
 };
 
