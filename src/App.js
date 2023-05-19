@@ -7,6 +7,7 @@ import './App.css';
 import logo from './assets/Icons/StorySaloon_Logo.svg';
 import Category from './components/pages/Category';
 import Upgrade from './components/pages/Upgrade';
+
 const Landing = lazy(() => import('./components/pages/Landing'));
 const Dashboard = lazy(() => import('./components/pages/Dashboard'));
 const Viewing = lazy(() => import('./components/pages/Viewing'));

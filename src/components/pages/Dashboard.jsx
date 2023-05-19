@@ -5,10 +5,10 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import StateContextProvider from '../../context/StateContext';
 import VideoContextProvider from '../../context/VideoContext';
 import { createCheckoutSession } from '../../stripe/createCheckoutSession';
+import Layout from '../UI/Layout';
 import CardContainer from '../VideoCards/CardContainer';
 import useLoadingState from '../hooks/useLoadingState';
 import './Dashboard.css';
-import Layout from '../UI/Layout';
 
 const Dashboard = () => {
   // Context Management
@@ -83,18 +83,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-export const Test = () => {
-  const [user, userLoading] = useAuthState(getAuth());
-
-  return (
-    <div>
-      {user && !userLoading && (
-        <>
-          <h1>Hello, {user.displayName}</h1>
-          <button onClick={() => createCheckoutSession(user.uid)}>Upgrade to premium!</button>
-        </>
-      )}
-    </div>
-  );
-};

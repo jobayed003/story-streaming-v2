@@ -49,7 +49,7 @@ const CategoriesCard = ({ sx }) => {
         </Slide>
       </Row>
       {clickedText !== '' && (
-        <Row style={{ marginTop: '4rem' }}>
+        <Row style={{ marginTop: '4rem', marginBottom: '6rem' }}>
           <Col className='text-light fontLosBanditos'>
             <h1>{clickedText}</h1>
           </Col>
