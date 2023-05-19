@@ -3,16 +3,11 @@ import { useContext } from 'react';
 import { Container } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import VideoContextProvider from '../../context/VideoContext';
-import Footer from '../UI/Footer';
-import Header from '../UI/Header';
-
 import CategoriesCard from '../Category/CategoriesCard';
 import useLoadingState from '../hooks/useLoadingState';
-
 import { categories } from '../../categories';
 import CategoryListCard from '../Category/CategoryListCard';
 import Layout from '../UI/Layout';
-import classes from './Category.module.css';
 
 const Category = () => {
   const [user] = useAuthState(getAuth());

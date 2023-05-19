@@ -3,16 +3,15 @@ import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useContext, useEffect, useRef } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
-
 import { toast } from 'react-toastify';
 import AuthProvider from '../../context/AuthContext';
 import VideoContextProvider from '../../context/VideoContext';
 import { db } from '../../firebase.config';
+import Layout from '../UI/Layout';
+import EditCard from '../VideoCards/EditCard';
 import useDimension from '../hooks/useDimension';
 import useLoadingState from '../hooks/useLoadingState';
 import useStatus from '../hooks/useStatus';
-
-import EditCard from '../VideoCards/EditCard';
 import Slide from '../util/Slide';
 import {
   getThumbnail,
@@ -20,7 +19,6 @@ import {
   ytDurationToSeconds,
 } from '../util/youtubeUtils';
 import './AddContent.css';
-import Layout from '../UI/Layout';
 
 const AddContent = () => {
   const initialEpisode = {
