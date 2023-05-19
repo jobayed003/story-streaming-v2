@@ -31,6 +31,11 @@ export const VideoContext = ({ children }) => {
     type: 'movies',
   });
 
+  const musics = seriesVideos.filter((vid) => vid.type === 'musics');
+  const tvShows = seriesVideos.filter((vid) => vid.type === 'tv-shows');
+  const movies = seriesVideos.filter((vid) => vid.type === 'movies');
+  const documentary = seriesVideos.filter((vid) => vid.type === 'documentary');
+
   useEffect(() => {
     const getVideos = async () => {
       try {
@@ -45,6 +50,10 @@ export const VideoContext = ({ children }) => {
   const contextValue = {
     seriesDetails,
     seriesVideos,
+    musics,
+    tvShows,
+    movies,
+    documentary,
 
     setUpdated,
     setSeriesDetails,

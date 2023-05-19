@@ -9,7 +9,7 @@ import logo from '../../assets/Icons/StorySaloon_Logo.svg';
 import AuthProvider from '../../context/AuthContext';
 import StateContextProvider from '../../context/StateContext';
 import useDimension from '../hooks/useDimension';
-import { ManageUser } from '../util/ManageUser';
+import { ManageUser } from '../auth/ManageUser';
 import classes from './Header.module.css';
 
 const Header = () => {
@@ -33,12 +33,12 @@ const Header = () => {
     auth.signOut();
   };
 
-  const scrollToElement = () => {
-    const element = document.getElementById(scrollId);
-    path === 'dashboard' &&
-      element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-    setScrollId('');
-  };
+  // const scrollToElement = () => {
+  //   const element = document.getElementById(scrollId);
+  //   path === 'dashboard' &&
+  //     element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+  //   setScrollId('');
+  // };
 
   // const closeNavbar = () => {
   //   navRef.current.classList.remove('show');
@@ -53,7 +53,10 @@ const Header = () => {
   ];
 
   useEffect(() => {
-    scrollId !== '' && scrollId !== 'categories' && scrollToElement(-100);
+    if (path === 'dashboard') {
+      setScrollId('');
+    }
+    // scrollId !== '' && scrollId !== 'categories' && scrollToElement(-100);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -90,7 +93,8 @@ const Header = () => {
                 key={Math.random()}
               >
                 <NavLink
-                  to={lnk.link !== 'categories' ? '/dashboard' : '/categories'}
+                  to={`/${lnk.link}`}
+                  // to={lnk.link !== 'categories' ? '/dashboard' : '/categories'}
                   className={classes.customLink}
                   style={{ color: scrollId === lnk.link ? '#fff' : 'var(--text-color)' }}
                   onClick={(e) => setScrollId(e.target.textContent.toLowerCase().replace(' ', '-'))}

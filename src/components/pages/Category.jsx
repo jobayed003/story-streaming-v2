@@ -8,9 +8,10 @@ import Header from '../UI/Header';
 
 import useLoadingState from '../hooks/useLoadingState';
 
-import CardContainer from '../util/CardContainer';
+import CardContainer from '../VideoCards/CardContainer';
 
-import Slide from '../util/Slide';
+import CategoriesCard from '../Category/CategoriesCard';
+
 import classes from './Category.module.css';
 
 const categories = [
@@ -33,30 +34,8 @@ const categories = [
 ];
 
 const Category = () => {
-  const [clickedText, setClickedText] = useState('');
-  // const [newCategories, setNewCategories] = useState([]);
-
-  const [filteredVid, setfilteredVid] = useState([]);
-
-  const { seriesVideos } = useContext(VideoContextProvider);
   const [user] = useAuthState(getAuth());
   const loadingState = useLoadingState();
-
-  const handleClick = (e) => {
-    setClickedText(e.target.textContent);
-    const replaceAll = /\b(?:-| |,)\b/gi;
-    const text = e.target.textContent.toLowerCase().replace(replaceAll, '').trim();
-    const regex = new RegExp(text, 'i');
-
-    setfilteredVid(
-      seriesVideos.filter((vid) => regex.test(vid.genre.replace(replaceAll, '').trim()))
-    );
-
-    // const idx = categories.indexOf(clickedText);
-    // categories.splice(idx, 1);
-
-    // console.log(categories);
-  };
 
   return (
     <Container as='main' className='fontLosBanditos' style={{ overflow: 'hidden' }}>
@@ -65,40 +44,7 @@ const Category = () => {
         <>
           <Header />
           <Container className={classes.container}>
-            <Row style={{ marginTop: '8rem' }}>
-              <Slide
-                change={{ infinite: false, centerMode: false, slidesToScroll: 1, autoplay: true }}
-              >
-                {categories.map((el) => (
-                  <div className='slide'>
-                    <div
-                      className='d-flex justify-content-center align-items-center fontLosBanditos cursor-pointer'
-                      style={{
-                        width: '200px',
-                        height: '100px',
-                        background: '#000',
-                        fontSize: '1.3rem',
-                        color: 'var(--text-color)',
-                        borderRadius: '5px',
-                        boxShadow:
-                          'rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px',
-                      }}
-                      onClick={handleClick}
-                    >
-                      {el}
-                    </div>
-                  </div>
-                ))}
-              </Slide>
-            </Row>
-            {clickedText !== '' && (
-              <Row style={{ marginTop: '4rem' }}>
-                <Col className='text-light fontLosBanditos'>
-                  <h1>{clickedText}</h1>
-                </Col>
-                <CardContainer videos={filteredVid} />
-              </Row>
-            )}
+            <CategoriesCard />
             {categories.map((el) => (
               <CategoryListCard category={el} />
             ))}

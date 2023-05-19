@@ -7,19 +7,14 @@ import VideoContextProvider from '../../context/VideoContext';
 import { createCheckoutSession } from '../../stripe/createCheckoutSession';
 import Footer from '../UI/Footer';
 import Header from '../UI/Header';
+import CardContainer from '../VideoCards/CardContainer';
 import useLoadingState from '../hooks/useLoadingState';
-import CardContainer from '../util/CardContainer';
 import './Dashboard.css';
 
 const Dashboard = () => {
   // Context Management
   const { favouriteVideos, searchedVideos, searchedText } = useContext(StateContextProvider);
-  const { seriesVideos } = useContext(VideoContextProvider);
-
-  // Getting list videos
-  const trendingVideos = seriesVideos.filter((vid) => vid.type === 'others');
-  const tvShows = seriesVideos.filter((vid) => vid.type === 'tv-shows');
-  const movies = seriesVideos.filter((vid) => vid.type === 'movies');
+  const { seriesVideos, tvShows, movies } = useContext(VideoContextProvider);
 
   // Custom Hooks
   const [user] = useAuthState(getAuth());
@@ -57,8 +52,7 @@ const Dashboard = () => {
                 <h1>Top Trending</h1>
               </Col>
             </Row>
-
-            <CardContainer videos={trendingVideos} />
+            <CardContainer videos={seriesVideos} />
 
             {/* Favourite Videos List */}
             <Row style={{ ...rowStyle }} id={'my-list'}>
@@ -66,7 +60,6 @@ const Dashboard = () => {
                 <h1>My List</h1>
               </Col>
             </Row>
-
             <CardContainer videos={favouriteVideos} />
 
             {/* TV SHOWS LIST */}
@@ -75,7 +68,6 @@ const Dashboard = () => {
                 <h1>TV Shows</h1>
               </Col>
             </Row>
-
             <CardContainer videos={tvShows} />
 
             {/* TOP MOVIES LIST */}

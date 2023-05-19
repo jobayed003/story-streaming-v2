@@ -13,7 +13,8 @@ import Header from '../UI/Header';
 import useDimension from '../hooks/useDimension';
 import useLoadingState from '../hooks/useLoadingState';
 import useStatus from '../hooks/useStatus';
-import { default as EditCard } from '../util/EditCard';
+
+import EditCard from '../VideoCards/EditCard';
 import Slide from '../util/Slide';
 import {
   getThumbnail,
@@ -292,7 +293,7 @@ const AddContent = () => {
                 </div>
               ) : (
                 <Slide
-                  change={{ infinite: false, centerMode: false, slidesToScroll: 1, autoplay: true }}
+                  change={{ infinite: false, centerMode: false, slidesToScroll: 3, autoplay: true }}
                 >
                   {seriesVideos.map((video, idx) => (
                     <div className='slide' key={Math.random() + idx}>
@@ -338,7 +339,9 @@ const VideoDetailsForm = () => {
               Movies
             </option>
             <option value='tv-shows'>TV Shows</option>
-            <option value='others'>Others</option>
+            <option value='musics'>Musics</option>
+            <option value='podcast'>Podcast</option>
+            <option value='documentary'>Documentary</option>
           </Form.Select>
         </Form.Group>
       </div>
