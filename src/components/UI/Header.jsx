@@ -76,7 +76,7 @@ const Header = () => {
           <FaBars />
         </Navbar.Toggle>
         <Navbar.Collapse ref={navRef} className={`justify-content-center`} id='navbarScroll'>
-          <Nav className='align-items-center me-auto mb-2 mb-lg-0 gap-2'>
+          <Nav className='align-items-center me-auto mb-2 mb-lg-0 gap-0 gap-sm-2'>
             {navLinks.map((lnk) => (
               <Link
                 to={lnk.link}

@@ -9,7 +9,7 @@ export const categories = [
   'Short Story',
   'Fiction',
   'Humor',
-  'Music',
+  'Musics',
   'Podcast',
   'Realty TV',
   'Crime Fiction',

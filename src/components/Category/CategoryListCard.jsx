@@ -19,7 +19,7 @@ const CategoryListCard = ({ category, videos }) => {
 
   return (
     <>
-      <Row style={{ marginTop: '2rem', marginBottom: '6rem' }}>
+      <Row style={{ paddingTop: '6.5rem' }}>
         <Col className='text-light'>
           <h1>{category}</h1>
         </Col>

@@ -19,7 +19,7 @@ const Dashboard = () => {
   const [user] = useAuthState(getAuth());
   const loadingState = useLoadingState();
 
-  const rowStyle = { marginTop: '8rem', scrollMargin: '8rem' };
+  const rowStyle = { marginTop: '9rem', scrollMargin: '8rem' };
 
   return (
     <>
