@@ -203,7 +203,7 @@ const Header = () => {
                         className={`${classes.dropDownLink}`}
                         onClick={() => navigate('/upload')}
                       >
-                        Upload Series
+                        Upload Videos
                       </Dropdown.Item>
                     </NavLink>
                     <Dropdown.Item

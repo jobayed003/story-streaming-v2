@@ -1,5 +1,5 @@
 import { getAuth } from 'firebase/auth';
-import { deleteDoc, doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { FieldValue, deleteDoc, doc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import { useContext, useRef, useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
@@ -22,7 +22,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
   const ref = useRef();
 
   // Context Management
-  const { favouriteVideos, setClickedVideo } = useContext(StateContextProvider);
+  const { favouriteVideos, setClickedVideo, setId, id } = useContext(StateContextProvider);
   const { seriesVideos } = useContext(VideoContextProvider);
 
   // Custom Hooks
@@ -45,6 +45,12 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
   };
 
   const saveFavourite = async () => {
+    // setId((prev) => [...prev, videoDetails.id]);
+
+    // await updateDoc(userRef, {
+    //   favouriteVideos: id,
+    // });
+
     const vidRef = doc(db, `users/${user.uid}/favourite_videos/${videoDetails.id}`);
 
     await setDoc(vidRef, {
@@ -61,8 +67,8 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
   // getting the position relative to the viewport
   const bodyRect = document.body.getBoundingClientRect();
   const getPosition = (el) => {
-    const elemRect = el.getBoundingClientRect();
-    setCoordinates({ left: elemRect.left, right: elemRect.right });
+    const { left, right } = el.getBoundingClientRect();
+    setCoordinates({ left, right });
   };
 
   const opts = {
@@ -76,7 +82,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
   const conditionalStyle =
     coordinates.left < bodyRect.width - coordinates.left
       ? 'translateX(2.8rem)'
-      : coordinates.right > bodyRect.width - coordinates.right && 'translateX(-4.4rem)';
+      : coordinates.right > bodyRect.width - coordinates.right && 'translateX(-3.9rem)';
 
   const textStyle = {
     width: '100%',
@@ -133,7 +139,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
           }}
           onMouseLeave={() => setHovered(false)}
           style={{
-            width: width > 1000 ? '350px' : '300px',
+            width: width > 1000 ? '340px' : '280px',
             position: 'absolute',
             top: '-25%',
             left: '-20%',

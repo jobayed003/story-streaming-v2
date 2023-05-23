@@ -17,6 +17,8 @@ export const StateContext = ({ children }) => {
 
   const [selectedAvatar, setSelectedAvatar] = useState({});
   const [favouriteVideos, setFavouriteVideos] = useState([]);
+  const [id, setId] = useState([]);
+
   const [searchedVideos, setSearchedVideos] = useState([]);
   const [searchTimeout, setSearchTimeout] = useState(null);
 
@@ -71,6 +73,8 @@ export const StateContext = ({ children }) => {
     );
   };
 
+  console.log(id);
+
   useEffect(() => {
     clearTimeout(searchTimeout);
 
@@ -100,6 +104,8 @@ export const StateContext = ({ children }) => {
     scrollId,
     searchedVideos,
     searchedText,
+    id,
+    setId,
 
     setClickedVideo,
     setScrollId,

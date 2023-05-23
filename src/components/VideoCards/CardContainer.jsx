@@ -1,6 +1,5 @@
 import { Row } from 'react-bootstrap';
 import { ListCard } from './ListCard';
-
 import useDimension from '../hooks/useDimension';
 import useStatus from '../hooks/useStatus';
 import Slide from '../util/Slide';
@@ -29,7 +28,12 @@ const CardContainer = ({ videos }) => {
           ))}
         </div>
       ) : (
-        <Slide>
+        <Slide
+          change={{
+            centerMode: false,
+            slidesToScroll: 2,
+          }}
+        >
           {videos.map((el, idx) => (
             <div className='slide' key={Math.random() + idx}>
               <ListCard imgSrc={el.episodes[0].thumbnail} videoDetails={el} />

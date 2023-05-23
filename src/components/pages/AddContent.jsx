@@ -289,7 +289,12 @@ const AddContent = () => {
                 </div>
               ) : (
                 <Slide
-                  change={{ infinite: false, centerMode: false, slidesToScroll: 3, autoplay: true }}
+                  change={{
+                    infinite: false,
+                    centerMode: false,
+                    slidesToScroll: 3,
+                    autoplay: false,
+                  }}
                 >
                   {seriesVideos.map((video, idx) => (
                     <div className='slide' key={Math.random() + idx}>
@@ -325,9 +330,7 @@ const VideoDetailsForm = () => {
           <Form.Label className='custom-label'>Choose Video Type</Form.Label>
           <Form.Select
             aria-label='Video Type Select'
-            onChange={(e) => {
-              setSeriesDetails({ ...seriesDetails, type: e.target.value });
-            }}
+            onChange={(e) => setSeriesDetails({ ...seriesDetails, type: e.target.value })}
             value={seriesDetails.type}
           >
             <option defaultValue={'movies'} value='movies'>

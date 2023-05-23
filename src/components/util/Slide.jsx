@@ -7,7 +7,6 @@ const Slide = ({ children, change }) => {
   const path = useLocation().pathname.replace('/', '');
 
   const settings = {
-    // infinite: true,
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 5,

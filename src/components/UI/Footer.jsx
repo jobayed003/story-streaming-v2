@@ -1,18 +1,19 @@
 import React from 'react';
-import { Col, Container, NavLink, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
 import './Footer.css';
 
 const Footer = () => {
   return (
     <Container className='pdy' as='footer'>
       <Row className={'footer-row'}>
-        <Col className='mb-4' style={{}}>
+        <Col className='mb-4'>
           <NavLink href='#' className='footer-header'>
             Questions? Contact us.
           </NavLink>
         </Col>
       </Row>
-      <Row className={'footer-row'} style={{}}>
+      <Row className={'footer-row'}>
         <Col>
           <NavLink href='#' className='footer-link mb-3'>
             Investor Relations
@@ -25,7 +26,7 @@ const Footer = () => {
           </NavLink>
         </Col>
         <Col>
-          <NavLink href='#' className='footer-link mb-3'>
+          <NavLink to='/settings' className='footer-link mb-3'>
             Account
           </NavLink>
           <NavLink href='#' className='footer-link mb-3'>

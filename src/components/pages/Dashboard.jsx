@@ -4,7 +4,6 @@ import { Col, Container, Row } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import StateContextProvider from '../../context/StateContext';
 import VideoContextProvider from '../../context/VideoContext';
-import { createCheckoutSession } from '../../stripe/createCheckoutSession';
 import Layout from '../UI/Layout';
 import CardContainer from '../VideoCards/CardContainer';
 import useLoadingState from '../hooks/useLoadingState';
