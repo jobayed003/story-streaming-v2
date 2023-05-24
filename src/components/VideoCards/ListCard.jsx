@@ -226,7 +226,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
                     }}
                     onClick={() => handleClick(videoDetails.episodes[0].id)}
                   >
-                    Fullscreen
+                    Watch
                   </Button>
                 )}
               </div>
