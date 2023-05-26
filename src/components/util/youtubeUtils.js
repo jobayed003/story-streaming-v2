@@ -17,6 +17,27 @@ function ytDurationToSeconds(duration) {
   return hours * 3600 + minutes * 60 + seconds;
 }
 
+const getVideoDetails = async (url) => {
+  const videoID = parseVideoIDFromYoutubeURL(url);
+
+  const videoDetails = await fetch(
+    `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoID}&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`
+  ).then((res) => res.json());
+  const { contentDetails, snippet } = videoDetails.items[0] || {};
+
+  const epDetails = {
+    contentDetails,
+    id: videoID,
+    url,
+    title: snippet.title,
+    description: snippet.description,
+    duration: ytDurationToSeconds(contentDetails.duration),
+    thumbnail: snippet.thumbnails.standard.url,
+  };
+
+  return { epDetails };
+};
+
 const getThumbnails = (urls, size) => {
   let video, results;
   let img = [];
@@ -61,4 +82,10 @@ const getThumbnail = (url, size) => {
   return getThumb();
 };
 
-export { parseVideoIDFromYoutubeURL, ytDurationToSeconds, getThumbnails, getThumbnail };
+export {
+  parseVideoIDFromYoutubeURL,
+  ytDurationToSeconds,
+  getVideoDetails,
+  getThumbnails,
+  getThumbnail,
+};

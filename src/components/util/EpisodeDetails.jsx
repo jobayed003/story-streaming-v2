@@ -94,7 +94,17 @@ export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
             />
           </div>
           <div className={'d-flex flex-column p-4 pb-0 '}>
-            <span style={{ fontWeight: 'bold', fontSize: '2rem' }}>{details.title}</span>
+            <span
+              style={{
+                fontWeight: 'bold',
+                fontSize: '2rem',
+                lineHeight: '1.2',
+                marginBottom: '.5rem',
+              }}
+              className={'textEllipsis'}
+            >
+              {details.title}
+            </span>
             <span className={'textEllipsis'}>{details.description}</span>
             <span style={{ fontStyle: 'italic' }}>{details.genre}</span>
           </div>

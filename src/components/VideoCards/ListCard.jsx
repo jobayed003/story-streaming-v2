@@ -1,5 +1,5 @@
 import { getAuth } from 'firebase/auth';
-import { FieldValue, deleteDoc, doc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
+import {  deleteDoc, doc, serverTimestamp, setDoc,  } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import { useContext, useRef, useState } from 'react';
 import { Button, Card } from 'react-bootstrap';

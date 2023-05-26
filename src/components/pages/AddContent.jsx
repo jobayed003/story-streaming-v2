@@ -13,11 +13,7 @@ import useDimension from '../hooks/useDimension';
 import useLoadingState from '../hooks/useLoadingState';
 import useStatus from '../hooks/useStatus';
 import Slide from '../util/Slide';
-import {
-  getThumbnail,
-  parseVideoIDFromYoutubeURL,
-  ytDurationToSeconds,
-} from '../util/youtubeUtils';
+import { getVideoDetails } from '../util/youtubeUtils';
 import './AddContent.css';
 
 const AddContent = () => {
@@ -41,25 +37,12 @@ const AddContent = () => {
   const loadingState = useLoadingState();
   const [user] = useAuthState(getAuth());
 
-  // Getting thumbnail from video Urls
-  const getVideoDetails = async (url) => {
-    const videoID = parseVideoIDFromYoutubeURL(url);
-
-    const videoDetails = await fetch(
-      `https://www.googleapis.com/youtube/v3/videos?id=${videoID}&part=contentDetails&key=AIzaSyCptCwdOzdgBvgU1O6UIOB_Z1ipsMUKCtg`
-    ).then((res) => res.json());
-
-    const { contentDetails } = videoDetails.items[0] || {};
-    return { id: videoID, duration: ytDurationToSeconds(contentDetails.duration), contentDetails };
-  };
-
   const updatedEpisodeDetails = (field, value, currentIndex) => {
     const updatedEpisodes = seriesDetails.episodes.map((episode, index) => {
       if (index === currentIndex) {
         return {
           ...episode,
           [field]: value,
-          // season: seriesDetails.season,
         };
       }
       return episode;
@@ -77,12 +60,10 @@ const AddContent = () => {
       const episode = seriesDetails.episodes[x];
 
       const videoDetails = await getVideoDetails(episode.url);
-      const vidThumbnail = getThumbnail(episode.url);
-
       episodes.push({
         ...episode,
         ...videoDetails,
-        thumbnail: vidThumbnail,
+        episode: initialEpisode.episode + 1,
       });
     }
 
@@ -117,6 +98,14 @@ const AddContent = () => {
       console.log(error);
     }
   };
+  const handleDetails = async (url, index) => {
+    const { epDetails } = await getVideoDetails(url);
+    setSeriesDetails({
+      episodes: [...seriesDetails.episodes, epDetails].filter((el) => el.url !== ''),
+      title: index === 0 ? epDetails.title : seriesDetails.episodes[0].title,
+      description: index === 0 ? epDetails.description : seriesDetails.episodes[0].description,
+    });
+  };
 
   useEffect(() => {
     setSeriesDetails({
@@ -146,7 +135,7 @@ const AddContent = () => {
                 <Form>
                   <VideoDetailsForm />
                   {seriesDetails.episodes.map((el, index) => (
-                    <span key={'episode-' + index}>
+                    <div key={'episode-' + index}>
                       <h3 className='mt-5'>Episode {index + 1}</h3>
                       {index > 0 && index === seriesDetails.episodes.length - 1 && (
                         <Button
@@ -159,13 +148,25 @@ const AddContent = () => {
                             seriesDetails.episodes.splice(index, 1);
                             setSeriesDetails({
                               ...seriesDetails,
-                              // episodes: seriesDetails.episodes.splice(index, 1),
                             });
                           }}
                         >
                           Remove
                         </Button>
                       )}
+
+                      <Form.Group className='mb-3'>
+                        <Form.Label className='custom-label'>Video URL</Form.Label>
+                        <Form.Control
+                          type='text'
+                          value={el.url}
+                          placeholder='Enter video URL'
+                          onChange={(e) => {
+                            handleDetails(e.target.value, index);
+                            updatedEpisodeDetails('url', e.target.value, index);
+                          }}
+                        />
+                      </Form.Group>
                       <Form.Group className='mb-3'>
                         <Form.Label className='custom-label'>Video Title</Form.Label>
                         <Form.Control
@@ -188,17 +189,7 @@ const AddContent = () => {
                           }}
                         />
                       </Form.Group>
-                      <Form.Group className='mb-3'>
-                        <Form.Label className='custom-label'>Video URL</Form.Label>
-                        <Form.Control
-                          type='text'
-                          value={el.url}
-                          placeholder='Enter video URL'
-                          onChange={(e) => {
-                            updatedEpisodeDetails('url', e.target.value, index);
-                          }}
-                        />
-                      </Form.Group>
+
                       <Form.Group className='mb-3'>
                         <Form.Label className='custom-label'>Season Number</Form.Label>
                         <Form.Control
@@ -214,7 +205,7 @@ const AddContent = () => {
                           }}
                         />
                       </Form.Group>
-                    </span>
+                    </div>
                   ))}
 
                   <div className='text-center'>

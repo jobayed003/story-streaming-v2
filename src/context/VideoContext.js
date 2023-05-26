@@ -5,6 +5,7 @@ import { fetchVideos } from '../components/util/videoUtil';
 const VideoContextProvider = createContext({
   seriesVideos: [],
   series: {},
+  seriesDetails: {},
 
   setSeriesVideos: () => {},
   setSeriesDetails: () => {},
@@ -22,7 +23,6 @@ const initialEpisode = {
 export const VideoContext = ({ children }) => {
   const [seriesVideos, setSeriesVideos] = useState([]);
   const [updated, setUpdated] = useState(false);
-
   const [seriesDetails, setSeriesDetails] = useState({
     description: '',
     episodes: [initialEpisode],

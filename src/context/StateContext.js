@@ -73,7 +73,7 @@ export const StateContext = ({ children }) => {
     );
   };
 
-  console.log(id);
+  // console.log(id);
 
   useEffect(() => {
     clearTimeout(searchTimeout);

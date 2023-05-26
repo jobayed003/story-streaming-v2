@@ -3,7 +3,6 @@ import { Image, Row } from 'react-bootstrap';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './App.css';
 import logo from './assets/Icons/StorySaloon_Logo.svg';
 import Category from './components/pages/Category';
 import Upgrade from './components/pages/Upgrade';
