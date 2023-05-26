@@ -1,6 +1,6 @@
 import { getAuth } from 'firebase/auth';
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { MdWbTwighlight } from 'react-icons/md';
@@ -108,6 +108,7 @@ const AddContent = () => {
     try {
       const { epDetails } = await getVideoDetails(url);
       setSeriesDetails({
+        ...seriesDetails,
         episodes: [...seriesDetails.episodes, epDetails].filter((el) => el.url !== ''),
         title: index === 0 ? epDetails.title : seriesDetails.episodes[0].title,
         description: index === 0 ? epDetails.description : seriesDetails.episodes[0].description,
@@ -223,7 +224,7 @@ const AddContent = () => {
                   <div className='text-center'>
                     <Button
                       variant='link'
-                      style={{ paddingLeft: 0, textDecoration: 'none' }}
+                      style={{ paddingLeft: 0, textDecoration: 'none', color: 'var(--text-color)' }}
                       type='button'
                       onClick={() => {
                         setSeriesDetails({
@@ -241,16 +242,25 @@ const AddContent = () => {
                     <div className='d-flex flex-column flex-sm-row gap-4 my-4 mx-5 flex-grow-1'>
                       <Button
                         className='flex-grow-1'
-                        variant='primary'
+                        style={{
+                          background: 'var(--button-color)',
+                          border: 'none',
+                          height: '2.5rem',
+                        }}
                         type='button'
+                        disabled={Object.values(seriesDetails).includes('')}
                         onClick={AddVideo}
                       >
                         Submit
                       </Button>
                       <Button
                         className='flex-grow-1'
-                        variant='primary'
                         type='button'
+                        style={{
+                          background: 'var(--button-color)',
+                          border: 'none',
+                          height: '2.5rem',
+                        }}
                         onClick={() => {
                           formRef.current.scrollIntoView({
                             behavior: 'smooth',

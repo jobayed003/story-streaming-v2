@@ -1,6 +1,7 @@
 import { deleteDoc, doc } from 'firebase/firestore';
 import { useContext } from 'react';
 import { Button, Card } from 'react-bootstrap';
+import { FaDumpster, FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import VideoContextProvider from '../../context/VideoContext';
@@ -37,7 +38,7 @@ const EditCard = ({ imgSrc, scrollTo, video }) => {
 
   const btnStyles = {
     fontFamily: 'Roboto',
-    background: 'none',
+    background: 'var(--button-color)',
     border: 'none',
   };
 
@@ -70,11 +71,14 @@ const EditCard = ({ imgSrc, scrollTo, video }) => {
           <Card.Text style={{ height: '45px' }}>{video.description}</Card.Text>
         </div>
         <div className='d-flex justify-content-between mt-2'>
-          <Button className={'bg-primary'} style={{ ...btnStyles }} onClick={editVideo}>
-            Edit
+          <Button style={{ ...btnStyles }} onClick={editVideo}>
+            <FaEdit />
           </Button>
-          <Button className={'bg-danger'} style={{ ...btnStyles }} onClick={deleteVideo}>
-            Delete
+          <Button
+            style={{ ...btnStyles, backgroundColor: 'var(--gray-color)' }}
+            onClick={deleteVideo}
+          >
+            <FaTrash />
           </Button>
         </div>
       </Card.Body>

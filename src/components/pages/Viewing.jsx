@@ -162,7 +162,7 @@ const Viewing = () => {
 
                   <div
                     className='my-4 customFormLabel'
-                    style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}
+                    style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '.5rem' }}
                   >
                     <div>
                       <Form.Label>Video:</Form.Label>
