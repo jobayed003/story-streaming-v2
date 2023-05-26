@@ -61,7 +61,7 @@ const AddContent = () => {
       episodes.push({
         ...episode,
         season: episode.season || 1,
-        episode: episode.episode === 0 ? episode.episode + 1 : seriesDetails.episodes[idx].episode,
+        episode: episode.episode || idx + 1,
       });
     });
     // for (var x = 0; x < seriesDetails.episodes.length; x++) {
