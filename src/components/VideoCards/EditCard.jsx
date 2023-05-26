@@ -1,7 +1,7 @@
 import { deleteDoc, doc } from 'firebase/firestore';
 import { useContext } from 'react';
 import { Button, Card } from 'react-bootstrap';
-import { FaDumpster, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import VideoContextProvider from '../../context/VideoContext';

@@ -102,11 +102,11 @@ const Login = ({ show, setShow }) => {
               >
                 {isLoading ? (
                   <div className='d-flex align-items-center'>
-                    <div>Loading...</div>
+                    <div>Signing In</div>
                     <Spinner animation='border' style={{ width: '1.3rem', height: '1.3rem' }} />
                   </div>
                 ) : (
-                  'Login'
+                  'Sign In'
                 )}
               </Button>
 

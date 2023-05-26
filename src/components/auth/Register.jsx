@@ -156,11 +156,11 @@ const Register = ({ show, setShow }) => {
               >
                 {isLoading ? (
                   <div className='d-flex align-items-center'>
-                    <div>Loading...</div>
+                    <div>Signing Up </div>
                     <Spinner animation='border' style={{ width: '1.3rem', height: '1.3rem' }} />
                   </div>
                 ) : (
-                  'Continue'
+                  'Sign Up'
                 )}
               </Button>
 
@@ -171,7 +171,7 @@ const Register = ({ show, setShow }) => {
                   onClick={() => setAuthStep('login')}
                   style={{ color: 'var(--button-color)', textDecoration: 'none' }}
                 >
-                  Login
+                  Sign In
                 </NavLink>
               </p>
             </div>

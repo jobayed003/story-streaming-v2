@@ -1,6 +1,6 @@
 import { getAuth } from 'firebase/auth';
 import { useContext, useEffect, useState } from 'react';
-import { Button, Form, Modal, Row, Spinner } from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { MdOutlineReportProblem } from 'react-icons/md';
 import YouTube from 'react-youtube';
