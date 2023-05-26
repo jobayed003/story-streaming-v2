@@ -1,15 +1,21 @@
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Form, Modal } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import YouTube from 'react-youtube';
 import ChevronDownIcon from '../../assets/Icons/chevron-down.svg';
+import StateContextProvider from '../../context/StateContext';
 import classes from './EpisodeDetails.module.css';
 import { getDuration } from './videoUtil';
 
-export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
+export const EpisodeDetails = ({ show, setShow, details }) => {
   const [seasons, setSeasons] = useState([]);
   const [episodes, setEpisodes] = useState([]);
   const [watchTime, setWatchTime] = useState(0);
+  const navigate = useNavigate();
+
+  // Context Management
+  const { setClickedVideo } = useContext(StateContextProvider);
 
   const handleClose = () => {
     setShow(false);
@@ -82,6 +88,13 @@ export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
     textOverflow: 'ellipsis',
   };
 
+  const handleClick = (el) => {
+    setClickedVideo({ ...el, seriesTitle: details.title });
+    localStorage.removeItem('video');
+    localStorage.setItem('video', JSON.stringify({ ...el, seriesTitle: details.title }));
+    navigate(`/watch/${details.id}`);
+  };
+
   return (
     <>
       <Modal show={show} onHide={handleClose} centered>
@@ -146,7 +159,7 @@ export const EpisodeDetails = ({ show, setShow, details, handleClick }) => {
                       alt='img'
                       src={el.thumbnail}
                       className={`${classes.episodesImg} cursor-pointer`}
-                      onClick={() => handleClick(el.id)}
+                      onClick={() => handleClick(el)}
                     />
 
                     <div

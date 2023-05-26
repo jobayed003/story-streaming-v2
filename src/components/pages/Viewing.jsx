@@ -1,6 +1,6 @@
 import { getAuth } from 'firebase/auth';
 import { useContext, useEffect, useState } from 'react';
-import { Button, Container, Modal } from 'react-bootstrap';
+import { Form, Modal } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import YouTube from 'react-youtube';
 import VideoContextProvider from '../../context/VideoContext';
@@ -8,7 +8,7 @@ import Header from '../UI/Header';
 import useDimension from '../hooks/useDimension';
 import useLoadingState from '../hooks/useLoadingState';
 import { getDuration } from '../util/videoUtil';
-import classes from './Viewing.module.css';
+import './Viewing.css';
 
 function getWidth() {
   return Math.max(
@@ -35,20 +35,17 @@ function getHeight() {
 const Viewing = () => {
   const { clickedVideo } = useContext(VideoContextProvider);
   const { height, width } = useDimension();
-  let videoId = '';
-  let title = '';
+  let videoDetails = {};
 
-  const videoIDfromStorage = JSON.parse(localStorage.getItem('videoID'));
+  const videofromStorage = JSON.parse(localStorage.getItem('video'));
 
-  if (videoIDfromStorage === undefined) {
-    videoId = clickedVideo;
-    // title = clickedVideo.episodes[0].title;
+  if (videofromStorage === undefined) {
+    videoDetails = clickedVideo;
   } else {
-    videoId = videoIDfromStorage;
-    // title = videofromStorage.episodes[0].title;
+    videoDetails = videofromStorage;
   }
   const [details, setDetails] = useState({
-    videoId,
+    videoId: videoDetails.id,
     id: '',
     className: '',
     iframeClassName: '',
@@ -83,6 +80,14 @@ const Viewing = () => {
   });
   const [watchTime, setWatchTime] = useState(0);
   const [show, setShow] = useState(false);
+  const [reports, setReports] = useState({
+    isVideoWrong: false,
+    isLinkBroken: false,
+    isAudioNotSynced: false,
+    isSubtitleNotSynced: false,
+    isSkipTimeWrong: false,
+    other: '',
+  });
 
   const loadingState = useLoadingState();
   const [user] = useAuthState(getAuth());
@@ -90,14 +95,22 @@ const Viewing = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const handleChange = ({ target }) => {
+    if (target.type === 'checkbox') {
+      setReports({ ...reports, [target.name]: target.checked });
+    } else if (target.type === 'textarea') {
+      setReports({ ...reports, other: target.value });
+    }
+  };
+
   useEffect(() => {
     setDetails((prev) => ({ ...prev, opts: { ...prev.opts, width: width, height: height } }));
   }, [width, height]);
 
   return (
     <>
-      {!user && videoId === '' && loadingState}
-      {user && videoId !== '' && (
+      {!user && videoDetails.id === '' && loadingState}
+      {user && videoDetails.id !== '' && (
         <div>
           <Header />
           <div className='text-light'>
@@ -109,17 +122,95 @@ const Viewing = () => {
           </div>
 
           <div className='d-flex justify-content-center p-4 cursor-pointer' onClick={handleShow}>
-            <p className={`${classes.button}`}>Report issue</p>
+            <p className={`button`}>Report issue</p>
           </div>
 
           <Modal show={show} onHide={handleClose} centered>
-            <Modal.Body className='rounded ' style={{ backgroundColor: 'var(--gray-color)' }}>
-              <h4>Report issues</h4>
-              <p>
-                Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac
-                facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac,
-                vestibulum at eros.
-              </p>
+            <Modal.Body
+              className='p-4 rounded'
+              style={{ backgroundColor: 'var(--gray-color)', overflow: 'hidden' }}
+            >
+              <div className='d-flex flex-column gap-2'>
+                <h4>Report an Issues</h4>
+                <span style={{ fontSize: '.9rem', color: 'var(--footer-text-color)' }}>
+                  Please let us know what's wrong so we can fix it as soon as possible.
+                </span>
+
+                <div
+                  className='d-flex flex-column'
+                  style={{ fontSize: '.9rem', color: 'var(--footer-text-color)' }}
+                >
+                  <h5 style={{ color: 'var(--text-color)', alignSelf: 'start' }}>
+                    {videoDetails.seriesTitle}
+                  </h5>
+                  <span>Season {videoDetails.season}</span>
+                  <span>Episode {videoDetails.episode}</span>
+
+                  <div
+                    className='my-4 customFormLabel'
+                    style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}
+                  >
+                    <div>
+                      <Form.Label>Video:</Form.Label>
+                      <Form.Check
+                        onChange={handleChange}
+                        label='Wrong Video'
+                        type='checkbox'
+                        name='isVideoWrong'
+                        id={'inline-checkbox-1'}
+                      />
+                      <Form.Check
+                        onChange={handleChange}
+                        label='Broken Link'
+                        type='checkbox'
+                        id={'inline-checkbox-2'}
+                        name='isLinkBroken'
+                      />
+                    </div>
+
+                    <div>
+                      <Form.Label>Audio:</Form.Label>
+                      <Form.Check
+                        onChange={handleChange}
+                        label='Not Synced'
+                        type='checkbox'
+                        name='isAudioNotSynced'
+                        id={'inline-checkbox-3'}
+                      />
+                    </div>
+                    <div>
+                      <Form.Label>Subtitle:</Form.Label>
+                      <Form.Check
+                        onChange={handleChange}
+                        label='Not Synced'
+                        type='checkbox'
+                        name='isSubtitleNotSynced'
+                        id={'inline-checkbox-4'}
+                      />
+                    </div>
+                    <div>
+                      <Form.Label>Skip time:</Form.Label>
+                      <Form.Check
+                        onChange={handleChange}
+                        label='Wrong'
+                        type='checkbox'
+                        name='isSkipTimeWrong'
+                        id={'inline-checkbox-5'}
+                      />
+                    </div>
+                  </div>
+
+                  <Form.Label style={{ fontSize: '1rem', color: '#fff' }}>Other:</Form.Label>
+                  <Form.Control
+                    as='textarea'
+                    rows={3}
+                    onChange={handleChange}
+                    id={'other'}
+                    style={{ backgroundColor: '#292929', color: '#888' }}
+                    className={`textArea`}
+                  />
+                </div>
+              </div>
             </Modal.Body>
           </Modal>
         </div>

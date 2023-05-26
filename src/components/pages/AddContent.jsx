@@ -56,16 +56,23 @@ const AddContent = () => {
   const AddVideo = async () => {
     const uniqueId = Math.random().toString(16).slice(2);
     const episodes = [];
-    for (var x = 0; x < seriesDetails.episodes.length; x++) {
-      const episode = seriesDetails.episodes[x];
 
-      // const videoDetails = await getVideoDetails(episode.url);
+    seriesDetails.episodes.forEach((episode, idx) => {
       episodes.push({
         ...episode,
-        season: seriesDetails.episodes[x].season || 1,
-        episode: initialEpisode.episode + 1,
+        season: episode.season || 1,
+        episode: episode.episode === 0 ? episode.episode + 1 : seriesDetails.episodes[idx].episode,
       });
-    }
+    });
+    // for (var x = 0; x < seriesDetails.episodes.length; x++) {
+    //   const episode = seriesDetails.episodes[x];
+    //   // const videoDetails = await getVideoDetails(episode.url);
+    //   episodes.push({
+    //     ...episode,
+    //     season: seriesDetails.episodes[x].season || 1,
+    //     episode: initialEpisode.episode + 1,
+    //   });
+    // }
 
     const finalSeries = {
       ...seriesDetails,
@@ -82,8 +89,8 @@ const AddContent = () => {
       toast.dark('Video added successfully', {
         theme: 'dark',
       });
-
       setUpdated((prev) => !prev);
+
       setSeriesDetails({
         description: '',
         episodes: [initialEpisode],

@@ -1,0 +1,23 @@
+.button:hover {
+  text-decoration: underline;
+}
+
+.textArea,
+.textArea:focus {
+  outline: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.form-check-input,
+.form-check-input:focus,
+.form-check-input:active {
+  border: none;
+  box-shadow: none;
+  background-color: #888 !important;
+}
+
+.customFormLabel > div > .form-label {
+  font-size: 1rem;
+  color: #fff;
+}

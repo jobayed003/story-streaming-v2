@@ -20,8 +20,11 @@ const EditCard = ({ imgSrc, scrollTo, video }) => {
 
   const playVideo = () => {
     navigate(`/watch/${video.id}`);
-    localStorage.removeItem('videoID');
-    localStorage.setItem('videoID', JSON.stringify(video.episodes[0].id));
+    localStorage.removeItem('video');
+    localStorage.setItem(
+      'video',
+      JSON.stringify({ ...video.episodes[0], seriesTitle: video.title })
+    );
   };
 
   const deleteVideo = async () => {

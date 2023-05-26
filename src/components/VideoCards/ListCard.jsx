@@ -1,5 +1,5 @@
 import { getAuth } from 'firebase/auth';
-import {  deleteDoc, doc, serverTimestamp, setDoc,  } from 'firebase/firestore';
+import { deleteDoc, doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import { useContext, useRef, useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
@@ -22,7 +22,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
   const ref = useRef();
 
   // Context Management
-  const { favouriteVideos, setClickedVideo, setId, id } = useContext(StateContextProvider);
+  const { favouriteVideos, setClickedVideo } = useContext(StateContextProvider);
   const { seriesVideos } = useContext(VideoContextProvider);
 
   // Custom Hooks
@@ -37,10 +37,13 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
   }
   const isFavourite = favVideosUniqueID.includes(videoDetails.id);
 
-  const handleClick = (id) => {
-    setClickedVideo(id);
-    localStorage.removeItem('videoID');
-    localStorage.setItem('videoID', JSON.stringify(id));
+  const playVideo = () => {
+    setClickedVideo({ ...videoDetails.episodes[0], seriesTitle: videoDetails.title });
+    localStorage.removeItem('video');
+    localStorage.setItem(
+      'video',
+      JSON.stringify({ ...videoDetails.episodes[0], seriesTitle: videoDetails.title })
+    );
     navigate(`/watch/${videoDetails.id}`);
   };
 
@@ -94,12 +97,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
 
   return (
     <div className='position-relative' ref={ref}>
-      <EpisodeDetails
-        show={show}
-        setShow={setShow}
-        details={videoDetails}
-        handleClick={handleClick}
-      />
+      <EpisodeDetails show={show} setShow={setShow} details={videoDetails} />
 
       <motion.div
         className='box'
@@ -169,13 +167,10 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
                 height: width > 1000 ? '250px' : '200px',
               }}
               className='cursor-pointer'
-              onClick={() => handleClick(videoDetails.episodes[0].id)}
+              onClick={playVideo}
             />
             <Card.Body className='cursor-pointer ' style={{ zIndex: '100000' }}>
-              <div
-                onClick={() => handleClick(videoDetails.episodes[0].id)}
-                style={{ overflow: 'hidden' }}
-              >
+              <div onClick={playVideo} style={{ overflow: 'hidden' }}>
                 <Card.Title
                   style={{ fontSize: '1.5rem', fontWeight: 'bold', ...textStyle, margin: '0' }}
                 >
@@ -224,7 +219,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
                       color: '#fff',
                       fontSize: '1rem',
                     }}
-                    onClick={() => handleClick(videoDetails.episodes[0].id)}
+                    onClick={playVideo}
                   >
                     Watch
                   </Button>
