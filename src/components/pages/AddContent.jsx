@@ -59,10 +59,10 @@ const AddContent = () => {
     for (var x = 0; x < seriesDetails.episodes.length; x++) {
       const episode = seriesDetails.episodes[x];
 
-      const videoDetails = await getVideoDetails(episode.url);
+      // const videoDetails = await getVideoDetails(episode.url);
       episodes.push({
         ...episode,
-        ...videoDetails,
+        season: seriesDetails.episodes[x].season || 1,
         episode: initialEpisode.episode + 1,
       });
     }
@@ -98,6 +98,7 @@ const AddContent = () => {
       console.log(error);
     }
   };
+
   const handleDetails = async (url, index) => {
     const { epDetails } = await getVideoDetails(url);
     setSeriesDetails({

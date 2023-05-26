@@ -1,5 +1,6 @@
 import { getAuth } from 'firebase/auth';
 import { useContext, useEffect, useState } from 'react';
+import { Button, Container, Modal } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import YouTube from 'react-youtube';
 import VideoContextProvider from '../../context/VideoContext';
@@ -7,6 +8,7 @@ import Header from '../UI/Header';
 import useDimension from '../hooks/useDimension';
 import useLoadingState from '../hooks/useLoadingState';
 import { getDuration } from '../util/videoUtil';
+import classes from './Viewing.module.css';
 
 function getWidth() {
   return Math.max(
@@ -80,8 +82,13 @@ const Viewing = () => {
     onPlaybackQualityChange: () => {},
   });
   const [watchTime, setWatchTime] = useState(0);
+  const [show, setShow] = useState(false);
+
   const loadingState = useLoadingState();
   const [user] = useAuthState(getAuth());
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     setDetails((prev) => ({ ...prev, opts: { ...prev.opts, width: width, height: height } }));
@@ -100,6 +107,21 @@ const Viewing = () => {
               onPause={(e) => setWatchTime(getDuration(e.target.playerInfo.currentTime))}
             />
           </div>
+
+          <div className='d-flex justify-content-center p-4 cursor-pointer' onClick={handleShow}>
+            <p className={`${classes.button}`}>Report issue</p>
+          </div>
+
+          <Modal show={show} onHide={handleClose} centered>
+            <Modal.Body className='rounded ' style={{ backgroundColor: 'var(--gray-color)' }}>
+              <h4>Report issues</h4>
+              <p>
+                Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac
+                facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac,
+                vestibulum at eros.
+              </p>
+            </Modal.Body>
+          </Modal>
         </div>
       )}
     </>
