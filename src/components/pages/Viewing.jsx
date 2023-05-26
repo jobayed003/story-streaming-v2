@@ -1,6 +1,6 @@
 import { getAuth } from 'firebase/auth';
 import { useContext, useEffect, useState } from 'react';
-import { Button, Form, Modal, Spinner } from 'react-bootstrap';
+import { Button, Form, Modal, Row, Spinner } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { MdOutlineReportProblem } from 'react-icons/md';
 import YouTube from 'react-youtube';
@@ -235,8 +235,7 @@ const Viewing = () => {
                 >
                   {isLoading ? (
                     <div className='d-flex justify-content-center'>
-                      <div>Loading...</div>
-                      <Spinner animation='border' style={{ width: '1.3rem', height: '1.3rem' }} />
+                      <div>Sending...</div>
                     </div>
                   ) : (
                     'Send report'

@@ -3,6 +3,7 @@ import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useContext, useEffect, useRef } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { MdWbTwighlight } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import AuthProvider from '../../context/AuthContext';
 import VideoContextProvider from '../../context/VideoContext';
@@ -11,6 +12,7 @@ import Layout from '../UI/Layout';
 import EditCard from '../VideoCards/EditCard';
 import useDimension from '../hooks/useDimension';
 import useLoadingState from '../hooks/useLoadingState';
+import useSearchDebounce from '../hooks/useSearchBounce';
 import useStatus from '../hooks/useStatus';
 import Slide from '../util/Slide';
 import { getVideoDetails } from '../util/youtubeUtils';
@@ -64,29 +66,25 @@ const AddContent = () => {
         episode: episode.episode || idx + 1,
       });
     });
-    // for (var x = 0; x < seriesDetails.episodes.length; x++) {
-    //   const episode = seriesDetails.episodes[x];
-    //   // const videoDetails = await getVideoDetails(episode.url);
-    //   episodes.push({
-    //     ...episode,
-    //     season: seriesDetails.episodes[x].season || 1,
-    //     episode: initialEpisode.episode + 1,
-    //   });
-    // }
 
+    if (!seriesDetails.genre) {
+      toast.dark('Something Went Wrong.Check the values and try again!', {
+        theme: 'dark',
+      });
+      return;
+    }
     const finalSeries = {
       ...seriesDetails,
       episodes: episodes.sort((a, b) => a.episode - b.episode),
       id: seriesDetails.id ? seriesDetails.id : uniqueId,
       timeStamp: serverTimestamp(),
     };
-
     const seriesVideoRef = doc(db, 'series', seriesDetails.id ? seriesDetails.id : uniqueId);
 
     try {
       await setDoc(seriesVideoRef, finalSeries);
 
-      toast.dark('Video added successfully', {
+      toast.dark('Video added successfully!', {
         theme: 'dark',
       });
       setUpdated((prev) => !prev);
@@ -107,12 +105,18 @@ const AddContent = () => {
   };
 
   const handleDetails = async (url, index) => {
-    const { epDetails } = await getVideoDetails(url);
-    setSeriesDetails({
-      episodes: [...seriesDetails.episodes, epDetails].filter((el) => el.url !== ''),
-      title: index === 0 ? epDetails.title : seriesDetails.episodes[0].title,
-      description: index === 0 ? epDetails.description : seriesDetails.episodes[0].description,
-    });
+    try {
+      const { epDetails } = await getVideoDetails(url);
+      setSeriesDetails({
+        episodes: [...seriesDetails.episodes, epDetails].filter((el) => el.url !== ''),
+        title: index === 0 ? epDetails.title : seriesDetails.episodes[0].title,
+        description: index === 0 ? epDetails.description : seriesDetails.episodes[0].description,
+      });
+    } catch (error) {
+      // toast.dark('Something went wrong.Try with a new url!', {
+      //   theme: 'dark',
+      // });
+    }
   };
 
   useEffect(() => {
