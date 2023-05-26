@@ -9,12 +9,19 @@
   box-shadow: none;
 }
 
-.form-check-input,
-.form-check-input:focus,
-.form-check-input:active {
+.form-check-input {
   border: none;
   box-shadow: none;
   background-color: #888 !important;
+}
+.form-check-input:focus {
+  border: none;
+  box-shadow: none;
+}
+.form-check-input:checked {
+  border: none;
+  box-shadow: none;
+  background-color: var(--text-color) !important;
 }
 
 .customFormLabel > div > .form-label {

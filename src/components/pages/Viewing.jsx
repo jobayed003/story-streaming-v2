@@ -1,7 +1,8 @@
 import { getAuth } from 'firebase/auth';
 import { useContext, useEffect, useState } from 'react';
-import { Form, Modal } from 'react-bootstrap';
+import { Button, Form, Modal, Spinner } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { MdOutlineReportProblem } from 'react-icons/md';
 import YouTube from 'react-youtube';
 import VideoContextProvider from '../../context/VideoContext';
 import Header from '../UI/Header';
@@ -88,6 +89,7 @@ const Viewing = () => {
     isSkipTimeWrong: false,
     other: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const loadingState = useLoadingState();
   const [user] = useAuthState(getAuth());
@@ -101,6 +103,15 @@ const Viewing = () => {
     } else if (target.type === 'textarea') {
       setReports({ ...reports, other: target.value });
     }
+  };
+
+  const handleReportSubmit = () => {
+    setIsLoading(true);
+
+    setTimeout(() => {
+      handleClose();
+      setIsLoading(false);
+    }, 2000);
   };
 
   useEffect(() => {
@@ -122,7 +133,10 @@ const Viewing = () => {
           </div>
 
           <div className='d-flex justify-content-center p-4 cursor-pointer' onClick={handleShow}>
-            <p className={`button`}>Report issue</p>
+            <p className={`d-flex align-items-center button m-0 gap-1`}>
+              <MdOutlineReportProblem />
+              <span className='mt-1'>Report</span>
+            </p>
           </div>
 
           <Modal show={show} onHide={handleClose} centered>
@@ -131,7 +145,7 @@ const Viewing = () => {
               style={{ backgroundColor: 'var(--gray-color)', overflow: 'hidden' }}
             >
               <div className='d-flex flex-column gap-2'>
-                <h4>Report an Issues</h4>
+                <h3>Report an Issue</h3>
                 <span style={{ fontSize: '.9rem', color: 'var(--footer-text-color)' }}>
                   Please let us know what's wrong so we can fix it as soon as possible.
                 </span>
@@ -210,6 +224,24 @@ const Viewing = () => {
                     className={`textArea`}
                   />
                 </div>
+                <Button
+                  className='mt-3'
+                  style={{
+                    background: 'var(--button-color)',
+                    border: 'none',
+                    height: '2.5rem',
+                  }}
+                  onClick={handleReportSubmit}
+                >
+                  {isLoading ? (
+                    <div className='d-flex justify-content-center'>
+                      <div>Loading...</div>
+                      <Spinner animation='border' style={{ width: '1.3rem', height: '1.3rem' }} />
+                    </div>
+                  ) : (
+                    'Send report'
+                  )}
+                </Button>
               </div>
             </Modal.Body>
           </Modal>
