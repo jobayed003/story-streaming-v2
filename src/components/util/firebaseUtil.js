@@ -16,13 +16,6 @@ export const getAllAvatar = async (avatarName) => {
   return await Promise.all(imageUrls);
 };
 
-const getImgUrl = async (img) => {
-  const storage = getStorage();
-  const imgRef = ref(storage, `avatar/${img}`);
-  const imgUrl = await getDownloadURL(imgRef);
-  return imgUrl;
-};
-
 export const updateUserDoc = async (id, payload) => {
   const userRef = doc(db, 'users', id);
 

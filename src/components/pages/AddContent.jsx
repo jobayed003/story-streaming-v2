@@ -1,9 +1,8 @@
 import { getAuth } from 'firebase/auth';
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { MdWbTwighlight } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import AuthProvider from '../../context/AuthContext';
 import VideoContextProvider from '../../context/VideoContext';
@@ -35,9 +34,11 @@ const AddContent = () => {
   const { isAdmin } = useContext(AuthProvider);
 
   // Custom Hooks
+
   const status = useStatus(seriesVideos);
   const loadingState = useLoadingState();
   const [user] = useAuthState(getAuth());
+  const [search, setSearchQuery, index, setIndex] = useSearchDebounce();
 
   const updatedEpisodeDetails = (field, value, currentIndex) => {
     const updatedEpisodes = seriesDetails.episodes.map((episode, index) => {
@@ -104,21 +105,27 @@ const AddContent = () => {
     }
   };
 
-  const handleDetails = async (url, index) => {
-    try {
-      const { epDetails } = await getVideoDetails(url);
-      setSeriesDetails({
-        ...seriesDetails,
-        episodes: [...seriesDetails.episodes, epDetails].filter((el) => el.url !== ''),
-        title: index === 0 ? epDetails.title : seriesDetails.episodes[0].title,
-        description: index === 0 ? epDetails.description : seriesDetails.episodes[0].description,
-      });
-    } catch (error) {
-      // toast.dark('Something went wrong.Try with a new url!', {
-      //   theme: 'dark',
-      // });
-    }
-  };
+  useEffect(() => {
+    const getDetails = async () => {
+      const data = await getVideoDetails(search);
+
+      if (data.error === '' && search !== '') {
+        const { epDetails } = data;
+        setSeriesDetails({
+          ...seriesDetails,
+          episodes: [...seriesDetails.episodes, epDetails].filter((el) => el.title !== ''),
+          title: index === 0 ? epDetails.title : seriesDetails.episodes[0].title,
+          description: index === 0 ? epDetails.description : seriesDetails.episodes[0].description,
+        });
+      } else {
+        toast.dark(data.error, {
+          theme: 'dark',
+        });
+      }
+    };
+    getDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
 
   useEffect(() => {
     setSeriesDetails({
@@ -175,7 +182,9 @@ const AddContent = () => {
                           value={el.url}
                           placeholder='Enter video URL'
                           onChange={(e) => {
-                            handleDetails(e.target.value, index);
+                            setSearchQuery(e.target.value);
+                            setIndex(index);
+                            // handleDetails(e.target.value, index);
                             updatedEpisodeDetails('url', e.target.value, index);
                           }}
                         />

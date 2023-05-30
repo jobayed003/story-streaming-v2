@@ -19,73 +19,79 @@ function ytDurationToSeconds(duration) {
 
 const getVideoDetails = async (url) => {
   const videoID = parseVideoIDFromYoutubeURL(url);
+  const data = { error: '', epDetails: {} };
 
   const videoDetails = await fetch(
     `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoID}&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`
   ).then((res) => res.json());
-  const { contentDetails, snippet } = videoDetails.items[0] || {};
 
-  const epDetails = {
-    contentDetails,
-    id: videoID,
-    url,
-    title: snippet.title,
-    description: snippet.description,
-    duration: ytDurationToSeconds(contentDetails.duration),
-    thumbnail: snippet.thumbnails.standard.url,
-  };
-
-  return { epDetails };
-};
-
-const getThumbnails = (urls, size) => {
-  let video, results;
-  let img = [];
-
-  urls.forEach((url) => {
-    const getThumb = () => {
-      if (url === null) {
-        return '';
-      }
-      size = size === null ? 'big' : size;
-      results = url.match('[\\?&]v=([^&#]*)');
-      video = results === null ? url : results[1];
-
-      if (size === 'small') {
-        return 'http://img.youtube.com/vi/' + video + '/2.jpg';
-      }
-      return 'http://img.youtube.com/vi/' + video + '/0.jpg';
+  if (videoDetails.items.length > 0) {
+    const { contentDetails, snippet } = videoDetails.items[0] || {};
+    data.epDetails = {
+      contentDetails,
+      id: videoID,
+      url,
+      title: snippet.title,
+      description: snippet.description,
+      duration: ytDurationToSeconds(contentDetails.duration),
+      thumbnail: snippet.thumbnails.standard.url,
     };
-    img.push(getThumb());
-  });
-  return img;
+
+    return data;
+  } else {
+    data.error = 'Something went wrong! Check the url and try again';
+    return data;
+  }
 };
-const getThumbnail = (url, size) => {
-  let video, results;
-  let img = [];
 
-  const getThumb = () => {
-    if (url === null) {
-      return '';
-    }
-    size = size === null ? 'big' : size;
-    results = url.match('[\\?&]v=([^&#]*)');
-    video = results === null ? url : results[1];
+// const getThumbnails = (urls, size) => {
+//   let video, results;
+//   let img = [];
 
-    if (size === 'small') {
-      return 'http://img.youtube.com/vi/' + video + '/2.jpg';
-    }
-    return 'http://img.youtube.com/vi/' + video + '/0.jpg';
-  };
-  // img.push(getThumb());
+//   urls.forEach((url) => {
+//     const getThumb = () => {
+//       if (url === null) {
+//         return '';
+//       }
+//       size = size === null ? 'big' : size;
+//       results = url.match('[\\?&]v=([^&#]*)');
+//       video = results === null ? url : results[1];
 
-  return getThumb();
-};
+//       if (size === 'small') {
+//         return 'http://img.youtube.com/vi/' + video + '/2.jpg';
+//       }
+//       return 'http://img.youtube.com/vi/' + video + '/0.jpg';
+//     };
+//     img.push(getThumb());
+//   });
+//   return img;
+// };
+// const getThumbnail = (url, size) => {
+//   let video, results;
+//   let img = [];
+
+//   const getThumb = () => {
+//     if (url === null) {
+//       return '';
+//     }
+//     size = size === null ? 'big' : size;
+//     results = url.match('[\\?&]v=([^&#]*)');
+//     video = results === null ? url : results[1];
+
+//     if (size === 'small') {
+//       return 'http://img.youtube.com/vi/' + video + '/2.jpg';
+//     }
+//     return 'http://img.youtube.com/vi/' + video + '/0.jpg';
+//   };
+//   // img.push(getThumb());
+
+//   return getThumb();
+// };
 
 export {
   parseVideoIDFromYoutubeURL,
   ytDurationToSeconds,
   getVideoDetails,
-  getThumbnails,
-  getThumbnail,
+  // getThumbnails,
+  // getThumbnail,
 };

@@ -26,11 +26,11 @@
 :root {
   --white: #fff;
   --dark: #000000;
-  /* --button-color: #e40914; */
   --button-hover-collor: #f40612;
   --gray-color: #303030;
   --footer-text-color: #898989;
   --button-color: #a6723d;
+  --button-secondary-color: #e40914;
   --form-text-color: '#f2e6d2';
   --text-color: #9b6c3b;
   --form-bg: #4c4544;
