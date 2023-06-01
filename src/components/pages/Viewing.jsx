@@ -84,6 +84,7 @@ const Viewing = () => {
   const [seasons, setSeasons] = useState([]);
   const [episodes, setEpisodes] = useState([]);
   const [episode, setEpisode] = useState({});
+  const [episodeNumber, setEpisodeNumber] = useState(1);
   const [show, setShow] = useState(false);
   const [isAvailable, setIsAvailable] = useState(false);
 
@@ -171,6 +172,7 @@ const Viewing = () => {
                   backgroundImage: `url(${ChevronDownIcon})`,
                 }}
                 onChange={(e) => {
+                  setEpisodeNumber(+e.target.value);
                   setEpisode(episodes[+e.target.value - 1]);
                   localStorage.removeItem('videoEp');
                   localStorage.setItem('videoEp', JSON.stringify(episodes[+e.target.value - 1]));
@@ -185,7 +187,13 @@ const Viewing = () => {
               </Form.Select>
             </div>
           </div>
-          <Report show={show} setShow={setShow} seriesTitle={video.title} episode={episode} />
+          <Report
+            show={show}
+            setShow={setShow}
+            seriesTitle={video.title}
+            episode={episode}
+            episodeNumber={episodeNumber}
+          />
           <Chat path={path} />
         </div>
       )}
@@ -195,7 +203,7 @@ const Viewing = () => {
 
 export default Viewing;
 
-const Report = ({ show, setShow, seriesTitle, episode }) => {
+const Report = ({ show, setShow, seriesTitle, episode, episodeNumber }) => {
   const [reports, setReports] = useState({
     isVideoWrong: false,
     isLinkBroken: false,
@@ -257,7 +265,7 @@ const Report = ({ show, setShow, seriesTitle, episode }) => {
           >
             <h5 style={{ color: 'var(--text-color)', alignSelf: 'start' }}>{seriesTitle}</h5>
             <span>Season {episode.season}</span>
-            <span>Episode {episode.episode}</span>
+            <span>Episode {episodeNumber}</span>
 
             <div
               className='my-4 customFormLabel'
@@ -389,9 +397,7 @@ const Chat = ({ path }) => {
     if (Object.keys(d).includes('chats')) {
       await setDoc(chatRef, { ...d });
     }
-    // } else {}
-    //   await updateDoc(chatRef, { ['episode' + episode]: { chats: [details] } });
-    // }
+
     setMessage('');
   };
 
