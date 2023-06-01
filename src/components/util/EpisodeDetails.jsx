@@ -15,29 +15,28 @@ export const EpisodeDetails = ({ show, setShow, details }) => {
   const navigate = useNavigate();
 
   // Context Management
-  const { setClickedVideo } = useContext(StateContextProvider);
+  const { setClickedEpisode } = useContext(StateContextProvider);
 
   const handleClose = () => {
     setShow(false);
-    getSeason(1);
+    getEpisodes(details.episodes, 1);
   };
 
   useEffect(() => {
     const totalSeason = [...new Set(details.episodes.map((el) => el.season))];
     setSeasons(totalSeason);
-    getSeason(1);
+    getEpisodes(details.episodes, 1);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const getSeason = (season) => {
+  const getEpisodes = (series, season) => {
     if (season === 'View All') {
-      const sortedEp = details.episodes.sort((a, b) => a.season - b.season);
+      const sortedEp = series.sort((a, b) => a.season - b.season);
       setEpisodes(sortedEp);
       return;
     }
-
-    const selectedSeasonEp = details.episodes.filter((ep) => ep.season === +season);
+    const selectedSeasonEp = series.filter((ep) => ep.season === +season);
     setEpisodes(selectedSeasonEp);
   };
 
@@ -88,10 +87,10 @@ export const EpisodeDetails = ({ show, setShow, details }) => {
     textOverflow: 'ellipsis',
   };
 
-  const handleClick = (el) => {
-    setClickedVideo({ ...el, seriesTitle: details.title });
-    localStorage.removeItem('video');
-    localStorage.setItem('video', JSON.stringify({ ...el, seriesTitle: details.title }));
+  const handleClick = (episode) => {
+    setClickedEpisode(episode);
+    localStorage.removeItem('videoEp');
+    localStorage.setItem('videoEp', JSON.stringify(episode));
     navigate(`/watch/${details.id}`);
   };
 
@@ -133,7 +132,7 @@ export const EpisodeDetails = ({ show, setShow, details }) => {
                   backgroundColor: 'var(--gray-color)',
                   backgroundImage: `url(${ChevronDownIcon})`,
                 }}
-                onChange={(e) => getSeason(e.target.value)}
+                onChange={(e) => getEpisodes(details.episodes, e.target.value)}
               >
                 {seasons.map((season) => (
                   <option defaultValue={details.season} value={season}>

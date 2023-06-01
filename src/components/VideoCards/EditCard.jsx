@@ -4,6 +4,7 @@ import { Button, Card, Modal } from 'react-bootstrap';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import StateContextProvider from '../../context/StateContext';
 import VideoContextProvider from '../../context/VideoContext';
 import { db } from '../../firebase.config';
 import { getSeriesData } from '../util/videoUtil';
@@ -14,7 +15,8 @@ const btnStyles = {
   border: 'none',
 };
 
-const EditCard = ({ imgSrc, scrollTo, video }) => {
+const EditCard = ({ imgSrc, scrollTo, videoDetails }) => {
+  const { setClickedEpisode } = useContext(StateContextProvider);
   const { setSeriesDetails } = useContext(VideoContextProvider);
   const [show, setShow] = useState(false);
 
@@ -23,17 +25,15 @@ const EditCard = ({ imgSrc, scrollTo, video }) => {
   const handleShow = () => setShow(true);
 
   const editVideo = async () => {
-    setSeriesDetails(await getSeriesData(video.id));
+    setSeriesDetails(await getSeriesData(videoDetails.id));
     scrollTo.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
   };
 
   const playVideo = () => {
-    navigate(`/watch/${video.id}`);
-    localStorage.removeItem('video');
-    localStorage.setItem(
-      'video',
-      JSON.stringify({ ...video.episodes[0], seriesTitle: video.title })
-    );
+    navigate(`/watch/${videoDetails.id}`);
+    setClickedEpisode(videoDetails.episodes[0]);
+    localStorage.removeItem('videoEp');
+    localStorage.setItem('videoEp', JSON.stringify(videoDetails.episodes[0]));
   };
 
   const textStyle = {
@@ -46,7 +46,7 @@ const EditCard = ({ imgSrc, scrollTo, video }) => {
 
   return (
     <>
-      <DeleteConfirmation show={show} setShow={setShow} video={video} />
+      <DeleteConfirmation show={show} setShow={setShow} video={videoDetails} />
 
       <Card style={{ background: 'gray', height: '20rem', maxWidth: '230px' }}>
         <Card.Img
@@ -67,8 +67,8 @@ const EditCard = ({ imgSrc, scrollTo, video }) => {
               overflow: 'hidden',
             }}
           >
-            <Card.Title style={{ ...textStyle }}>{video.title}</Card.Title>
-            <Card.Text style={{ height: '45px' }}>{video.description}</Card.Text>
+            <Card.Title style={{ ...textStyle }}>{videoDetails.title}</Card.Title>
+            <Card.Text style={{ height: '45px' }}>{videoDetails.description}</Card.Text>
           </div>
           <div className='d-flex justify-content-between mt-2'>
             <Button style={{ ...btnStyles }} onClick={editVideo}>

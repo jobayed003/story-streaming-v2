@@ -22,7 +22,7 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
   const ref = useRef();
 
   // Context Management
-  const { favouriteVideos, setClickedVideo } = useContext(StateContextProvider);
+  const { favouriteVideos, setClickedEpisode } = useContext(StateContextProvider);
   const { seriesVideos } = useContext(VideoContextProvider);
 
   // Custom Hooks
@@ -38,12 +38,10 @@ export const ListCard = ({ imgSrc, videoDetails }) => {
   const isFavourite = favVideosUniqueID.includes(videoDetails.id);
 
   const playVideo = () => {
-    setClickedVideo({ ...videoDetails.episodes[0], seriesTitle: videoDetails.title });
-    localStorage.removeItem('video');
-    localStorage.setItem(
-      'video',
-      JSON.stringify({ ...videoDetails.episodes[0], seriesTitle: videoDetails.title })
-    );
+    setClickedEpisode(videoDetails.episodes[0]);
+    localStorage.removeItem('videoEp');
+    localStorage.setItem('videoEp', JSON.stringify(videoDetails.episodes[0]));
+
     navigate(`/watch/${videoDetails.id}`);
   };
 

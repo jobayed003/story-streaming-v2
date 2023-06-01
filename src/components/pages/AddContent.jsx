@@ -303,7 +303,7 @@ const AddContent = () => {
                 >
                   {seriesVideos.map((video, idx) => (
                     <EditCard
-                      video={video}
+                      videoDetails={video}
                       imgSrc={video.episodes[0].thumbnail}
                       scrollTo={formRef}
                     />
@@ -321,7 +321,7 @@ const AddContent = () => {
                   {seriesVideos.map((video, idx) => (
                     <div className='slide' key={Math.random() + idx}>
                       <EditCard
-                        video={video}
+                        videoDetails={video}
                         imgSrc={video.episodes[0].thumbnail}
                         scrollTo={formRef}
                       />

@@ -12,7 +12,7 @@ const StateContextProvider = createContext({
 });
 
 export const StateContext = ({ children }) => {
-  const [clickedVideo, setClickedVideo] = useState('');
+  const [clickedEpisode, setClickedEpisode] = useState([]);
   const [searchedText, setSearchedText] = useState('');
 
   const [selectedAvatar, setSelectedAvatar] = useState({});
@@ -98,7 +98,7 @@ export const StateContext = ({ children }) => {
   }, [userCredentials.avatarDetails]);
 
   const contextValue = {
-    clickedVideo,
+    clickedEpisode,
     favouriteVideos,
     selectedAvatar,
     scrollId,
@@ -107,7 +107,7 @@ export const StateContext = ({ children }) => {
     id,
     setId,
 
-    setClickedVideo,
+    setClickedEpisode,
     setScrollId,
     setSelectedAvatar,
     setSearchedText,
