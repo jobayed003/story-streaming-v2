@@ -125,6 +125,8 @@ const Viewing = () => {
 
   const getEpisodes = (season) => {
     const selectedSeasonEp = video.episodes.filter((ep) => ep.season === +season);
+    // const selectedEpNumber = selectedSeasonEp.findIndex((el) => el.episode === episode.episode);
+
     setEpisodes(selectedSeasonEp);
   };
 
@@ -178,9 +180,15 @@ const Viewing = () => {
                   localStorage.setItem('videoEp', JSON.stringify(episodes[+e.target.value - 1]));
                 }}
               >
+                <option value='' selected hidden>
+                  Select Episode
+                </option>
                 {isAvailable &&
                   episodes.map((ep, idx) => (
-                    <option selected={episode.episode === ep.episode} value={idx + 1}>
+                    <option
+                      selected={episode.season === ep.season && episode.episode === ep.episode}
+                      value={idx + 1}
+                    >
                       Episode {idx + 1}
                     </option>
                   ))}
@@ -397,7 +405,9 @@ const Chat = ({ path }) => {
     if (Object.keys(d).includes('chats')) {
       await setDoc(chatRef, { ...d });
     }
-
+    // } else {}
+    //   await updateDoc(chatRef, { ['episode' + episode]: { chats: [details] } });
+    // }
     setMessage('');
   };
 
