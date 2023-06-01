@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import YouTube from 'react-youtube';
 import ChevronDownIcon from '../../assets/Icons/chevron-down.svg';
 import StateContextProvider from '../../context/StateContext';
+import useDimension from '../hooks/useDimension';
 import classes from './EpisodeDetails.module.css';
 import { getDuration } from './videoUtil';
 
@@ -16,6 +17,8 @@ export const EpisodeDetails = ({ show, setShow, details }) => {
 
   // Context Management
   const { setClickedEpisode } = useContext(StateContextProvider);
+
+  const { width } = useDimension();
 
   const handleClose = () => {
     setShow(false);
@@ -80,7 +83,7 @@ export const EpisodeDetails = ({ show, setShow, details }) => {
   };
 
   const textStyle = {
-    width: '80%',
+    width: width > 500 ? '80%' : '60%',
     display: 'inline-block',
     whiteSpace: 'nowrap',
     overflow: 'hidden',

@@ -144,12 +144,12 @@ const Viewing = () => {
             />
           </div>
 
-          <div className='d-flex justify-content-around align-items-center p-4 cursor-pointer'>
+          <div className='d-flex justify-content-around align-items-center flex-column-reverse flex-sm-row p-4 gap-2 gap-sm-0 cursor-pointer'>
             <p className={`d-flex align-items-center button m-0 gap-1`} onClick={handleShow}>
               <MdOutlineReportProblem />
               <span className='mt-1'>Report</span>
             </p>
-            <div className='d-flex gap-2'>
+            <div className='d-flex  gap-2'>
               <Form.Select
                 aria-label='Season No. Select'
                 className='text-white align-self-end cursor-pointer '
@@ -180,9 +180,11 @@ const Viewing = () => {
                   localStorage.setItem('videoEp', JSON.stringify(episodes[+e.target.value - 1]));
                 }}
               >
-                <option value='' selected hidden>
-                  Select Episode
-                </option>
+                {!episodes.every((ep) => episode.season === ep.season) && (
+                  <option value='' selected hidden>
+                    Select Episode
+                  </option>
+                )}
                 {isAvailable &&
                   episodes.map((ep, idx) => (
                     <option
